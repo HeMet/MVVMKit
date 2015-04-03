@@ -9,16 +9,16 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
 
     var window: UIWindow?
 
-    let router = Router()
+    var router: Router = Router()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
         router.route("root").toView { _ in
-            return ViewController()
+            return UINavigationController(rootViewController: ViewController())
         }.withTransition(Transitions.root)
         
         router.route("next").toView { _ in
@@ -51,7 +51,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

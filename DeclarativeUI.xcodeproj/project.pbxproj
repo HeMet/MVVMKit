@@ -15,6 +15,9 @@
 		B677815E1AC2B86A00D41721 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B677815C1AC2B86A00D41721 /* LaunchScreen.xib */; };
 		B677816A1AC2B86A00D41721 /* DeclarativeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */; };
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
+		B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */; };
+		B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */; };
+		B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,9 @@
 		B67781681AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclarativeUITests.swift; sourceTree = "<group>"; };
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
+		B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMVVMApplication.swift; sourceTree = "<group>"; };
+		B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +95,9 @@
 				B67781511AC2B86A00D41721 /* Supporting Files */,
 				B67781731AC2B88000D41721 /* DeclarativeUI.swift */,
 				B6461E361ACD5708004C7B62 /* Router.swift */,
+				B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */,
+				B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */,
+				B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -220,7 +229,10 @@
 			files = (
 				B6461E371ACD5708004C7B62 /* Router.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
+				B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */,
+				B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */,
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
+				B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

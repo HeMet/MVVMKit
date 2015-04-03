@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        (UIApplication.sharedApplication().delegate as AppDelegate).router.navigate("next", viewModel: "empty")
+        router.navigate("next", viewModel: "empty")
     }
 }
 

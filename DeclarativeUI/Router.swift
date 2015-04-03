@@ -8,13 +8,11 @@
 
 import UIKit
 
-class Router {
+class Router : NSObject {
     // from, to, what
     typealias Transition = (UIViewController, UIViewController, String) -> ()
     
     private var points = [String:RoutePoint]()
-    // todo: watch for Back transition
-    private var topViewController : UIViewController? = nil
     
     func route(id: String) -> RoutePoint {
         let rp = RoutePoint()
@@ -25,8 +23,7 @@ class Router {
     func navigate(id: String, viewModel: AnyObject) {
         if let point = points[id] {
             let vc = point._toFactory(viewModel)
-            let from = topViewController ?? UIViewController()
-            topViewController = vc
+            let from = UIApplication.sharedApplication().topViewController ?? UIViewController()
             point._transition(from, vc, id)
         }
     }
@@ -51,6 +48,10 @@ struct Transitions {
     
     static var show: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         from.showViewController(to, sender: from);
+    }
+    
+    static var showModal: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+        from.presentViewController(to, animated: true, completion: nil)
     }
 }
 
