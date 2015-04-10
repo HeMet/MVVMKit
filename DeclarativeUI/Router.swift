@@ -22,9 +22,32 @@ class Router : NSObject {
     
     func navigate<ViewModelType: AnyObject>(id: String, viewModel: ViewModelType) {
         let point = points[id]!
+        
         let vc = point.buildView(viewModel)
+        handleGroupView(id, view: vc)
+        
         let from = UIApplication.sharedApplication().topViewController ?? UIViewController()
+        
         point.t(from, vc, id)
+    }
+    
+    func handleGroupView(id:String, view: UIViewController) {
+        if let split = view as? UISplitViewController {
+            handleSplitView(id, splitView: split)
+        }
+    }
+    
+    func handleSplitView(id: String, splitView: UISplitViewController) {
+        let masterID = id + ".master"
+        let detailID = id + ".detail"
+        var views = [UIViewController]()
+        if let masterPoint = points[masterID] {
+            views.append(masterPoint.buildView(""))
+        }
+        if let detailPoint = points[detailID] {
+            views.append(detailPoint.buildView(""))
+        }
+        splitView.viewControllers = views
     }
 }
 
@@ -40,6 +63,10 @@ struct Transitions {
         from.showViewController(to, sender: from);
     }
     
+    static let showDetail: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+        from.showDetailViewController(to, sender: from);
+    }
+    
     static let showModal: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         from.presentViewController(to, animated: true, completion: nil)
     }
@@ -51,9 +78,11 @@ protocol ViewBuilder {
 }
 
 // it's seems imposible to define constraint as "class T and subclasses that support protocol P"
+//1. can instantiate View model and bind it to ViewModel
+//2. known that transition should be performed to move to this view
+//3. optionally it can wrap View in common container views
 class RoutePoint<VType where VType: ViewForViewModel> : ViewBuilder {
     typealias VMType = VType.ViewModelType
-    //typealias ViewFactory = (VMType) -> VType
     typealias ViewFactory = (VMType) -> UIViewController
     
     var t: Router.Transition!
