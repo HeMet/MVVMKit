@@ -16,14 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
     var router: Router = Router()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        router.route("root").toView { _ in
-            return UINavigationController(rootViewController: ViewController())
-        }.withTransition(Transitions.root)
-        
-        router.route("next").toView { _ in
-            return ViewController()
-        }.withTransition(Transitions.show)
+                      
+        router.route("root", to: ViewController.self).withTransition(Transitions.root).wrapInNavigationBar()
+        router.route("next", to: ViewController.self).withTransition(Transitions.show)
         
         router.navigate("root", viewModel: "empty")
         

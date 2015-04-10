@@ -8,9 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ViewForViewModel {
 
+    let viewModel : String
+    
     var subviewHook : UIView!
+    
+    required init(viewModel: String) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        self.viewModel = ""
+        super.init(coder: aDecoder)
+    }
     
     override func loadView() {
         view = UIView() => {
@@ -26,8 +38,16 @@ class ViewController: UIViewController {
         }
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         router.navigate("next", viewModel: "empty")
+    }
+    
+    func bindToViewModel() {
+        
+    }
+    
+    func bind(viewModel: String) {
+        
     }
 }
 

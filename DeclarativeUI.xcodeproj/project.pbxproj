@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6164EDB1AD2749300217581 /* ViewForViewModel.swift */; };
 		B6461E371ACD5708004C7B62 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6461E361ACD5708004C7B62 /* Router.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
 		B67781561AC2B86A00D41721 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781551AC2B86A00D41721 /* ViewController.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B6164EDB1AD2749300217581 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
 		B6461E361ACD5708004C7B62 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781521AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */,
 				B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */,
 				B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */,
+				B6164EDB1AD2749300217581 /* ViewForViewModel.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
 				B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
+				B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
