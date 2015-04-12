@@ -14,40 +14,54 @@ class Router : NSObject {
     
     private var points = [String:ViewBuilder]()
     
-    func route<ViewType: ViewForViewModel>(id: String, to: ViewType.Type) -> RoutePoint<ViewType> {
-        let rp = RoutePoint<ViewType>()
+    func route<ViewType: ViewForViewModel>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
+        let rp = RoutePointWithVM<ViewType>()
         points[id] = rp
         return rp
     }
     
-    func navigate<ViewModelType: AnyObject>(id: String, viewModel: ViewModelType) {
+    func route<ViewType: UIViewController>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, AnyObject> {
+        let rp = ModelessRoutePoint<ViewType>()
+        points[id] = rp
+        return rp
+    }
+    
+    func navigate<ViewModelType: AnyObject>(id: String, viewModels: ViewModelType...) {
         let point = points[id]!
         
-        let vc = point.buildView(viewModel)
-        handleGroupView(id, view: vc)
+        // somehow we should determine is this group view or not
+        let to : UIViewController
+        if (point is GroupViewRoutePoint) {
+            to = point.buildView("[placeholder]")
+            handleGroupView(id, view: to as! GroupViewForViewModels, viewModels: viewModels)
+        } else {
+            assert(viewModels.count == 1, "Too many View Models. This View can be bound to one View Model only.")
+            to = point.buildView(viewModels.first!)
+        }
         
         let from = UIApplication.sharedApplication().topViewController ?? UIViewController()
-        
-        point.t(from, vc, id)
+        point.t(from, to, id)
     }
     
-    func handleGroupView(id:String, view: UIViewController) {
-        if let split = view as? UISplitViewController {
-            handleSplitView(id, splitView: split)
+    func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {
+        let prefix = id + "."
+        let children = filter(points) { (point) -> Bool in
+            point.0.hasPrefix(prefix)
         }
-    }
-    
-    func handleSplitView(id: String, splitView: UISplitViewController) {
-        let masterID = id + ".master"
-        let detailID = id + ".detail"
-        var views = [UIViewController]()
-        if let masterPoint = points[masterID] {
-            views.append(masterPoint.buildView(""))
+        var childViews = [ViewEntry]()
+        var processedChildren = [String]()
+        for viewModel in viewModels {
+            for childPoint in children {
+                let childID = childPoint.0.substringFromIndex(prefix.endIndex)
+                if !contains(processedChildren, childID) && childPoint.1.canBindViewModel(viewModel) {
+                    childViews.append((childID, childPoint.1.buildView(viewModel)))
+                    processedChildren.append(childID)
+                    break
+                }
+            }
         }
-        if let detailPoint = points[detailID] {
-            views.append(detailPoint.buildView(""))
-        }
-        splitView.viewControllers = views
+        assert(viewModels.count == childViews.count, "All view models must be binded.")
+        view.bindToViewModels(childViews)
     }
 }
 
@@ -73,21 +87,23 @@ struct Transitions {
 }
 
 protocol ViewBuilder {
+    func canBindViewModel(viewModel: AnyObject) -> Bool
     func buildView(viewModel: AnyObject) -> UIViewController
     var t: Router.Transition! { get }
 }
 
-// it's seems imposible to define constraint as "class T and subclasses that support protocol P"
-//1. can instantiate View model and bind it to ViewModel
-//2. known that transition should be performed to move to this view
-//3. optionally it can wrap View in common container views
-class RoutePoint<VType where VType: ViewForViewModel> : ViewBuilder {
-    typealias VMType = VType.ViewModelType
+protocol GroupViewRoutePoint { }
+
+class RoutePoint<VType, VMType> : ViewBuilder {
     typealias ViewFactory = (VMType) -> UIViewController
     
     var t: Router.Transition!
-    private var createHierarchy: ViewFactory = { vm in
-        return VType(viewModel: vm) as! UIViewController
+    
+    // abstract
+    var createHierarchy: ViewFactory!
+    
+    func canBindViewModel(viewModel: AnyObject) -> Bool {
+        return false
     }
     
     func withFactory(factory: ViewFactory) -> RoutePoint {
@@ -100,9 +116,9 @@ class RoutePoint<VType where VType: ViewForViewModel> : ViewBuilder {
         return self
     }
     
-    //factory method
-    class func createView(viewModel: VMType) -> VType {
-        return VType(viewModel: viewModel)
+    //ABSTRACT factory method
+    class func createView(viewModel: VMType) -> VType! {
+        return nil
     }
     
     func buildView(viewModel: AnyObject) -> UIViewController {
@@ -116,5 +132,45 @@ class RoutePoint<VType where VType: ViewForViewModel> : ViewBuilder {
             return UINavigationController(rootViewController: ch(vm))
         }
         return self
+    }
+}
+
+class ModelessRoutePoint<VType: UIViewController>: RoutePoint<VType, AnyObject>, GroupViewRoutePoint {
+    override init() {
+        super.init()
+        createHierarchy = { vm in
+            return VType()
+        }
+    }
+    
+    override func canBindViewModel(viewModel: AnyObject) -> Bool {
+        return true
+    }
+    
+    override class func createView(viewModel: AnyObject) -> VType! {
+        return VType()
+    }
+}
+
+// it's seems imposible to define constraint as "class T and subclasses that support protocol P"
+//1. can instantiate View model and bind it to ViewModel
+//2. known that transition should be performed to move to this view
+//3. optionally it can wrap View in common container views
+class RoutePointWithVM<VType where VType: ViewForViewModel>: RoutePoint<VType, VType.ViewModelType> {
+    typealias VMType = VType.ViewModelType
+    
+    override init() {
+        super.init()
+        createHierarchy = { vm in
+            return VType(viewModel: vm) as! UIViewController
+        }
+    }
+    
+    override func canBindViewModel(viewModel: AnyObject) -> Bool {
+        return viewModel is VType.ViewModelType
+    }
+    
+    override class func createView(viewModel: VMType) -> VType! {
+        return VType(viewModel: viewModel)
     }
 }

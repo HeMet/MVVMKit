@@ -25,11 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         2. add check for UISplitViewController inside router, that searches for child points
         3. add SplitViewModel protocol, that descibes how to get related view models
         */
-        router.route("split", to: SplitView.self).withTransition(Transitions.root)
-        router.route("split.master", to: ViewController.self)
+        //router.route("split", to: SplitView.self).withTransition(Transitions.root)
+        router.route("split", to: UISplitViewController.self).withTransition(Transitions.root)
+        router.route("split.master", to: ViewController.self).wrapInNavigationBar()
         router.route("split.detail", to: ViewController.self)
         
-        router.navigate("split", viewModel: "empty")
+        router.navigate("split", viewModels: "empty", "empty")
         
         return true
     }

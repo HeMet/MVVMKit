@@ -14,6 +14,7 @@ extension UIApplication {
     }
     
     // todo: popovers
+    // проблема: topViewContoller разруливается до SplitViewController, но не дальше (Master, Detail)
     func topViewControllerWithRootViewController(rootViewController : UIViewController?) -> UIViewController? {
         if let tabBarController = rootViewController as? UITabBarController {
             return topViewControllerWithRootViewController(tabBarController.selectedViewController)

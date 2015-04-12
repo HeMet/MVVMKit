@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		840369611AD8477400FCD109 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840369601AD8477400FCD109 /* SplitView.swift */; };
+		84AB0A171AD98E8D00971555 /* GroupViewForViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */; };
+		84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */; };
 		B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6164EDB1AD2749300217581 /* ViewForViewModel.swift */; };
 		B6461E371ACD5708004C7B62 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6461E361ACD5708004C7B62 /* Router.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -34,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		840369601AD8477400FCD109 /* SplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
+		84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewForViewModels.swift; sourceTree = "<group>"; };
+		84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuiltInGroupViews.swift; sourceTree = "<group>"; };
 		B6164EDB1AD2749300217581 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
 		B6461E361ACD5708004C7B62 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +108,8 @@
 				B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */,
 				B6164EDB1AD2749300217581 /* ViewForViewModel.swift */,
 				840369601AD8477400FCD109 /* SplitView.swift */,
+				84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */,
+				84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -234,10 +240,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6461E371ACD5708004C7B62 /* Router.swift in Sources */,
+				84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
 				B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */,
 				B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */,
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
+				84AB0A171AD98E8D00971555 /* GroupViewForViewModels.swift in Sources */,
 				840369611AD8477400FCD109 /* SplitView.swift in Sources */,
 				B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
