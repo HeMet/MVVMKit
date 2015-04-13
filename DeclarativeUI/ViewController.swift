@@ -17,6 +17,7 @@ class ViewController: UIViewController, ViewForViewModel {
     required init(viewModel: String) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.title = viewModel
     }
 
     required init(coder aDecoder: NSCoder) {

@@ -18,3 +18,16 @@ extension UISplitViewController : GroupViewForViewModels {
         self.viewControllers = [masterView, detailView]
     }
 }
+
+extension UITabBarController : GroupViewForViewModels {
+    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory) {
+        assert(viewModels.count == 2, "SplitView must contains two child views.")
+        
+        var vcs = [UIViewController]()
+        for i in 0..<viewModels.count {
+            vcs.append(childFactory(childId: "\(i)", childVM: viewModels[i]))
+        }
+        
+        self.viewControllers = vcs
+    }
+}
