@@ -32,7 +32,7 @@ class Router : NSObject {
         return rp
     }
     
-    func route<ViewType: UIViewController>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, AnyObject> {
+    func route<ViewType: UIViewController where ViewType: GroupViewForViewModels>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, AnyObject> {
         let rp = ModelessRoutePoint<ViewType>()
         points[id] = rp
         return rp
@@ -49,10 +49,10 @@ class Router : NSObject {
             handleGroupView(id, view: to as! GroupViewForViewModels, viewModels: viewModels)
         } else {
             assert(viewModels.count == 1, "Too many View Models. This View can be bound to one View Model only.")
-            to = point.buildView(viewModels.first!)
-            knownVM.append(VMEntry(vm: viewModels.first!, view: to))
+            to = resolveViewToViewModelBinding(id, childID: nil, viewModel: viewModels.first!)
         }
         
+        // todo: refactoring
         let from = getFromView(sender) ?? UIViewController()
         point.t(from, to, id)
     }
@@ -62,26 +62,33 @@ class Router : NSObject {
     }
     
     func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {        
-        view.bindToViewModels(viewModels) { (childID: String, childVM: AnyObject) -> UIViewController in
-            let point = self.points["\(id).\(childID)"]!
-            assert(point.canBindViewModel(childVM), "Wrong View Model for child View.")
-            let childView = point.buildView(childVM)
-            self.knownVM.append(VMEntry(vm: childVM, view: childView))
-            
-            return childView
+        view.bindToViewModels(viewModels) {
+            self.resolveViewToViewModelBinding(id, childID: $0, viewModel: $1)
         }
     }
     
-    func cleanDeadVM() {
-        var aliveVM = [VMEntry]()
-        for entry in knownVM {
-            if entry.vm != nil && entry.view != nil {
-                aliveVM.append(entry)
-            }
-        }
+    func resolveViewToViewModelBinding(id: String, childID: String?, viewModel: AnyObject) -> UIViewController {
+        var finalID = concatID(id, childID: childID)
+        let point = self.points[finalID]!
+        assert(point.canBindViewModel(viewModel), "Wrong View Model for child View.")
         
-        if (knownVM.count != aliveVM.count) {
-            knownVM = aliveVM
+        let childView = point.buildView(viewModel)
+        self.knownVM.append(VMEntry(vm: viewModel, view: childView))
+        
+        return childView
+    }
+    
+    func concatID(id: String, childID: String?) -> String {
+        var finalID = id
+        if let chID = childID {
+            finalID += ".\(chID)"
+        }
+        return finalID
+    }
+    
+    func cleanDeadVM() {
+        knownVM = knownVM.filter {
+            $0.vm != nil && $0.view != nil
         }
     }
 }
