@@ -8,8 +8,8 @@
 
 import UIKit
 
-typealias ViewEntry = (id: String, view: UIViewController)
+typealias ChildViewFactory = (childId: String, childVM: AnyObject) -> UIViewController
 
 protocol GroupViewForViewModels {
-    func bindToViewModels(viewModels: [ViewEntry])
+    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory)
 }

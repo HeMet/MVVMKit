@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         //router.route("split", to: SplitView.self).withTransition(Transitions.root)
         router.route("split", to: UISplitViewController.self).withTransition(Transitions.root)
         router.route("split.master", to: ViewController.self).wrapInNavigationBar()
-        router.route("split.detail", to: ViewController.self)
+        router.route("split.detail", to: ViewController2.self)
         
-        router.navigate(self, id: "split", viewModels: "empty", "empty")
+        router.navigate(self, id: "split", viewModels: "master", "detail")
         
         return true
     }

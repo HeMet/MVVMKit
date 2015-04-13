@@ -1,15 +1,15 @@
 //
-//  ViewController.swift
+//  ViewController2.swift
 //  DeclarativeUI
 //
-//  Created by Eugene Gubin on 25.03.15.
+//  Created by Eugene Gubin on 13.04.15.
 //  Copyright (c) 2015 SimbirSoft. All rights reserved.
 //
 
 import UIKit
 
-class ViewController: UIViewController, ViewForViewModel {
-
+class ViewController2: UIViewController, ViewForViewModel {
+    
     let viewModel : String
     
     var subviewHook : UILabel!
@@ -18,7 +18,7 @@ class ViewController: UIViewController, ViewForViewModel {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         self.viewModel = ""
         super.init(coder: aDecoder)
@@ -27,7 +27,7 @@ class ViewController: UIViewController, ViewForViewModel {
     override func loadView() {
         view = UIView() => {
             $0.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            $0.backgroundColor = UIColor.redColor()
+            $0.backgroundColor = UIColor.yellowColor()
             
             $0 => [
                 self.subviewHook ~> UILabel() => {
@@ -51,4 +51,3 @@ class ViewController: UIViewController, ViewForViewModel {
         
     }
 }
-

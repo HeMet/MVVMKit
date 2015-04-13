@@ -9,17 +9,12 @@
 import UIKit
 
 extension UISplitViewController : GroupViewForViewModels {
-    func bindToViewModels(viewModels: [ViewEntry]) {
-        let vmd = viewEntriesToDictionary(viewModels)
-        var viewControllers = [vmd["master"]!, vmd["detail"]!]
-        self.viewControllers = viewControllers
+    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory) {
+        assert(viewModels.count == 2, "SplitView must contains two child views.")
+        
+        let masterView = childFactory(childId: "master", childVM: viewModels[0])
+        let detailView = childFactory(childId: "detail", childVM: viewModels[1])
+        
+        self.viewControllers = [masterView, detailView]
     }
-}
-
-func viewEntriesToDictionary(entries: [ViewEntry]) -> Dictionary<String, UIViewController> {
-    var d = Dictionary<String, UIViewController>()
-    for entry in entries {
-        d[entry.id] = entry.view
-    }
-    return d
 }

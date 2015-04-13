@@ -39,11 +39,10 @@ class Router : NSObject {
     }
     
     func navigate<ViewModelType: AnyObject>(sender: AnyObject, id: String, viewModels: ViewModelType...) {
-        cleanKnownVM()
+        cleanDeadVM()
         
         let point = points[id]!
         
-        // somehow we should determine is this group view or not
         let to : UIViewController
         if (point is GroupViewRoutePoint) {
             to = point.buildView("[placeholder]")
@@ -62,30 +61,18 @@ class Router : NSObject {
         return knownVM.filter({ $0.vm === sender }).first?.view
     }
     
-    func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {
-        let prefix = id + "."
-        let children = filter(points) { (point) -> Bool in
-            point.0.hasPrefix(prefix)
+    func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {        
+        view.bindToViewModels(viewModels) { (childID: String, childVM: AnyObject) -> UIViewController in
+            let point = self.points["\(id).\(childID)"]!
+            assert(point.canBindViewModel(childVM), "Wrong View Model for child View.")
+            let childView = point.buildView(childVM)
+            self.knownVM.append(VMEntry(vm: childVM, view: childView))
+            
+            return childView
         }
-        var childViews = [ViewEntry]()
-        var processedChildren = [String]()
-        for viewModel in viewModels {
-            for childPoint in children {
-                let childID = childPoint.0.substringFromIndex(prefix.endIndex)
-                if !contains(processedChildren, childID) && childPoint.1.canBindViewModel(viewModel) {
-                    let childView = childPoint.1.buildView(viewModel)
-                    childViews.append((childID, childView))
-                    processedChildren.append(childID)
-                    knownVM.append(VMEntry(vm: viewModel, view: childView))
-                    break
-                }
-            }
-        }
-        assert(viewModels.count == childViews.count, "All view models must be binded.")
-        view.bindToViewModels(childViews)
     }
     
-    func cleanKnownVM() {
+    func cleanDeadVM() {
         var aliveVM = [VMEntry]()
         for entry in knownVM {
             if entry.vm != nil && entry.view != nil {
@@ -128,6 +115,9 @@ protocol ViewBuilder {
 
 protocol GroupViewRoutePoint { }
 
+//1. can instantiate View model and bind it to ViewModel
+//2. known that transition should be performed to move to this view
+//3. optionally it can wrap View in common container views
 class RoutePoint<VType, VMType> : ViewBuilder {
     typealias ViewFactory = (VMType) -> UIViewController
     
@@ -187,9 +177,6 @@ class ModelessRoutePoint<VType: UIViewController>: RoutePoint<VType, AnyObject>,
 }
 
 // it's seems imposible to define constraint as "class T and subclasses that support protocol P"
-//1. can instantiate View model and bind it to ViewModel
-//2. known that transition should be performed to move to this view
-//3. optionally it can wrap View in common container views
 class RoutePointWithVM<VType where VType: ViewForViewModel>: RoutePoint<VType, VType.ViewModelType> {
     typealias VMType = VType.ViewModelType
     
