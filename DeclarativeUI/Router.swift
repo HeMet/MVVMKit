@@ -12,7 +12,19 @@ class Router : NSObject {
     // from, to, what
     typealias Transition = (UIViewController, UIViewController, String) -> ()
     
+    private class VMEntry {
+        weak var vm: AnyObject?
+        weak var view: UIViewController?
+        
+        init (vm: AnyObject, view: UIViewController) {
+            self.vm = vm
+            self.view = view
+        }
+    }
+    
     private var points = [String:ViewBuilder]()
+    
+    private var knownVM = [VMEntry]()
     
     func route<ViewType: ViewForViewModel>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
         let rp = RoutePointWithVM<ViewType>()
@@ -26,7 +38,9 @@ class Router : NSObject {
         return rp
     }
     
-    func navigate<ViewModelType: AnyObject>(id: String, viewModels: ViewModelType...) {
+    func navigate<ViewModelType: AnyObject>(sender: AnyObject, id: String, viewModels: ViewModelType...) {
+        cleanKnownVM()
+        
         let point = points[id]!
         
         // somehow we should determine is this group view or not
@@ -37,10 +51,15 @@ class Router : NSObject {
         } else {
             assert(viewModels.count == 1, "Too many View Models. This View can be bound to one View Model only.")
             to = point.buildView(viewModels.first!)
+            knownVM.append(VMEntry(vm: viewModels.first!, view: to))
         }
         
-        let from = UIApplication.sharedApplication().topViewController ?? UIViewController()
+        let from = getFromView(sender) ?? UIViewController()
         point.t(from, to, id)
+    }
+    
+    func getFromView(sender: AnyObject) -> UIViewController? {
+        return knownVM.filter({ $0.vm === sender }).first?.view
     }
     
     func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {
@@ -54,14 +73,29 @@ class Router : NSObject {
             for childPoint in children {
                 let childID = childPoint.0.substringFromIndex(prefix.endIndex)
                 if !contains(processedChildren, childID) && childPoint.1.canBindViewModel(viewModel) {
-                    childViews.append((childID, childPoint.1.buildView(viewModel)))
+                    let childView = childPoint.1.buildView(viewModel)
+                    childViews.append((childID, childView))
                     processedChildren.append(childID)
+                    knownVM.append(VMEntry(vm: viewModel, view: childView))
                     break
                 }
             }
         }
         assert(viewModels.count == childViews.count, "All view models must be binded.")
         view.bindToViewModels(childViews)
+    }
+    
+    func cleanKnownVM() {
+        var aliveVM = [VMEntry]()
+        for entry in knownVM {
+            if entry.vm != nil && entry.view != nil {
+                aliveVM.append(entry)
+            }
+        }
+        
+        if (knownVM.count != aliveVM.count) {
+            knownVM = aliveVM
+        }
     }
 }
 

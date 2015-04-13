@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         router.route("split.master", to: ViewController.self).wrapInNavigationBar()
         router.route("split.detail", to: ViewController.self)
         
-        router.navigate("split", viewModels: "empty", "empty")
+        router.navigate(self, id: "split", viewModels: "empty", "empty")
         
         return true
     }

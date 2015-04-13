@@ -39,7 +39,7 @@ class ViewController: UIViewController, ViewForViewModel {
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        router.navigate("next", viewModels: "empty")
+        router.navigate(self.viewModel, id: "next", viewModels: "empty")
     }
     
     func bindToViewModel() {
