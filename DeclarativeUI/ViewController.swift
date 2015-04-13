@@ -46,9 +46,5 @@ class ViewController: UIViewController, ViewForViewModel {
     func bindToViewModel() {
         
     }
-    
-    func bind(viewModel: String) {
-        
-    }
 }
 
