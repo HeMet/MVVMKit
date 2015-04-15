@@ -9,10 +9,11 @@
 import Foundation
 
 struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, CollectionType {
+    typealias DictionaryItem = (KeyType, ValueType)
     var keys = [KeyType]()
     var data = Dictionary<KeyType, ValueType>()
     
-    init(dictionaryLiteral elements: (KeyType, ValueType)...) {
+    init(dictionaryLiteral elements: DictionaryItem...) {
         for e in elements {
             self[e.0] = e.1
         }
@@ -23,12 +24,12 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
     }
     
     /// The first element, or `nil` if the array is empty
-    var first: (KeyType, ValueType)? {
+    var first: DictionaryItem? {
         return data.isEmpty ? nil : self[0]
     }
     
     /// The last element, or `nil` if the array is empty
-    var last: (KeyType, ValueType)? {
+    var last: DictionaryItem? {
         return data.isEmpty ? nil : self[count - 1]
     }
     
@@ -54,7 +55,7 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         }
     }
     
-    subscript(position: Int) -> (KeyType, ValueType) {
+    subscript(position: Int) -> DictionaryItem {
         get {
             precondition(position < keys.count, "Index out-of-bounds")
             
@@ -85,7 +86,7 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         return existingValue
     }
     
-    mutating func removeAtIndex(index: Int) -> (KeyType, ValueType)
+    mutating func removeAtIndex(index: Int) -> DictionaryItem
     {
         precondition(index < keys.count, "Index out-of-bounds")
         
@@ -97,6 +98,12 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
     
     mutating func addDictionaryUnordered(dictionary: Dictionary<KeyType, ValueType>) {
         for e in dictionary {
+            self[e.0] = e.1
+        }
+    }
+    
+    mutating func addElements(elements: [DictionaryItem]) {
+        for e in elements {
             self[e.0] = e.1
         }
     }

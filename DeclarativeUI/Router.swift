@@ -45,9 +45,12 @@ class Router : NSObject {
     func navigate(sender: AnyObject, id: String, viewModels: Dictionary<String, AnyObject>) {
         var vms = OrderedDictionary<String, AnyObject>()
         vms[id] = "[placeholder]"
-        for e in viewModels {
-            vms[id + "." + e.0] = e.1
+        
+        let fullSpecifiedIDs = map(viewModels) { e in
+            (id + "." + e.0, e.1)
         }
+        vms.addElements(fullSpecifiedIDs)
+        
         internalNavigate(sender, viewModels: vms)
     }
     
