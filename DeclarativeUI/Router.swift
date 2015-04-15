@@ -26,7 +26,7 @@ class Router : NSObject {
     
     private var knownVM = [VMEntry]()
     
-    func route<ViewType: ViewForViewModel>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
+    func route<ViewType: ViewForViewModel where ViewType.ViewModelType: AnyObject>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
         let rp = RoutePointWithVM<ViewType>()
         points[id] = rp
         return rp
