@@ -8,8 +8,6 @@
 
 import UIKit
 
-typealias ChildViewFactory = (childId: String, childVM: AnyObject) -> UIViewController
-
 protocol GroupViewForViewModels {
-    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory)
+    func attachChildViews(children: OrderedDictionary<String, UIViewController>)
 }

@@ -9,25 +9,17 @@
 import UIKit
 
 extension UISplitViewController : GroupViewForViewModels {
-    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory) {
-        assert(viewModels.count == 2, "SplitView must contains two child views.")
-        
-        let masterView = childFactory(childId: "master", childVM: viewModels[0])
-        let detailView = childFactory(childId: "detail", childVM: viewModels[1])
-        
-        self.viewControllers = [masterView, detailView]
+    func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
+        self.viewControllers = [children["master"]!, children["detail"]!]
     }
 }
 
-extension UITabBarController : GroupViewForViewModels {
-    func bindToViewModels(viewModels: [AnyObject], childFactory: ChildViewFactory) {
-        assert(viewModels.count == 2, "SplitView must contains two child views.")
-        
-        var vcs = [UIViewController]()
-        for i in 0..<viewModels.count {
-            vcs.append(childFactory(childId: "\(i)", childVM: viewModels[i]))
+extension UITabBarController : GroupViewForViewModels {    
+    func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
+        var childViews = [UIViewController]()
+        for e in children {
+            childViews.append(e.1)
         }
-        
-        self.viewControllers = vcs
+        self.viewControllers = childViews
     }
 }

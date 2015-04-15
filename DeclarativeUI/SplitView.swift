@@ -9,7 +9,7 @@
 import UIKit
 
 class SplitView: UISplitViewController, ViewForViewModel {
-    var viewModel: String
+    var viewModel: String!
     
     required init(viewModel: String) {
         self.viewModel = viewModel

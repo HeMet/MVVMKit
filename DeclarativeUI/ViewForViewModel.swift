@@ -10,7 +10,7 @@ import UIKit
 
 protocol ViewForViewModel {
     typealias ViewModelType
-    var viewModel: ViewModelType { get }
+    var viewModel: ViewModelType! { get }
     func bindToViewModel()
     init(viewModel: ViewModelType)
 }

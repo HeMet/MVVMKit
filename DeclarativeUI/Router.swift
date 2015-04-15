@@ -22,7 +22,7 @@ class Router : NSObject {
         }
     }
     
-    private var points = [String:ViewBuilder]()
+    private var points = OrderedDictionary<String, ViewBuilder>()
     
     private var knownVM = [VMEntry]()
     
@@ -38,58 +38,108 @@ class Router : NSObject {
         return rp
     }
     
-    func navigate<ViewModelType: AnyObject>(sender: AnyObject, id: String, viewModels: ViewModelType...) {
+    func navigate(sender: AnyObject, id: String, viewModel: AnyObject) {
+        internalNavigate(sender, viewModels: [id: viewModel])
+    }
+    
+    func navigate(sender: AnyObject, id: String, viewModels: Dictionary<String, AnyObject>) {
+        var vms = OrderedDictionary<String, AnyObject>()
+        vms[id] = "[placeholder]"
+        for e in viewModels {
+            vms[id + "." + e.0] = e.1
+        }
+        internalNavigate(sender, viewModels: vms)
+    }
+    
+    func internalNavigate(sender: AnyObject, viewModels: OrderedDictionary<String, AnyObject>) {
         cleanDeadVM()
         
-        let point = points[id]!
-        
-        let to : UIViewController
-        if (point is GroupViewRoutePoint) {
-            to = point.buildView("[placeholder]")
-            handleGroupView(id, view: to as! GroupViewForViewModels, viewModels: viewModels)
-        } else {
-            assert(viewModels.count == 1, "Too many View Models. This View can be bound to one View Model only.")
-            to = resolveViewToViewModelBinding(id, childID: nil, viewModel: viewModels.first!)
+        var vms = viewModels
+        vms.keys.sort { (a, b) -> Bool in
+            return self.getIDWeight(a) < self.getIDWeight(b)
         }
         
-        // todo: refactoring
+        let binding = vms.removeAtIndex(0)
+        let point = getBindingWithID(binding.0)
+        let to = bindViewModel(binding.1, binding: point)
+        bindViewModels(to, viewModels: vms)
+        
+        //todo: add check when from is needed or not
         let from = getFromView(sender) ?? UIViewController()
-        point.t(from, to, id)
+        point.t(from, to, binding.0)
+    }
+    
+    func bindViewModels(parentView: UIViewController, viewModels: OrderedDictionary<String, AnyObject>) {
+        var views = OrderedDictionary<String, UIViewController>()
+        for e in viewModels {
+            let point = getBindingWithID(e.0)
+            let (pid, cid) = devideID(e.0)
+            
+            let view = bindViewModel(e.1, binding: point)
+            if view is GroupViewForViewModels {
+                let children = getChildren(pid, viewModels: viewModels)
+                bindViewModels(view, viewModels: children)
+            } else {
+                views[cid] = view
+                
+            }
+        }
+        
+        if (views.count > 0) {
+            let groupView = parentView as! GroupViewForViewModels
+            groupView.attachChildViews(views)
+        }
+    }
+    
+    func bindViewModel(viewModel: AnyObject, binding: ViewBuilder) -> UIViewController {
+        assert(binding.canBindViewModel(viewModel), "Wrong View Model for child View.")
+        
+        let result = binding.buildView(viewModel)
+        if (!(result is GroupViewForViewModels)) {
+            knownVM.append(VMEntry(vm: viewModel, view: result))
+        }
+        
+        return result
+    }
+    
+    func getChildren(parentID: String, viewModels: OrderedDictionary<String, AnyObject>) -> OrderedDictionary<String, AnyObject> {
+        var result = OrderedDictionary<String, AnyObject>()
+        for e in viewModels {
+            let (pid, cid) = devideID(e.0)
+            if pid == parentID {
+                result[cid] = e.1
+            }
+        }
+        return result
+    }
+    
+    func getBindingWithID(id: String) -> ViewBuilder {
+        assert(points[id] != nil, "Unknown binding: \(id)")
+        return points[id]!
+    }
+    
+    func devideID(id: String) -> (String, String) {
+        var components = id.componentsSeparatedByString(".")
+        let parentID = components.removeAtIndex(0)
+        let childID = ".".join(components)
+        
+        return (parentID, childID)
+    }
+    
+    func getIDWeight(id: String) -> Int {
+        var components = id.componentsSeparatedByString(".")
+        return components.count - 1
     }
     
     func getFromView(sender: AnyObject) -> UIViewController? {
         return knownVM.filter({ $0.vm === sender }).first?.view
     }
     
-    func handleGroupView(id:String, view: GroupViewForViewModels, viewModels: [AnyObject]) {        
-        view.bindToViewModels(viewModels) {
-            self.resolveViewToViewModelBinding(id, childID: $0, viewModel: $1)
-        }
-    }
-    
-    func resolveViewToViewModelBinding(id: String, childID: String?, viewModel: AnyObject) -> UIViewController {
-        var finalID = concatID(id, childID: childID)
-        let point = self.points[finalID]!
-        assert(point.canBindViewModel(viewModel), "Wrong View Model for child View.")
-        
-        let childView = point.buildView(viewModel)
-        self.knownVM.append(VMEntry(vm: viewModel, view: childView))
-        
-        return childView
-    }
-    
-    func concatID(id: String, childID: String?) -> String {
-        var finalID = id
-        if let chID = childID {
-            finalID += ".\(chID)"
-        }
-        return finalID
-    }
-    
     func cleanDeadVM() {
-        knownVM = knownVM.filter {
+        let alive = knownVM.filter {
             $0.vm != nil && $0.view != nil
         }
+        knownVM = alive
     }
 }
 

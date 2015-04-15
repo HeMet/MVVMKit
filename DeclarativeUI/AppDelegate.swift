@@ -18,24 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
                       
         router.route("root", to: ViewController.self).withTransition(Transitions.root).wrapInNavigationBar()
-        router.route("next", to: ViewController.self).withTransition(Transitions.show)
+        router.route("next", to: ViewController2.self).withTransition(Transitions.show)
         
         router.route("split", to: UISplitViewController.self).withTransition(Transitions.root)
         router.route("split.master", to: ViewController.self).wrapInNavigationBar()
         router.route("split.detail", to: ViewController2.self)
         
-        /*
-        Think about:
-        1. Order of child views same as order in which they declared (there it has meaning)
-        2. navigate takes dictionary [childID, child] instead of array of children
-        */
-        
         router.route("tabbar", to: UITabBarController.self).withTransition(Transitions.root)
         router.route("tabbar.0", to: ViewController.self)
         router.route("tabbar.1", to: ViewController2.self)
         
-        router.navigate(self, id: "tabbar", viewModels: "master", "detail")
-        //router.navigate(self, id: "root", viewModels: "master")
+        //router.navigate(self, id: "tabbar", viewModels: ["0" : SimpleViewModel(s: "master"), "1" : SimpleViewModel(s: "detail")])
+        router.navigate(self, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
+        //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
         
         return true
     }

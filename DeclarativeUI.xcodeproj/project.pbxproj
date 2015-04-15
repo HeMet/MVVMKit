@@ -12,6 +12,7 @@
 		84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */; };
 		B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6164EDB1AD2749300217581 /* ViewForViewModel.swift */; };
 		B6461E371ACD5708004C7B62 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6461E361ACD5708004C7B62 /* Router.swift */; };
+		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
 		B67781561AC2B86A00D41721 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781551AC2B86A00D41721 /* ViewController.swift */; };
 		B67781591AC2B86A00D41721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B67781571AC2B86A00D41721 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 		B677816A1AC2B86A00D41721 /* DeclarativeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */; };
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
 		B6797F161ADBB8740031420D /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6797F151ADBB8740031420D /* ViewController2.swift */; };
+		B6D8E0211ADCF758003C955F /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */; };
 		B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */; };
 		B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */; };
 		B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */; };
@@ -41,6 +43,7 @@
 		84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuiltInGroupViews.swift; sourceTree = "<group>"; };
 		B6164EDB1AD2749300217581 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
 		B6461E361ACD5708004C7B62 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781521AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781531AC2B86A00D41721 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,6 +56,7 @@
 		B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclarativeUITests.swift; sourceTree = "<group>"; };
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
 		B6797F151ADBB8740031420D /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
+		B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMVVMApplication.swift; sourceTree = "<group>"; };
 		B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 				84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */,
 				84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */,
 				B6797F151ADBB8740031420D /* ViewController2.swift */,
+				B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */,
+				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -244,7 +250,9 @@
 			files = (
 				B6461E371ACD5708004C7B62 /* Router.swift in Sources */,
 				84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */,
+				B6D8E0211ADCF758003C955F /* OrderedDictionary.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
+				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
 				B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */,
 				B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */,
 				B6797F161ADBB8740031420D /* ViewController2.swift in Sources */,
