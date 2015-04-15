@@ -119,16 +119,11 @@ class Router : NSObject {
     }
     
     func devideID(id: String) -> (String, String) {
-        var components = id.componentsSeparatedByString(".")
-        let parentID = components.removeAtIndex(0)
-        let childID = ".".join(components)
-        
-        return (parentID, childID)
+        return id.devideByIndex(id.indexOf("."))
     }
     
     func getIDWeight(id: String) -> Int {
-        var components = id.componentsSeparatedByString(".")
-        return components.count - 1
+        return id.countOf(".")
     }
     
     func getFromView(sender: AnyObject) -> UIViewController? {
