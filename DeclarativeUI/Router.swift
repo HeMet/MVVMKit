@@ -54,7 +54,7 @@ class Router : NSObject {
         internalNavigate(sender, viewModels: vms)
     }
     
-    func internalNavigate(sender: AnyObject, viewModels: OrderedDictionary<String, AnyObject>) {
+    private func internalNavigate(sender: AnyObject, viewModels: OrderedDictionary<String, AnyObject>) {
         cleanDeadVM()
         
         var vms = viewModels
@@ -72,7 +72,7 @@ class Router : NSObject {
         point.t(from, to, binding.0)
     }
     
-    func bindViewModels(parentView: UIViewController, viewModels: OrderedDictionary<String, AnyObject>) {
+    private func bindViewModels(parentView: UIViewController, viewModels: OrderedDictionary<String, AnyObject>) {
         var views = OrderedDictionary<String, UIViewController>()
         for e in viewModels {
             let point = getBindingWithID(e.0)
@@ -84,7 +84,6 @@ class Router : NSObject {
                 bindViewModels(view, viewModels: children)
             } else {
                 views[cid] = view
-                
             }
         }
         
@@ -94,7 +93,7 @@ class Router : NSObject {
         }
     }
     
-    func bindViewModel(viewModel: AnyObject, binding: ViewBuilder) -> UIViewController {
+    private func bindViewModel(viewModel: AnyObject, binding: ViewBuilder) -> UIViewController {
         assert(binding.canBindViewModel(viewModel), "Wrong View Model for child View.")
         
         let result = binding.buildView(viewModel)
@@ -105,7 +104,7 @@ class Router : NSObject {
         return result
     }
     
-    func getChildren(parentID: String, viewModels: OrderedDictionary<String, AnyObject>) -> OrderedDictionary<String, AnyObject> {
+    private func getChildren(parentID: String, viewModels: OrderedDictionary<String, AnyObject>) -> OrderedDictionary<String, AnyObject> {
         var result = OrderedDictionary<String, AnyObject>()
         for e in viewModels {
             let (pid, cid) = devideID(e.0)
@@ -116,28 +115,27 @@ class Router : NSObject {
         return result
     }
     
-    func getBindingWithID(id: String) -> ViewBuilder {
+    private func getBindingWithID(id: String) -> ViewBuilder {
         assert(points[id] != nil, "Unknown binding: \(id)")
         return points[id]!
     }
     
-    func devideID(id: String) -> (String, String) {
+    private func devideID(id: String) -> (String, String) {
         return id.devideByIndex(id.indexOf("."))
     }
     
-    func getIDWeight(id: String) -> Int {
+    private func getIDWeight(id: String) -> Int {
         return id.countOf(".")
     }
     
-    func getFromView(sender: AnyObject) -> UIViewController? {
+    private func getFromView(sender: AnyObject) -> UIViewController? {
         return knownVM.filter({ $0.vm === sender }).first?.view
     }
     
-    func cleanDeadVM() {
-        let alive = knownVM.filter {
+    private func cleanDeadVM() {
+        knownVM = knownVM.filter {
             $0.vm != nil && $0.view != nil
         }
-        knownVM = alive
     }
 }
 
@@ -168,8 +166,6 @@ protocol ViewBuilder {
     var t: Router.Transition! { get }
 }
 
-protocol GroupViewRoutePoint { }
-
 //1. can instantiate View model and bind it to ViewModel
 //2. known that transition should be performed to move to this view
 //3. optionally it can wrap View in common container views
@@ -179,7 +175,7 @@ class RoutePoint<VType, VMType> : ViewBuilder {
     var t: Router.Transition!
     
     // abstract
-    var createHierarchy: ViewFactory!
+    private var createHierarchy: ViewFactory!
     
     func canBindViewModel(viewModel: AnyObject) -> Bool {
         return false
@@ -214,7 +210,7 @@ class RoutePoint<VType, VMType> : ViewBuilder {
     }
 }
 
-class ModelessRoutePoint<VType: UIViewController>: RoutePoint<VType, AnyObject>, GroupViewRoutePoint {
+class ModelessRoutePoint<VType: UIViewController>: RoutePoint<VType, AnyObject> {
     override init() {
         super.init()
         createHierarchy = { vm in
