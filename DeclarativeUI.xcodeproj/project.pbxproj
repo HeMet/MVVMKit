@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		840369611AD8477400FCD109 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840369601AD8477400FCD109 /* SplitView.swift */; };
+		84147C801AE15E8D001F64B6 /* DynamicPropertyTyped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */; };
+		84147C821AE175DC001F64B6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C811AE175DC001F64B6 /* ViewModel.swift */; };
+		841CDF6C1AE13A1900123576 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841CDF6B1AE13A1900123576 /* ReactiveCocoa.framework */; };
 		84AB0A171AD98E8D00971555 /* GroupViewForViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */; };
 		84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */; };
 		B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6164EDB1AD2749300217581 /* ViewForViewModel.swift */; };
@@ -40,6 +43,9 @@
 
 /* Begin PBXFileReference section */
 		840369601AD8477400FCD109 /* SplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
+		84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicPropertyTyped.swift; sourceTree = "<group>"; };
+		84147C811AE175DC001F64B6 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		841CDF6B1AE13A1900123576 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../3rdParty/ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
 		84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewForViewModels.swift; sourceTree = "<group>"; };
 		84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuiltInGroupViews.swift; sourceTree = "<group>"; };
 		B6164EDB1AD2749300217581 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
@@ -69,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841CDF6C1AE13A1900123576 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +92,7 @@
 		B67781451AC2B86A00D41721 = {
 			isa = PBXGroup;
 			children = (
+				841CDF6B1AE13A1900123576 /* ReactiveCocoa.framework */,
 				B67781501AC2B86A00D41721 /* DeclarativeUI */,
 				B67781661AC2B86A00D41721 /* DeclarativeUITests */,
 				B677814F1AC2B86A00D41721 /* Products */,
@@ -122,6 +130,8 @@
 				B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */,
 				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
 				B66457C01ADE67DE0078B05B /* StringExtension.swift */,
+				84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */,
+				84147C811AE175DC001F64B6 /* ViewModel.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -256,6 +266,8 @@
 				B66457C11ADE67DE0078B05B /* StringExtension.swift in Sources */,
 				B6D8E0211ADCF758003C955F /* OrderedDictionary.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
+				84147C801AE15E8D001F64B6 /* DynamicPropertyTyped.swift in Sources */,
+				84147C821AE175DC001F64B6 /* ViewModel.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
 				B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */,
 				B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */,
@@ -390,8 +402,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Hemet/Documents/Projects/3rdParty/ReactiveCocoa/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = DeclarativeUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -400,8 +417,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Hemet/Documents/Projects/3rdParty/ReactiveCocoa/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = DeclarativeUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
