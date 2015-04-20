@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../3rdParty/ReactiveCocoa/Carthage/Checkouts/LlamaKit/LlamaKit.xcodeproj">
+      location = "group:External/ReactiveCocoa/Carthage/Checkouts/LlamaKit/LlamaKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../3rdParty/ReactiveCocoa/ReactiveCocoa.xcodeproj">
+      location = "group:External/ReactiveCocoa/ReactiveCocoa.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:DeclarativeUI.xcodeproj">
