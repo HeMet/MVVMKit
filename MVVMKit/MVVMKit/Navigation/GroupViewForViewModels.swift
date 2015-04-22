@@ -8,6 +8,6 @@
 
 import UIKit
 
-protocol GroupViewForViewModels {
+public protocol GroupViewForViewModels {
     func attachChildViews(children: OrderedDictionary<String, UIViewController>)
 }

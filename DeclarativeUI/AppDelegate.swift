@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MVVMKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {

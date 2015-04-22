@@ -8,9 +8,9 @@
 
 import UIKit
 
-class Router : NSObject {
+public class Router : NSObject {
     // from, to, what
-    typealias Transition = (UIViewController, UIViewController, String) -> ()
+    public typealias Transition = (UIViewController, UIViewController, String) -> ()
     
     private class VMEntry {
         weak var vm: AnyObject?
@@ -26,23 +26,23 @@ class Router : NSObject {
     
     private var knownVM = [VMEntry]()
     
-    func route<ViewType: ViewForViewModel where ViewType.ViewModelType: AnyObject>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
+    public func route<ViewType: ViewForViewModel where ViewType.ViewModelType: AnyObject>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
         let rp = RoutePointWithVM<ViewType>()
         points[id] = rp
         return rp
     }
     
-    func route<ViewType: UIViewController where ViewType: GroupViewForViewModels>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, AnyObject> {
+    public func route<ViewType: UIViewController where ViewType: GroupViewForViewModels>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, AnyObject> {
         let rp = ModelessRoutePoint<ViewType>()
         points[id] = rp
         return rp
     }
     
-    func navigate(sender: AnyObject, id: String, viewModel: AnyObject) {
+    public func navigate(sender: AnyObject, id: String, viewModel: AnyObject) {
         internalNavigate(sender, viewModels: [id: viewModel])
     }
     
-    func navigate(sender: AnyObject, id: String, viewModels: Dictionary<String, AnyObject>) {
+    public func navigate(sender: AnyObject, id: String, viewModels: Dictionary<String, AnyObject>) {
         var vms = OrderedDictionary<String, AnyObject>()
         vms[id] = "[placeholder]"
         
@@ -140,22 +140,22 @@ class Router : NSObject {
 }
 
 // Predefined transitions
-struct Transitions {
-    static let root: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+public struct Transitions {
+    public static let root: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         let window = UIApplication.sharedApplication().delegate?.window!
         window?.rootViewController = to
         window?.makeKeyAndVisible()
     }
     
-    static let show: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+    public static let show: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         from.showViewController(to, sender: from);
     }
     
-    static let showDetail: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+    public static let showDetail: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         from.showDetailViewController(to, sender: from);
     }
     
-    static let showModal: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
+    public static let showModal: Router.Transition = { (from: UIViewController, to: UIViewController, id: String) in
         from.presentViewController(to, animated: true, completion: nil)
     }
 }
@@ -169,7 +169,7 @@ protocol ViewBuilder {
 //1. can instantiate View model and bind it to ViewModel
 //2. known that transition should be performed to move to this view
 //3. optionally it can wrap View in common container views
-class RoutePoint<VType, VMType> : ViewBuilder {
+public class RoutePoint<VType, VMType> : ViewBuilder {
     typealias ViewFactory = (VMType) -> UIViewController
     
     var t: Router.Transition!
@@ -177,16 +177,16 @@ class RoutePoint<VType, VMType> : ViewBuilder {
     // abstract
     private var createHierarchy: ViewFactory!
     
-    func canBindViewModel(viewModel: AnyObject) -> Bool {
+    public func canBindViewModel(viewModel: AnyObject) -> Bool {
         return false
     }
     
-    func withFactory(factory: ViewFactory) -> RoutePoint {
+    public func withFactory(factory: ViewFactory) -> RoutePoint {
         createHierarchy = factory
         return self
     }
     
-    func withTransition(t: Router.Transition) -> RoutePoint {
+    public func withTransition(t: Router.Transition) -> RoutePoint {
         self.t = t
         return self
     }
@@ -201,7 +201,7 @@ class RoutePoint<VType, VMType> : ViewBuilder {
         return createHierarchy(typedVM)
     }
     
-    func wrapInNavigationBar() -> RoutePoint {
+    public func wrapInNavigationBar() -> RoutePoint {
         let ch = createHierarchy
         createHierarchy = { vm in
             return UINavigationController(rootViewController: ch(vm))

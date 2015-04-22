@@ -8,14 +8,14 @@
 
 import UIKit
 
-extension UISplitViewController : GroupViewForViewModels {
-    func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
+ extension UISplitViewController : GroupViewForViewModels {
+    public func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
         self.viewControllers = [children["master"]!, children["detail"]!]
     }
 }
 
 extension UITabBarController : GroupViewForViewModels {    
-    func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
+    public func attachChildViews(children: OrderedDictionary<String, UIViewController>) {
         var childViews = [UIViewController]()
         for e in children {
             childViews.append(e.1)

@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveCocoa
 import LlamaKit
+import MVVMKit
 
 class ViewModel {
     //todo: to remove reference to UIKit it's better to let Router init this property

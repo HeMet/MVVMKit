@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveCocoa
+import MVVMKit
 
 class ViewController: UIViewController, ViewForViewModel {
 

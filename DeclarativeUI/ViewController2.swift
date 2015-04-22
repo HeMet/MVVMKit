@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MVVMKit
 
 class ViewController2: UIViewController, ViewForViewModel {
     
@@ -41,7 +42,7 @@ class ViewController2: UIViewController, ViewForViewModel {
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        router.navigate(self.viewModel, id: "next", viewModel: SimpleViewModel(s: "empty"))
+        //router.navigate(self.viewModel, id: "next", viewModel: SimpleViewModel(s: "empty"))
     }
     
     func bindToViewModel() {

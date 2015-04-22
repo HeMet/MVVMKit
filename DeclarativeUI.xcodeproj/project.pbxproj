@@ -7,15 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		840369611AD8477400FCD109 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840369601AD8477400FCD109 /* SplitView.swift */; };
-		84147C801AE15E8D001F64B6 /* DynamicPropertyTyped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */; };
 		84147C821AE175DC001F64B6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C811AE175DC001F64B6 /* ViewModel.swift */; };
-		84AB0A171AD98E8D00971555 /* GroupViewForViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */; };
-		84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */; };
-		B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6164EDB1AD2749300217581 /* ViewForViewModel.swift */; };
-		B6461E371ACD5708004C7B62 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6461E361ACD5708004C7B62 /* Router.swift */; };
+		B6347C881AE78CC100D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C871AE78CC100D70121 /* MVVMKit.framework */; };
 		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
-		B66457C11ADE67DE0078B05B /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457C01ADE67DE0078B05B /* StringExtension.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
 		B67781561AC2B86A00D41721 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781551AC2B86A00D41721 /* ViewController.swift */; };
 		B67781591AC2B86A00D41721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B67781571AC2B86A00D41721 /* Main.storyboard */; };
@@ -24,11 +18,6 @@
 		B677816A1AC2B86A00D41721 /* DeclarativeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */; };
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
 		B6797F161ADBB8740031420D /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6797F151ADBB8740031420D /* ViewController2.swift */; };
-		B6A411281AE4E58E007D3827 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A411271AE4E58E007D3827 /* ReactiveCocoa.framework */; };
-		B6D8E0211ADCF758003C955F /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */; };
-		B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */; };
-		B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */; };
-		B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,15 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		840369601AD8477400FCD109 /* SplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
-		84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicPropertyTyped.swift; sourceTree = "<group>"; };
 		84147C811AE175DC001F64B6 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupViewForViewModels.swift; sourceTree = "<group>"; };
-		84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuiltInGroupViews.swift; sourceTree = "<group>"; };
-		B6164EDB1AD2749300217581 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
-		B6461E361ACD5708004C7B62 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		B6347C871AE78CC100D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVMKit.framework; path = "MVVMKit/build/Debug-iphoneos/MVVMKit.framework"; sourceTree = "<group>"; };
 		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
-		B66457C01ADE67DE0078B05B /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781521AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781531AC2B86A00D41721 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,11 +46,6 @@
 		B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclarativeUITests.swift; sourceTree = "<group>"; };
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
 		B6797F151ADBB8740031420D /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
-		B6A411271AE4E58E007D3827 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "External/ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
-		B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
-		B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
-		B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMVVMApplication.swift; sourceTree = "<group>"; };
-		B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6A411281AE4E58E007D3827 /* ReactiveCocoa.framework in Frameworks */,
+				B6347C881AE78CC100D70121 /* MVVMKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,7 +70,7 @@
 		B67781451AC2B86A00D41721 = {
 			isa = PBXGroup;
 			children = (
-				B6A411271AE4E58E007D3827 /* ReactiveCocoa.framework */,
+				B6347C871AE78CC100D70121 /* MVVMKit.framework */,
 				B67781501AC2B86A00D41721 /* DeclarativeUI */,
 				B67781661AC2B86A00D41721 /* DeclarativeUITests */,
 				B677814F1AC2B86A00D41721 /* Products */,
@@ -118,19 +96,8 @@
 				B677815C1AC2B86A00D41721 /* LaunchScreen.xib */,
 				B67781511AC2B86A00D41721 /* Supporting Files */,
 				B67781731AC2B88000D41721 /* DeclarativeUI.swift */,
-				B6461E361ACD5708004C7B62 /* Router.swift */,
-				B6E9E3661ACE7D5000340A6D /* UIApplicationExtension.swift */,
-				B6E9E3681ACE933500340A6D /* UIMVVMApplication.swift */,
-				B6E9E36A1ACE949900340A6D /* UIViewControllerExtension.swift */,
-				B6164EDB1AD2749300217581 /* ViewForViewModel.swift */,
-				840369601AD8477400FCD109 /* SplitView.swift */,
-				84AB0A161AD98E8D00971555 /* GroupViewForViewModels.swift */,
-				84AB0A181ADA55C700971555 /* BuiltInGroupViews.swift */,
 				B6797F151ADBB8740031420D /* ViewController2.swift */,
-				B6D8E0201ADCF758003C955F /* OrderedDictionary.swift */,
 				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
-				B66457C01ADE67DE0078B05B /* StringExtension.swift */,
-				84147C7F1AE15E8D001F64B6 /* DynamicPropertyTyped.swift */,
 				84147C811AE175DC001F64B6 /* ViewModel.swift */,
 			);
 			path = DeclarativeUI;
@@ -261,23 +228,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6461E371ACD5708004C7B62 /* Router.swift in Sources */,
-				84AB0A191ADA55C700971555 /* BuiltInGroupViews.swift in Sources */,
-				B66457C11ADE67DE0078B05B /* StringExtension.swift in Sources */,
-				B6D8E0211ADCF758003C955F /* OrderedDictionary.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
-				84147C801AE15E8D001F64B6 /* DynamicPropertyTyped.swift in Sources */,
 				84147C821AE175DC001F64B6 /* ViewModel.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
-				B6E9E3671ACE7D5000340A6D /* UIApplicationExtension.swift in Sources */,
-				B6E9E3691ACE933500340A6D /* UIMVVMApplication.swift in Sources */,
 				B6797F161ADBB8740031420D /* ViewController2.swift in Sources */,
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
-				84AB0A171AD98E8D00971555 /* GroupViewForViewModels.swift in Sources */,
-				840369611AD8477400FCD109 /* SplitView.swift in Sources */,
-				B6E9E36B1ACE949900340A6D /* UIViewControllerExtension.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
-				B6164EDC1AD2749300217581 /* ViewForViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +360,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = DeclarativeUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -416,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = DeclarativeUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

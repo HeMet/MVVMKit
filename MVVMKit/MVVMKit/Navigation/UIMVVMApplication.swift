@@ -8,6 +8,6 @@
 
 import UIKit
 
-@objc protocol UIMVVMApplication {
+@objc public protocol UIMVVMApplication {
     var router: Router { get set }
 }
