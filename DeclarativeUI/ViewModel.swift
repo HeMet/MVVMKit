@@ -12,6 +12,8 @@ import LlamaKit
 import MVVMKit
 
 class ViewModel {
+    static let inactiveThrottleInterval: NSTimeInterval = 1
+    
     //todo: to remove reference to UIKit it's better to let Router init this property
     var router: Router {
         return (UIApplication.sharedApplication().delegate! as! UIMVVMApplication).router
@@ -39,10 +41,7 @@ class ViewModel {
                 case .Next(let isActive):
                     if (isActive.unbox) {
                         // forward event from input signal to output
-                        signalDisposable = signal.observe(Signal.Observer { event in
-                            observer.put(event)
-                        })
-                        
+                        signalDisposable = signal.observe(observer)
                         signalDisposableHandle = compositeDisposable.addDisposable(signalDisposable)
                     } else {
                         signalDisposable?.dispose()
@@ -105,4 +104,110 @@ class ViewModel {
             compositeDisposable.addDisposable(activeDisposable)
         }
     }
+    
+    /*
+    - (RACSignal *)throttleSignalWhileInactive:(RACSignal *)signal {
+    NSParameterAssert(signal != nil);
+    
+    signal = [signal replayLast];
+    
+    return [[[[[RACObserve(self, active)
+    takeUntil:[signal ignoreValues]]
+    combineLatestWith:signal]
+    throttle:RVMViewModelInactiveThrottleInterval valuesPassingTest:^ BOOL (RACTuple *xs) {
+    BOOL active = [xs.first boolValue];
+    return !active;
+    }]
+    reduceEach:^(NSNumber *active, id value) {
+    return value;
+    }]
+    setNameWithFormat:@"%@ -throttleSignalWhileInactive: %@", self, signal];
+    }
+    */
+    func trottleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
+        let (sp, sink) = SignalProducer<T, E>.buffer(1)
+        
+        
+        
+        let trigger = signal.lift { s in
+            return Signal<(), NoError> { observer in
+                return s.observe (Signal.Observer { event in
+                    switch (event) {
+                    case .Interrupted:
+                        observer.put(Event<(), NoError>.Interrupted)
+                    case .Completed:
+                        observer.put(Event<(), NoError>.Completed)
+                    default:
+                        break
+                    }
+                })
+            }
+        }
+        
+        let trigger2 = signal |> ignoreValues |> ignoreErrors
+        
+        let result = self.active.producer |> takeUntil(trigger)
+        let result2 = result.lift { s in
+            return Signal<Bool, E> { observer in
+                return s.observe(Signal.Observer { event in
+                    switch (event) {
+                    case .Next(let value):
+                        observer.put(Event<Bool, E>.Next(value))
+                    case .Completed:
+                        observer.put(Event<Bool, E>.Completed)
+                    case .Interrupted:
+                        observer.put(Event<Bool, E>.Interrupted)
+                    default:
+                        break
+                    }
+                })
+            }
+        }
+        
+        let result3 = combineLatestWith(result2)(producer: signal)
+        
+        
+        
+        self.active.producer.startWithSignal { signal, disposable in
+            let s = signal |> filter { _ in false }
+            //signal |> takeUntil(sp) |> combineLatestWith(sp)
+        }
+        
+        return sp
+    }
+    
+    func ignoreValues<T, E>(signal: Signal<T, E>) -> Signal<(), E> {
+        return Signal<(), E> { observer in
+            return signal.observe (Signal.Observer { event in
+                switch (event) {
+                case .Error(let error):
+                    observer.put(Event<(), E>.Error(error))
+                case .Interrupted:
+                    observer.put(Event<(), E>.Interrupted)
+                case .Completed:
+                    observer.put(Event<(), E>.Completed)
+                default:
+                    break
+                }
+            })
+        }
+    }
+    
+    func ignoreErrors<T, E>(signal: Signal<T, E>) -> Signal<T, NoError> {
+        return Signal<T, NoError> { observer in
+            return signal.observe (Signal.Observer { event in
+                switch (event) {
+                case .Next(let value):
+                    observer.put(Event<T, NoError>.Next(value))
+                case .Interrupted:
+                    observer.put(Event<T, NoError>.Interrupted)
+                case .Completed:
+                    observer.put(Event<T, NoError>.Completed)
+                default:
+                    break
+                }
+            })
+        }
+    }
+
 }
