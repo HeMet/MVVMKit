@@ -125,55 +125,14 @@ class ViewModel {
     }
     */
     func trottleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
-        let (sp, sink) = SignalProducer<T, E>.buffer(1)
+        let trigger = signal |> ignoreValues |> ignoreErrors
+        let result = self.active.producer |> takeUntil(trigger) |> mapError { return $0 as! E }
+        let result2 = combineLatestWith(result)(producer: signal) |> filter { !$0.1 }
+        let result3 = result2.lift {
+            throttle(1, onScheduler: QueueScheduler())($0)
+        } |> map { $0.0 }
         
-        
-        
-        let trigger = signal.lift { s in
-            return Signal<(), NoError> { observer in
-                return s.observe (Signal.Observer { event in
-                    switch (event) {
-                    case .Interrupted:
-                        observer.put(Event<(), NoError>.Interrupted)
-                    case .Completed:
-                        observer.put(Event<(), NoError>.Completed)
-                    default:
-                        break
-                    }
-                })
-            }
-        }
-        
-        let trigger2 = signal |> ignoreValues |> ignoreErrors
-        
-        let result = self.active.producer |> takeUntil(trigger)
-        let result2 = result.lift { s in
-            return Signal<Bool, E> { observer in
-                return s.observe(Signal.Observer { event in
-                    switch (event) {
-                    case .Next(let value):
-                        observer.put(Event<Bool, E>.Next(value))
-                    case .Completed:
-                        observer.put(Event<Bool, E>.Completed)
-                    case .Interrupted:
-                        observer.put(Event<Bool, E>.Interrupted)
-                    default:
-                        break
-                    }
-                })
-            }
-        }
-        
-        let result3 = combineLatestWith(result2)(producer: signal)
-        
-        
-        
-        self.active.producer.startWithSignal { signal, disposable in
-            let s = signal |> filter { _ in false }
-            //signal |> takeUntil(sp) |> combineLatestWith(sp)
-        }
-        
-        return sp
+        return result3
     }
     
     func ignoreValues<T, E>(signal: Signal<T, E>) -> Signal<(), E> {
@@ -181,11 +140,11 @@ class ViewModel {
             return signal.observe (Signal.Observer { event in
                 switch (event) {
                 case .Error(let error):
-                    observer.put(Event<(), E>.Error(error))
+                    sendError(observer, error.unbox)
                 case .Interrupted:
-                    observer.put(Event<(), E>.Interrupted)
+                    sendInterrupted(observer)
                 case .Completed:
-                    observer.put(Event<(), E>.Completed)
+                    sendCompleted(observer)
                 default:
                     break
                 }
@@ -198,16 +157,15 @@ class ViewModel {
             return signal.observe (Signal.Observer { event in
                 switch (event) {
                 case .Next(let value):
-                    observer.put(Event<T, NoError>.Next(value))
+                    sendNext(observer, value.unbox)
                 case .Interrupted:
-                    observer.put(Event<T, NoError>.Interrupted)
+                    sendInterrupted(observer)
                 case .Completed:
-                    observer.put(Event<T, NoError>.Completed)
+                    sendCompleted(observer)
                 default:
                     break
                 }
             })
         }
     }
-
 }
