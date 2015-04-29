@@ -124,48 +124,7 @@ class ViewModel {
     setNameWithFormat:@"%@ -throttleSignalWhileInactive: %@", self, signal];
     }
     */
-    func trottleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
-        let trigger = signal |> ignoreValues |> ignoreErrors
-        let result = self.active.producer |> takeUntil(trigger) |> mapError { return $0 as! E }
-        let result2 = combineLatestWith(result)(producer: signal) |> filter { !$0.1 }
-        let result3 = result2.lift {
-            throttle(1, onScheduler: QueueScheduler())($0)
-        } |> map { $0.0 }
-        
-        return result3
-    }
-    
-    func ignoreValues<T, E>(signal: Signal<T, E>) -> Signal<(), E> {
-        return Signal<(), E> { observer in
-            return signal.observe (Signal.Observer { event in
-                switch (event) {
-                case .Error(let error):
-                    sendError(observer, error.unbox)
-                case .Interrupted:
-                    sendInterrupted(observer)
-                case .Completed:
-                    sendCompleted(observer)
-                default:
-                    break
-                }
-            })
-        }
-    }
-    
-    func ignoreErrors<T, E>(signal: Signal<T, E>) -> Signal<T, NoError> {
-        return Signal<T, NoError> { observer in
-            return signal.observe (Signal.Observer { event in
-                switch (event) {
-                case .Next(let value):
-                    sendNext(observer, value.unbox)
-                case .Interrupted:
-                    sendInterrupted(observer)
-                case .Completed:
-                    sendCompleted(observer)
-                default:
-                    break
-                }
-            })
-        }
+    func throttleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
+        return signal |> throttleWhile(self.active.producer |> map { !$0 })
     }
 }
