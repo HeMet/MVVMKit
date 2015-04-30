@@ -8,6 +8,39 @@
 
 import UIKit
 import MVVMKit
+import ReactiveCocoa
+
+extension NSTimer {
+    /**
+    Creates and schedules a one-time `NSTimer` instance.
+    
+    :param: delay The delay before execution.
+    :param: handler A closure to execute after `delay`.
+    
+    :returns: The newly-created `NSTimer` instance.
+    */
+    class func schedule(#delay: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
+        let fireDate = delay + CFAbsoluteTimeGetCurrent()
+        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, 0, 0, 0, handler)
+        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
+        return timer
+    }
+    
+    /**
+    Creates and schedules a repeating `NSTimer` instance.
+    
+    :param: repeatInterval The interval between each execution of `handler`. Note that individual calls may be delayed; subsequent calls to `handler` will be based on the time the `NSTimer` was created.
+    :param: handler A closure to execute after `delay`.
+    
+    :returns: The newly-created `NSTimer` instance.
+    */
+    class func schedule(repeatInterval interval: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
+        let fireDate = interval + CFAbsoluteTimeGetCurrent()
+        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, interval, 0, 0, handler)
+        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
+        return timer
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
@@ -30,8 +63,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         router.route("tabbar.1", to: ViewController2.self)
         
         //router.navigate(self, id: "tabbar", viewModels: ["0" : SimpleViewModel(s: "master"), "1" : SimpleViewModel(s: "detail")])
-        router.navigate(self, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
+        router.navigate(Router.NO_MODEL, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
         //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
+        
+        let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
+            var isActive = false
+            sendNext(sink, isActive)
+            
+            let timer = NSTimer.schedule(repeatInterval: 5) { timer in
+                isActive = !isActive
+                println("Throttle is active: \(!isActive)")
+                sendNext(sink, isActive)
+            }
+            compositeDisposable.addDisposable {
+                timer.invalidate()
+            }
+        }
+        
+        let producer = SignalProducer<Int, NoError> { sink, compositeDisposable in
+            var i = 0
+            NSTimer.schedule(repeatInterval: 0.25) { timer in
+                sendNext(sink, i++)
+                if (i > 100) {
+                    sendCompleted(sink)
+                }
+            }
+        }
+        
+        let result = producer |> throttle(interval: 1)(_while: activeProducer)
+        
+        result |> start(SinkOf { println($0) })
         
         return true
     }

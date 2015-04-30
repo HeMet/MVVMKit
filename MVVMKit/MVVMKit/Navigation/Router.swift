@@ -13,20 +13,26 @@ public class Router : NSObject {
     public typealias Transition = (UIViewController, UIViewController, String) -> ()
     
     private class VMEntry {
-        weak var vm: AnyObject?
+        weak var vm: ViewModel?
         weak var view: UIViewController?
         
-        init (vm: AnyObject, view: UIViewController) {
+        init (vm: ViewModel, view: UIViewController) {
             self.vm = vm
             self.view = view
         }
     }
     
+    private class DummyModel : ViewModel {
+        var router : Router!
+    }
+    
+    public static let NO_MODEL : ViewModel = DummyModel()
+    
     private var points = OrderedDictionary<String, ViewBuilder>()
     
     private var knownVM = [VMEntry]()
     
-    public func route<ViewType: ViewForViewModel where ViewType.ViewModelType: AnyObject>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
+    public func route<ViewType: ViewForViewModel where ViewType.ViewModelType: ViewModel>(id: String, to: ViewType.Type) -> RoutePoint<ViewType, ViewType.ViewModelType> {
         let rp = RoutePointWithVM<ViewType>()
         points[id] = rp
         return rp
@@ -38,13 +44,13 @@ public class Router : NSObject {
         return rp
     }
     
-    public func navigate(sender: AnyObject, id: String, viewModel: AnyObject) {
+    public func navigate<ViewModelType : ViewModel>(sender: ViewModel, id: String, viewModel: ViewModelType) {
         internalNavigate(sender, viewModels: [id: viewModel])
     }
     
-    public func navigate(sender: AnyObject, id: String, viewModels: Dictionary<String, AnyObject>) {
-        var vms = OrderedDictionary<String, AnyObject>()
-        vms[id] = "[placeholder]"
+    public func navigate(sender: ViewModel, id: String, viewModels: Dictionary<String, ViewModel>) {
+        var vms = OrderedDictionary<String, ViewModel>()
+        vms[id] = Router.NO_MODEL
         
         let fullSpecifiedIDs = map(viewModels) { e in
             (id + "." + e.0, e.1)
@@ -54,7 +60,9 @@ public class Router : NSObject {
         internalNavigate(sender, viewModels: vms)
     }
     
-    private func internalNavigate(sender: AnyObject, viewModels: OrderedDictionary<String, AnyObject>) {
+    public var onViewModelBinded : ((ViewModel) -> ())?
+    
+    private func internalNavigate(sender: ViewModel, viewModels: OrderedDictionary<String, ViewModel>) {
         cleanDeadVM()
         
         var vms = viewModels
@@ -72,7 +80,7 @@ public class Router : NSObject {
         point.t(from, to, binding.0)
     }
     
-    private func bindViewModels(parentView: UIViewController, viewModels: OrderedDictionary<String, AnyObject>) {
+    private func bindViewModels(parentView: UIViewController, viewModels: OrderedDictionary<String, ViewModel>) {
         var views = OrderedDictionary<String, UIViewController>()
         for e in viewModels {
             let point = getBindingWithID(e.0)
@@ -93,19 +101,27 @@ public class Router : NSObject {
         }
     }
     
-    private func bindViewModel(viewModel: AnyObject, binding: ViewBuilder) -> UIViewController {
+    private func bindViewModel(viewModel: ViewModel, binding: ViewBuilder) -> UIViewController {
         assert(binding.canBindViewModel(viewModel), "Wrong View Model for child View.")
         
         let result = binding.buildView(viewModel)
         if (!(result is GroupViewForViewModels)) {
             knownVM.append(VMEntry(vm: viewModel, view: result))
+            
+            internalOnViewModelBinded(viewModel)
         }
         
         return result
     }
     
-    private func getChildren(parentID: String, viewModels: OrderedDictionary<String, AnyObject>) -> OrderedDictionary<String, AnyObject> {
-        var result = OrderedDictionary<String, AnyObject>()
+    private func internalOnViewModelBinded(viewModel: ViewModel) {
+        viewModel.router = self
+        
+        onViewModelBinded?(viewModel)
+    }
+    
+    private func getChildren(parentID: String, viewModels: OrderedDictionary<String, ViewModel>) -> OrderedDictionary<String, ViewModel> {
+        var result = OrderedDictionary<String, ViewModel>()
         for e in viewModels {
             let (pid, cid) = devideID(e.0)
             if pid == parentID {
@@ -128,7 +144,7 @@ public class Router : NSObject {
         return id.countOf(".")
     }
     
-    private func getFromView(sender: AnyObject) -> UIViewController? {
+    private func getFromView(sender: ViewModel) -> UIViewController? {
         return knownVM.filter({ $0.vm === sender }).first?.view
     }
     

@@ -9,7 +9,7 @@
 import Foundation
 import ReactiveCocoa
 
-class SimpleViewModel : ViewModel {
+class SimpleViewModel : BaseViewModel {
     var data: String
     
     var value = MutableProperty<Int>(0)

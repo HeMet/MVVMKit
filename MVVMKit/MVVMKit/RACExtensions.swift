@@ -14,7 +14,7 @@ public func ignoreValues<T, E>(signal: Signal<T, E>) -> Signal<(), E> {
         return signal.observe (Signal.Observer { event in
             switch (event) {
             case .Error(let error):
-                sendError(observer, error.unbox)
+                sendError(observer, error.value)
             case .Interrupted:
                 sendInterrupted(observer)
             case .Completed:
@@ -31,7 +31,7 @@ public func ignoreErrors<T, E>(signal: Signal<T, E>) -> Signal<T, NoError> {
         return signal.observe (Signal.Observer { event in
             switch (event) {
             case .Next(let value):
-                sendNext(observer, value.unbox)
+                sendNext(observer, value.value)
             case .Interrupted:
                 sendInterrupted(observer)
             case .Completed:
@@ -57,9 +57,9 @@ public func throttle<T, E>(interval: NSTimeInterval, onScheduler scheduler: Date
             let signalDisposable = signal.observe(SinkOf { event in
                 switch event {
                 case let .Next(value):
-                    if passingTest(value.unbox) {
+                    if passingTest(value.value) {
                         let (_, scheduleDate) = state.modify { (var state) -> (ThrottleState<T>, NSDate) in
-                            state.pendingValue = value.unbox
+                            state.pendingValue = value.value
                             
                             let proposedScheduleDate = state.previousDate?.dateByAddingTimeInterval(interval) ?? scheduler.currentDate
                             let scheduleDate = proposedScheduleDate.laterDate(scheduler.currentDate)
@@ -89,7 +89,7 @@ public func throttle<T, E>(interval: NSTimeInterval, onScheduler scheduler: Date
                         }
                         
                         schedulerDisposable.innerDisposable = scheduler.schedule {
-                            sendNext(observer, value.unbox)
+                            sendNext(observer, value.value)
                         }
                     }
                     
@@ -186,18 +186,57 @@ internal final class Atomic<T> {
     }
 }
 
-public func throttleWhile<T, E>(conditionSignal: Signal<Bool, NoError>)(signal: Signal<T, E>) -> Signal<T, E> {
+public func forwardWhile<T, E>(conditionSignal: Signal<Bool, NoError>)(signal: Signal<T, E>) -> Signal<T, E> {
+    return Signal { observer in
+        let compositeDisposable = CompositeDisposable()
+        
+        var signalDisposable: Disposable?
+        var signalDisposableHandle: CompositeDisposable.DisposableHandle?
+        
+        let activeDisposable = conditionSignal.observe(SinkOf { event in
+            switch event {
+            case .Next(let isActive):
+                if (isActive.value) {
+                    // forward event from input signal to output
+                    signalDisposable = signal.observe(observer)
+                    signalDisposableHandle = compositeDisposable.addDisposable(signalDisposable)
+                } else {
+                    signalDisposable?.dispose()
+                    signalDisposableHandle?.remove()
+                    signalDisposable = nil
+                    signalDisposableHandle = nil
+                }
+            case .Completed:
+                sendCompleted(observer)
+            case .Interrupted:
+                sendInterrupted(observer)
+            default:
+                break
+            }
+        })
+        
+        compositeDisposable.addDisposable(activeDisposable)
+        
+        return compositeDisposable
+    }
+}
+
+public func forwardWhile<T, E>(conditionProducer: SignalProducer<Bool, NoError>)(producer: SignalProducer<T, E>) -> SignalProducer<T, E> {
+    return producer.lift(forwardWhile)(conditionProducer)
+}
+
+public func throttle<T, E>(# interval: NSTimeInterval)(_while: Signal<Bool, NoError>)(signal: Signal<T, E>) -> Signal<T, E> {
     let signalCompletes = signal |> ignoreValues |> ignoreErrors
     // while signal is not completed
-    let result = conditionSignal |> takeUntil(signalCompletes) |> promoteErrors(E.self)
+    let result = _while |> takeUntil(signalCompletes) |> promoteErrors(E.self)
     // combine latest value from signal with active value
     let result2 = combineLatestWith(result)(signal: signal)
     // throttle it when not active and forward it immediately in other case
-    let result3 = result2 |> throttle(1, onScheduler: QueueScheduler()) { !$0.1 } |> map { $0.0 }
+    let result3 = result2 |> throttle(interval, onScheduler: QueueScheduler()) { !$0.1 } |> map { $0.0 }
     
     return result3
 }
 
-public func throttleWhile<T, E>(conditionSignal: SignalProducer<Bool, NoError>)(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
-    return signal.lift(throttleWhile)(conditionSignal)
+public func throttle<T, E>(# interval: NSTimeInterval)(_while: SignalProducer<Bool, NoError>)(producer: SignalProducer<T, E>) -> SignalProducer<T, E> {
+    return producer.lift(throttle(interval: interval))(_while)
 }

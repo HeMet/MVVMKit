@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B60D982D1AF20A5D00262E3A /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982B1AF20A5D00262E3A /* Box.framework */; };
 		B60D982E1AF20A5D00262E3A /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982C1AF20A5D00262E3A /* Result.framework */; };
+		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
 		B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6347C5F1AE78B8300D70121 /* MVVMKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
 		B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */; };
@@ -24,6 +25,7 @@
 		B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
 		B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C901AE78E2E00D70121 /* StringExtension.swift */; };
 		B6347C961AE793D900D70121 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C951AE793D900D70121 /* SplitView.swift */; };
+		B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,7 @@
 /* Begin PBXFileReference section */
 		B60D982B1AF20A5D00262E3A /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos/Box.framework"; sourceTree = "<group>"; };
 		B60D982C1AF20A5D00262E3A /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
+		B60D982F1AF2392C00262E3A /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		B6347C5A1AE78B8300D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6347C5E1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6347C5F1AE78B8300D70121 /* MVVMKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MVVMKit.h; sourceTree = "<group>"; };
@@ -57,6 +60,7 @@
 		B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedDictionary.swift; path = Utils/OrderedDictionary.swift; sourceTree = "<group>"; };
 		B6347C901AE78E2E00D70121 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtension.swift; path = Utils/StringExtension.swift; sourceTree = "<group>"; };
 		B6347C951AE793D900D70121 /* SplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SplitView.swift; path = Misc/SplitView.swift; sourceTree = "<group>"; };
+		B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RACExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 				B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */,
 				B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */,
 				B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */,
+				B60D982F1AF2392C00262E3A /* ViewModel.swift */,
 			);
 			name = Navigation;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 				B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */,
 				B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */,
 				B6347C901AE78E2E00D70121 /* StringExtension.swift */,
+				B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -282,7 +288,9 @@
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */,
 				B6347C961AE793D900D70121 /* SplitView.swift in Sources */,
+				B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */,
 				B6347C821AE78C8700D70121 /* UIApplicationExtension.swift in Sources */,
+				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
 				B6347C801AE78C8700D70121 /* Router.swift in Sources */,
 				B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */,
 				B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */,
@@ -408,11 +416,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos",
-					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MVVMKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -429,11 +433,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos",
-					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MVVMKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
