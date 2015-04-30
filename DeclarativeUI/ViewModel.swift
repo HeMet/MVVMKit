@@ -8,8 +8,8 @@
 
 import UIKit
 import ReactiveCocoa
-import LlamaKit
 import MVVMKit
+import Box
 
 class ViewModel {
     static let inactiveThrottleInterval: NSTimeInterval = 1
@@ -39,7 +39,7 @@ class ViewModel {
             let activeDisposable = self.active.producer.start(Signal.Observer { event in
                 switch event {
                 case .Next(let isActive):
-                    if (isActive.unbox) {
+                    if (isActive.value) {
                         // forward event from input signal to output
                         signalDisposable = signal.observe(observer)
                         signalDisposableHandle = compositeDisposable.addDisposable(signalDisposable)
@@ -72,7 +72,7 @@ class ViewModel {
             let activeDisposable = self.active.producer.start(Signal.Observer { event in
                 switch event {
                 case .Next(let isActive):
-                    if (isActive.unbox) {
+                    if (isActive.value) {
                         // forward event from input signal to output
                         signalDisposable = signal.start(Signal.Observer { event in
                             switch event {
@@ -124,7 +124,7 @@ class ViewModel {
     setNameWithFormat:@"%@ -throttleSignalWhileInactive: %@", self, signal];
     }
     */
-    func throttleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
-        return signal |> throttleWhile(self.active.producer |> map { !$0 })
-    }
+//    func throttleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
+//        return signal |> throttleWhile(self.active.producer |> map { !$0 })
+//    }
 }

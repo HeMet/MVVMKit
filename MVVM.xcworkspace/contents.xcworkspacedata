@@ -2,10 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MVVMKit/MVVMKit.xcodeproj">
+      location = "group:External/ReactiveCocoa/Carthage/Checkouts/Result/Result.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:External/ReactiveCocoa/Carthage/Checkouts/LlamaKit/LlamaKit.xcodeproj">
+      location = "group:External/ReactiveCocoa/Carthage/Checkouts/Box/Box.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:MVVMKit/MVVMKit.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:External/ReactiveCocoa/ReactiveCocoa.xcodeproj">

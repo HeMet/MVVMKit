@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B60D982D1AF20A5D00262E3A /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982B1AF20A5D00262E3A /* Box.framework */; };
+		B60D982E1AF20A5D00262E3A /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982C1AF20A5D00262E3A /* Result.framework */; };
 		B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6347C5F1AE78B8300D70121 /* MVVMKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
 		B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */; };
@@ -17,7 +19,6 @@
 		B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */; };
 		B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */; };
 		B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */; };
-		B6347C8B1AE78CD900D70121 /* LlamaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C891AE78CD900D70121 /* LlamaKit.framework */; };
 		B6347C8C1AE78CD900D70121 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C8A1AE78CD900D70121 /* ReactiveCocoa.framework */; };
 		B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */; };
 		B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B60D982B1AF20A5D00262E3A /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos/Box.framework"; sourceTree = "<group>"; };
+		B60D982C1AF20A5D00262E3A /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
 		B6347C5A1AE78B8300D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6347C5E1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6347C5F1AE78B8300D70121 /* MVVMKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MVVMKit.h; sourceTree = "<group>"; };
@@ -49,7 +52,6 @@
 		B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMVVMApplication.swift; path = Navigation/UIMVVMApplication.swift; sourceTree = "<group>"; };
 		B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Navigation/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewForViewModel.swift; path = Navigation/ViewForViewModel.swift; sourceTree = "<group>"; };
-		B6347C891AE78CD900D70121 /* LlamaKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LlamaKit.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/LlamaKit/build/Debug-iphoneos/LlamaKit.framework"; sourceTree = "<group>"; };
 		B6347C8A1AE78CD900D70121 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../External/ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
 		B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DynamicPropertyTyped.swift; path = Utils/DynamicPropertyTyped.swift; sourceTree = "<group>"; };
 		B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedDictionary.swift; path = Utils/OrderedDictionary.swift; sourceTree = "<group>"; };
@@ -62,7 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6347C8B1AE78CD900D70121 /* LlamaKit.framework in Frameworks */,
+				B60D982D1AF20A5D00262E3A /* Box.framework in Frameworks */,
+				B60D982E1AF20A5D00262E3A /* Result.framework in Frameworks */,
 				B6347C8C1AE78CD900D70121 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,7 +84,8 @@
 		B6347C501AE78B8300D70121 = {
 			isa = PBXGroup;
 			children = (
-				B6347C891AE78CD900D70121 /* LlamaKit.framework */,
+				B60D982B1AF20A5D00262E3A /* Box.framework */,
+				B60D982C1AF20A5D00262E3A /* Result.framework */,
 				B6347C8A1AE78CD900D70121 /* ReactiveCocoa.framework */,
 				B6347C5C1AE78B8300D70121 /* MVVMKit */,
 				B6347C691AE78B8300D70121 /* MVVMKitTests */,
@@ -404,7 +408,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos",
+					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = MVVMKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -421,7 +429,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos",
+					"/Users/e.gubin/Documents/Projects/Demos/DeclarativeUI/External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = MVVMKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -479,6 +491,7 @@
 				B6347C721AE78B8300D70121 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B6347C731AE78B8300D70121 /* Build configuration list for PBXNativeTarget "MVVMKitTests" */ = {
 			isa = XCConfigurationList;
@@ -487,6 +500,7 @@
 				B6347C751AE78B8300D70121 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
