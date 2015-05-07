@@ -66,6 +66,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         router.navigate(Router.NO_MODEL, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
         //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
         
+        let svm = SimpleViewModel(s: "")
+        
+        let b = bind(ViewController.self, ViewController2.self)
+        let maker = toGroupView(b, UISplitViewController.self) as (master: SimpleViewModel, detail: SimpleViewModel) -> UISplitViewController
+        let temp = withTransition(maker, Transitions.root)
+        let navigator = route(router)(args: temp)
+        
+        let t = bind(ViewController.self, ViewController2.self) |> toGroupView(UISplitViewController.self) |> withTransition(Transitions.root)
+        let t2 = bind(ViewController2.self) |> Transitions.show
+        
+        //usage
+        navigator(master: svm, detail: svm)
+        
         let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
             var isActive = false
             sendNext(sink, isActive)
