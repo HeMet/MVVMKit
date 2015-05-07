@@ -63,21 +63,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         router.route("tabbar.1", to: ViewController2.self)
         
         //router.navigate(self, id: "tabbar", viewModels: ["0" : SimpleViewModel(s: "master"), "1" : SimpleViewModel(s: "detail")])
-        router.navigate(Router.NO_MODEL, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
+        //router.navigate(Router.NO_MODEL, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
         //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
         
         let svm = SimpleViewModel(s: "")
         
-        let b = bind(ViewController.self, ViewController2.self)
+        let b = route(ViewController.self, ViewController2.self)
         let maker = toGroupView(b, UISplitViewController.self) as (master: SimpleViewModel, detail: SimpleViewModel) -> UISplitViewController
-        let temp = withTransition(maker, Transitions.root)
-        let navigator = route(router)(args: temp)
+        let goToRoot = withTransition(maker, Transitions.root)
         
-        let t = bind(ViewController.self, ViewController2.self) |> toGroupView(UISplitViewController.self) |> withTransition(Transitions.root)
-        let t2 = bind(ViewController2.self) |> Transitions.show
+        let toRoot = route(ViewController.self, ViewController2.self) |> toGroupView(UISplitViewController.self) |> withTransition(Transitions.root)
+        let t2 = route(ViewController2.self) |> Transitions.show
         
         //usage
-        navigator(master: svm, detail: svm)
+        goToRoot(sender: svm)(master: svm, detail: svm)
         
         let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
             var isActive = false

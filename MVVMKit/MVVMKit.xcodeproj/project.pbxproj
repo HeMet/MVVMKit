@@ -24,7 +24,6 @@
 		B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */; };
 		B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
 		B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C901AE78E2E00D70121 /* StringExtension.swift */; };
-		B6347C961AE793D900D70121 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C951AE793D900D70121 /* SplitView.swift */; };
 		B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +58,6 @@
 		B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DynamicPropertyTyped.swift; path = Utils/DynamicPropertyTyped.swift; sourceTree = "<group>"; };
 		B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedDictionary.swift; path = Utils/OrderedDictionary.swift; sourceTree = "<group>"; };
 		B6347C901AE78E2E00D70121 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtension.swift; path = Utils/StringExtension.swift; sourceTree = "<group>"; };
-		B6347C951AE793D900D70121 /* SplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SplitView.swift; path = Misc/SplitView.swift; sourceTree = "<group>"; };
 		B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RACExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +170,6 @@
 		B6347C941AE793CD00D70121 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
-				B6347C951AE793D900D70121 /* SplitView.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -287,7 +284,6 @@
 				B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */,
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */,
-				B6347C961AE793D900D70121 /* SplitView.swift in Sources */,
 				B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */,
 				B6347C821AE78C8700D70121 /* UIApplicationExtension.swift in Sources */,
 				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
