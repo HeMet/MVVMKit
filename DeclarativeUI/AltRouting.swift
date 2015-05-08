@@ -129,3 +129,41 @@ class VMTracker {
         }
     }
 }
+
+
+/*
+func wrapInNavBar<T, V>(f: T -> V)(arg: T) -> UINavigationController {
+let innerView = f(arg) as! UIViewController
+return UINavigationController(rootViewController: innerView)
+}
+
+prefix operator ! {}
+
+prefix func ! <T : Creatable>(t : T.Type) -> T.T -> T {
+return { arg in t(viewModel: arg) }
+}
+
+let creator2 = wrapInNavBar(!Demo.self)
+
+infix operator => {
+associativity left
+precedence 90
+}
+
+func => <T, V, V2>(left: T -> V, wrapper: (T -> V) -> T -> V2) -> T -> V2 {
+return wrapper(left)
+}
+
+!Demo.self => wrapInNavBar
+
+func present<T, V : UIViewController>(f : T -> V) -> T -> V {
+return f
+}
+
+func present<T, V : UIViewController, T2, V2: UIViewController>(f: T -> V, f2: T2 -> V2)(arg0: T, arg1: T2) -> [UIViewController] {
+return [f(arg0), f2(arg1)]
+}
+
+present(!Demo.self => wrapInNavBar)
+let r = present(!Demo.self => wrapInNavBar, !Demo.self => wrapInNavBar)
+*/
