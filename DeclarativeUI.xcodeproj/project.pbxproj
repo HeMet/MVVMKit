@@ -19,7 +19,6 @@
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
 		B6797F161ADBB8740031420D /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6797F151ADBB8740031420D /* ViewController2.swift */; };
 		B6D760741AFB41EA00023A40 /* AltRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D760731AFB41EA00023A40 /* AltRouting.swift */; };
-		B6D760761AFB68F300023A40 /* AltRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D760751AFB68F300023A40 /* AltRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
 		B6797F151ADBB8740031420D /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 		B6D760731AFB41EA00023A40 /* AltRouting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AltRouting.swift; sourceTree = "<group>"; };
-		B6D760751AFB68F300023A40 /* AltRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AltRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +102,6 @@
 				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
 				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
 				B6D760731AFB41EA00023A40 /* AltRouting.swift */,
-				B6D760751AFB68F300023A40 /* AltRouter.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -238,7 +235,6 @@
 				84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */,
 				B6D760741AFB41EA00023A40 /* AltRouting.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
-				B6D760761AFB68F300023A40 /* AltRouter.swift in Sources */,
 				B6797F161ADBB8740031420D /* ViewController2.swift in Sources */,
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,

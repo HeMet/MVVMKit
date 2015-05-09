@@ -9,97 +9,115 @@
 import UIKit
 import MVVMKit
 
-protocol MultiView {
-    typealias MultiViewType : UIViewController
-    static func assemble(views: [UIViewController]) -> MultiViewType
+
+public protocol GroupView {
+    typealias GroupViewType : UIViewController
+    static func assemble(views: [UIViewController]) -> GroupViewType
 }
 
-class TabBarView : MultiView {
-    static func assemble(views: [UIViewController]) -> UITabBarController {
+// Built-in group views
+
+public class TabBarView : GroupView {
+    public static func assemble(views: [UIViewController]) -> UITabBarController {
         let tb = UITabBarController()
         tb.viewControllers = views
         return tb
     }
 }
 
-extension UISplitViewController : MultiView {
-    static func assemble(views: [UIViewController]) -> UISplitViewController {
+public class SplitView : GroupView {
+    public static func assemble(views: [UIViewController]) -> UISplitViewController {
         let splitV = UISplitViewController()
         splitV.viewControllers = views
         return splitV
     }
 }
 
-func route<V : ViewForViewModel>(vType : V.Type)(_ vm: V.ViewModelType) -> UIViewController {
-    let result = V(viewModel: vm) as! UIViewController
-    let vmObject: AnyObject = vm as! AnyObject
-    VMTracker.append(vmObject, view: result)
-    return result
-}
+// Creation
 
-func route<V1 : ViewForViewModel, V2: ViewForViewModel>(v1Type: V1.Type, v2Type: V2.Type) -> (V1.ViewModelType, V2.ViewModelType) -> [UIViewController] {
-    let b1 = route(V1)
-    let b2 = route(V2)
+prefix operator ! {}
+
+/// Factory operator
+///
+/// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
+public prefix func ! <V : ViewForViewModel where V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
+    let view = vType(viewModel: viewModel)
     
-    return { args in
-        let v1 = b1(args.0)
-        let v2 = b2(args.1)
-        return [v1, v2]
-    }
-}
-
-func route<V1 : ViewForViewModel, V2: ViewForViewModel, V3: ViewForViewModel>(v1Type: V1.Type, v2Type: V2.Type, v3Type: V3.Type) -> (V1.ViewModelType, V2.ViewModelType, V3.ViewModelType) -> [UIViewController] {
-    let other = route(V1.self, V2.self)
-    let b3 = route(V3)
+    let v = view as! UIViewController
+    VMTracker.append(viewModel, view: v)
     
-    return { args in
-        var result = other((args.0, args.1))
-        let v = b3(args.2)
-        result.append(v)
-        return result
+    return view
+}
+
+// Composition
+
+infix operator *> {
+    associativity left
+    precedence 95
+}
+
+/// Wrap operator
+///
+/// For given factory function using given wrapper function it returns new factory function.
+/// It's useful for placing ViewForViewModel inside another content view.
+public func *> <T, V, V2>(factory: T -> V, wrapper: V -> V2) -> T -> V2 {
+    return {
+        let innerView = factory($0)
+        return wrapper(innerView)
     }
 }
 
-func toGroupView<GV: MultiView, ArgsType where GV: UIViewController> (bindings: ArgsType -> [UIViewController], gvType: GV.Type) -> ArgsType -> GV {
-    return { args in
-        let views = bindings(args)
-        return GV.assemble(views) as! GV
-    }
+// Wraps given view controller in navigation controller and returns it.
+public func withinNavView(innerView: UIViewController) -> UINavigationController {
+    return UINavigationController(rootViewController: innerView)
 }
 
-func withTransition<ArgsType> (builder: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+/// Present do two things:
+///
+/// -- Denotes ViewForViewModel's we want to use.
+///
+/// -- Aggregates given factory functions in one single factory function which takes as many arguments as factory functions provided and returns array of views.
+public func present<T, V : UIViewController>(f : T -> V) -> T -> V {
+    return f
+}
+
+public func present<T0, V0 : UIViewController, T1, V1: UIViewController>(f0: T0 -> V0, f1: T1 -> V1)(vm0: T0, vm1: T1) -> [UIViewController] {
+    return [f0(vm0), f1(vm1)]
+}
+
+public func present<T0, V0 : UIViewController, T1, V1: UIViewController, T2, V2: UIViewController>(f0: T0 -> V0, f1: T1 -> V1, f2: T2 -> V2)(vm0: T0, vm1: T1, vm2: T2) -> [UIViewController] {
+    return [f0(vm0), f1(vm1), f2(vm2)]
+}
+
+// For given GroupView type returns wrapper function.
+public func within<GV : GroupView>(gvType: GV.Type)(views: [UIViewController]) -> GV.GroupViewType {
+    return gvType.assemble(views)
+}
+
+// Transition
+
+/// Detones application of transition. Actually does nothing.
+public func withTransition(t: Router.Transition) -> Router.Transition {
+    return t
+}
+
+/// Creates navigation item for given factory and transition.
+public func *> <ArgsType> (factory: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+    return createNavItem(factory, transition)
+}
+
+func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
     return { s in
         return { args in
-            let toView = builder(args)
-            println("toView \(toView)")
+            let toView = factory(args)
             let fromView = VMTracker.getFromView(s) ?? UIViewController()
             transition(fromView, toView, "")
         }
     }
 }
 
-infix operator |> {
-    associativity left
 
-    // Bind tighter than assignment, but looser than everything else.
-    precedence 95
-}
-
-func |> <ArgsType, GV : MultiView where GV: UIViewController>(bindings: ArgsType -> [UIViewController], gv: GV.Type) -> ArgsType -> GV {
-    return toGroupView(bindings, GV.self)
-}
-
-func toGroupView<GV: MultiView where GV: UIViewController>(gvType: GV.Type) -> GV.Type {
-    return gvType
-}
-
-func |> <ArgsType> (builder: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
-    return withTransition(builder, transition)
-}
-
-func withTransition(t: Router.Transition) -> Router.Transition {
-    return t
-}
+// VM & V tracking
 
 class VMEntry {
     weak var vm: AnyObject?
@@ -131,39 +149,3 @@ class VMTracker {
 }
 
 
-/*
-func wrapInNavBar<T, V>(f: T -> V)(arg: T) -> UINavigationController {
-let innerView = f(arg) as! UIViewController
-return UINavigationController(rootViewController: innerView)
-}
-
-prefix operator ! {}
-
-prefix func ! <T : Creatable>(t : T.Type) -> T.T -> T {
-return { arg in t(viewModel: arg) }
-}
-
-let creator2 = wrapInNavBar(!Demo.self)
-
-infix operator => {
-associativity left
-precedence 90
-}
-
-func => <T, V, V2>(left: T -> V, wrapper: (T -> V) -> T -> V2) -> T -> V2 {
-return wrapper(left)
-}
-
-!Demo.self => wrapInNavBar
-
-func present<T, V : UIViewController>(f : T -> V) -> T -> V {
-return f
-}
-
-func present<T, V : UIViewController, T2, V2: UIViewController>(f: T -> V, f2: T2 -> V2)(arg0: T, arg1: T2) -> [UIViewController] {
-return [f(arg0), f2(arg1)]
-}
-
-present(!Demo.self => wrapInNavBar)
-let r = present(!Demo.self => wrapInNavBar, !Demo.self => wrapInNavBar)
-*/
