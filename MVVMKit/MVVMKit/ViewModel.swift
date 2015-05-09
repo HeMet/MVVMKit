@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol ViewModel : class {
-    var router : Router! { get set }
+    
 }

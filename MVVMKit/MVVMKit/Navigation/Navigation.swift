@@ -7,31 +7,13 @@
 //
 
 import UIKit
-import MVVMKit
-
 
 public protocol GroupView {
     typealias GroupViewType : UIViewController
     static func assemble(views: [UIViewController]) -> GroupViewType
 }
 
-// Built-in group views
-
-public class TabBarView : GroupView {
-    public static func assemble(views: [UIViewController]) -> UITabBarController {
-        let tb = UITabBarController()
-        tb.viewControllers = views
-        return tb
-    }
-}
-
-public class SplitView : GroupView {
-    public static func assemble(views: [UIViewController]) -> UISplitViewController {
-        let splitV = UISplitViewController()
-        splitV.viewControllers = views
-        return splitV
-    }
-}
+public typealias Transition = (from: UIViewController, to: UIViewController) -> ()
 
 // Creation
 
@@ -97,21 +79,21 @@ public func within<GV : GroupView>(gvType: GV.Type)(views: [UIViewController]) -
 // Transition
 
 /// Detones application of transition. Actually does nothing.
-public func withTransition(t: Router.Transition) -> Router.Transition {
+public func withTransition(t: Transition) -> Transition {
     return t
 }
 
 /// Creates navigation item for given factory and transition.
-public func *> <ArgsType> (factory: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+public func *> <ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
     return createNavItem(factory, transition)
 }
 
-func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Router.Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
     return { s in
         return { args in
             let toView = factory(args)
             let fromView = VMTracker.getFromView(s) ?? UIViewController()
-            transition(fromView, toView, "")
+            transition(from: fromView, to: toView)
         }
     }
 }
@@ -140,12 +122,10 @@ class VMTracker {
         cleanDeadEntries()
         return entries.filter({ $0.vm === sender }).first?.view
     }
-
+    
     static func cleanDeadEntries() {
         entries = entries.filter {
             $0.vm != nil && $0.view != nil
         }
     }
 }
-
-

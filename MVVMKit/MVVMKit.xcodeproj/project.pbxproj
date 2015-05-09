@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424184B1AFE72B500BAB4C6 /* Navigation.swift */; };
+		8424184F1AFE741E00BAB4C6 /* BuiltInTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */; };
 		B60D982D1AF20A5D00262E3A /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982B1AF20A5D00262E3A /* Box.framework */; };
 		B60D982E1AF20A5D00262E3A /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982C1AF20A5D00262E3A /* Result.framework */; };
 		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
@@ -14,9 +16,6 @@
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
 		B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */; };
 		B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */; };
-		B6347C7F1AE78C8700D70121 /* GroupViewForViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C771AE78C8700D70121 /* GroupViewForViewModels.swift */; };
-		B6347C801AE78C8700D70121 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C781AE78C8700D70121 /* Router.swift */; };
-		B6347C821AE78C8700D70121 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7A1AE78C8700D70121 /* UIApplicationExtension.swift */; };
 		B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */; };
 		B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */; };
 		B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */; };
@@ -38,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8424184B1AFE72B500BAB4C6 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Navigation.swift; path = Navigation/Navigation.swift; sourceTree = "<group>"; };
+		8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuiltInTransitions.swift; path = Navigation/BuiltInTransitions.swift; sourceTree = "<group>"; };
 		B60D982B1AF20A5D00262E3A /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos/Box.framework"; sourceTree = "<group>"; };
 		B60D982C1AF20A5D00262E3A /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
 		B60D982F1AF2392C00262E3A /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -48,9 +49,6 @@
 		B6347C6B1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVMKitTests.swift; sourceTree = "<group>"; };
 		B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuiltInGroupViews.swift; path = Navigation/BuiltInGroupViews.swift; sourceTree = "<group>"; };
-		B6347C771AE78C8700D70121 /* GroupViewForViewModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupViewForViewModels.swift; path = Navigation/GroupViewForViewModels.swift; sourceTree = "<group>"; };
-		B6347C781AE78C8700D70121 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Router.swift; path = Navigation/Router.swift; sourceTree = "<group>"; };
-		B6347C7A1AE78C8700D70121 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIApplicationExtension.swift; path = Navigation/UIApplicationExtension.swift; sourceTree = "<group>"; };
 		B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMVVMApplication.swift; path = Navigation/UIMVVMApplication.swift; sourceTree = "<group>"; };
 		B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Navigation/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewForViewModel.swift; path = Navigation/ViewForViewModel.swift; sourceTree = "<group>"; };
@@ -145,13 +143,12 @@
 			isa = PBXGroup;
 			children = (
 				B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */,
-				B6347C771AE78C8700D70121 /* GroupViewForViewModels.swift */,
-				B6347C781AE78C8700D70121 /* Router.swift */,
-				B6347C7A1AE78C8700D70121 /* UIApplicationExtension.swift */,
 				B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */,
 				B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */,
 				B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */,
 				B60D982F1AF2392C00262E3A /* ViewModel.swift */,
+				8424184B1AFE72B500BAB4C6 /* Navigation.swift */,
+				8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */,
 			);
 			name = Navigation;
 			sourceTree = "<group>";
@@ -285,12 +282,11 @@
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */,
 				B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */,
-				B6347C821AE78C8700D70121 /* UIApplicationExtension.swift in Sources */,
 				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
-				B6347C801AE78C8700D70121 /* Router.swift in Sources */,
 				B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */,
 				B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */,
-				B6347C7F1AE78C8700D70121 /* GroupViewForViewModels.swift in Sources */,
+				8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */,
+				8424184F1AFE741E00BAB4C6 /* BuiltInTransitions.swift in Sources */,
 				B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */,
 				B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */,
 			);

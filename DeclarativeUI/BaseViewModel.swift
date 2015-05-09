@@ -6,15 +6,11 @@
 //  Copyright (c) 2015 SimbirSoft. All rights reserved.
 //
 
-import UIKit
 import ReactiveCocoa
 import MVVMKit
 
 class BaseViewModel : ViewModel {
     static let inactiveThrottleInterval: NSTimeInterval = 1
-    
-    //todo: to remove reference to UIKit it's better to let Router init this property
-    var router: Router!
     
     var active = MutableProperty<Bool>(false)
     

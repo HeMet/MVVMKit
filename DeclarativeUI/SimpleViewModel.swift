@@ -26,7 +26,7 @@ class SimpleViewModel : BaseViewModel {
                 return SignalProducer<Int, NoError> { observer, disposable in
 //                    self.value.value++
 //                    sendNext(observer, self.value.value)
-                    self.router.navigate(self, id: "next", viewModel: SimpleViewModel(s: "child"))
+//                    self.router.navigate(self, id: "next", viewModel: SimpleViewModel(s: "child"))
                     
                     sendCompleted(observer)
                 }

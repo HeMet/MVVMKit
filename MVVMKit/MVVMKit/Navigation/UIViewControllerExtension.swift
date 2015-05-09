@@ -9,7 +9,5 @@
 import UIKit
 
 extension UIViewController {
-    var router: Router {
-        return (UIApplication.sharedApplication().delegate! as! UIMVVMApplication).router
-    }
+    
 }

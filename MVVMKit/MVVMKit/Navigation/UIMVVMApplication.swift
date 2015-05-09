@@ -9,5 +9,5 @@
 import UIKit
 
 @objc public protocol UIMVVMApplication {
-    var router: Router { get set }
+    
 }

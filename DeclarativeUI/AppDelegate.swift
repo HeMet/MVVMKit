@@ -46,37 +46,32 @@ extension NSTimer {
 class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
 
     var window: UIWindow?
-
-    var router: Router = Router()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
                       
-        router.route("root", to: ViewController.self).withTransition(Transitions.root).wrapInNavigationBar()
-        router.route("next", to: ViewController2.self).withTransition(Transitions.show)
-        
-        router.route("split", to: UISplitViewController.self).withTransition(Transitions.root)
-        router.route("split.master", to: ViewController.self).wrapInNavigationBar()
-        router.route("split.detail", to: ViewController2.self)
-        
-        router.route("tabbar", to: UITabBarController.self).withTransition(Transitions.root)
-        router.route("tabbar.0", to: ViewController.self)
-        router.route("tabbar.1", to: ViewController2.self)
+//        router.route("root", to: ViewController.self).withTransition(Transitions.root).wrapInNavigationBar()
+//        router.route("next", to: ViewController2.self).withTransition(Transitions.show)
+//        
+//        router.route("split", to: UISplitViewController.self).withTransition(Transitions.root)
+//        router.route("split.master", to: ViewController.self).wrapInNavigationBar()
+//        router.route("split.detail", to: ViewController2.self)
+//        
+//        router.route("tabbar", to: UITabBarController.self).withTransition(Transitions.root)
+//        router.route("tabbar.0", to: ViewController.self)
+//        router.route("tabbar.1", to: ViewController2.self)
         
         //router.navigate(self, id: "tabbar", viewModels: ["0" : SimpleViewModel(s: "master"), "1" : SimpleViewModel(s: "detail")])
         //router.navigate(Router.NO_MODEL, id: "split", viewModels: ["master": SimpleViewModel(s: "master"), "detail": SimpleViewModel(s: "detail")])
         //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
         
-        let svm = SimpleViewModel(s: "")
+        let svm = SimpleViewModel(s: "Simple View Model")
         
-        let b = route(ViewController.self, ViewController2.self)
-        let maker = toGroupView(b, UISplitViewController.self) as (master: SimpleViewModel, detail: SimpleViewModel) -> UISplitViewController
-        let goToRoot = withTransition(maker, Transitions.root)
+//        let b = route(ViewController.self, ViewController2.self)
+//        let maker = toGroupView(b, UISplitViewController.self) as (master: SimpleViewModel, detail: SimpleViewModel) -> UISplitViewController
+//        let goToRoot = withTransition(maker, Transitions.root)
         
-        let toRoot = route(ViewController.self, ViewController2.self) |> toGroupView(UISplitViewController.self) |> withTransition(Transitions.root)
-        let t2 = route(ViewController2.self) |> Transitions.show
-        
-        //usage
-        goToRoot(sender: svm)(master: svm, detail: svm)
+        let gtr = present(!ViewController.self *> withinNavView, !ViewController2.self) *> within(SplitView.self) *> withTransition(Transitions.root)
+        gtr(sender: svm)(vm0: svm, vm1: svm)
         
         let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
             var isActive = false
