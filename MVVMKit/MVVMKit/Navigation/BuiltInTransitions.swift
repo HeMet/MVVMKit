@@ -10,7 +10,7 @@ import UIKit
 
 // Predefined transitions
 public struct Transitions {
-    public static let root: Transition = { (from: UIViewController, to: UIViewController) in
+    static let root: Transition = { (from: UIViewController, to: UIViewController) in
         let window = UIApplication.sharedApplication().delegate?.window!
         window?.rootViewController = to
         window?.makeKeyAndVisible()

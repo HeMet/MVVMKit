@@ -66,12 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         
         let svm = SimpleViewModel(s: "Simple View Model")
         
-//        let b = route(ViewController.self, ViewController2.self)
-//        let maker = toGroupView(b, UISplitViewController.self) as (master: SimpleViewModel, detail: SimpleViewModel) -> UISplitViewController
-//        let goToRoot = withTransition(maker, Transitions.root)
-        
-        let gtr = present(!ViewController.self *> withinNavView, !ViewController2.self) *> within(SplitView.self) *> withTransition(Transitions.root)
-        gtr(sender: svm)(vm0: svm, vm1: svm)
+        let gtr = present(!ViewController.self *> withinNavView, !ViewController2.self) *> within(SplitView.self) *> asRoot
+        gtr(vm0: svm, vm1: svm)
         
         let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
             var isActive = false

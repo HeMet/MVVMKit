@@ -8,12 +8,17 @@
 
 import UIKit
 
-public protocol GroupView {
-    typealias GroupViewType : UIViewController
-    static func assemble(views: [UIViewController]) -> GroupViewType
+public typealias Transition = (from: UIViewController, to: UIViewController) -> ()
+
+infix operator *> {
+    associativity left
+    precedence 95
 }
 
-public typealias Transition = (from: UIViewController, to: UIViewController) -> ()
+/// Pipe operator. It connects all steps in stream-like form.
+public func *> <T, R>(value: T, f: T -> R) -> R {
+    return f(value)
+}
 
 // Creation
 
@@ -32,11 +37,6 @@ public prefix func ! <V : ViewForViewModel where V.ViewModelType : AnyObject> (v
 }
 
 // Composition
-
-infix operator *> {
-    associativity left
-    precedence 95
-}
 
 /// Wrap operator
 ///
@@ -78,14 +78,14 @@ public func within<GV : GroupView>(gvType: GV.Type)(views: [UIViewController]) -
 
 // Transition
 
-/// Detones application of transition. Actually does nothing.
-public func withTransition(t: Transition) -> Transition {
-    return t
+/// Creates navigation item for given factory and transition.
+public func withTransition<ArgsType>(t: Transition)(factory: ArgsType -> UIViewController) -> (sender: AnyObject) -> (ArgsType) -> () {
+    return createNavItem(factory, t)
 }
 
-/// Creates navigation item for given factory and transition.
-public func *> <ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
-    return createNavItem(factory, transition)
+/// Creates root View.
+public func asRoot<ArgsType>(factory: ArgsType -> UIViewController) -> (ArgsType) -> () {
+    return withTransition(Transitions.root)(factory: factory) *> noSender
 }
 
 func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
@@ -98,6 +98,12 @@ func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition:
     }
 }
 
+func noSender<ArgsType>(navItem: (sender: AnyObject) -> ArgsType -> ()) -> ArgsType -> () {
+    return navItem(sender: dummyViewModel)
+}
+
+class DummyViewModel {}
+let dummyViewModel = DummyViewModel()
 
 // VM & V tracking
 
