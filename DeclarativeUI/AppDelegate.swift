@@ -65,9 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIMVVMApplication {
         //router.navigate(self, id: "root", viewModel: SimpleViewModel(s: "master"))
         
         let svm = SimpleViewModel(s: "Simple View Model")
-        
-        let gtr = present(!ViewController.self *> withinNavView, !ViewController2.self) *> within(SplitView.self) *> asRoot
-        gtr(vm0: svm, vm1: svm)
+        GoTo.root(vm0: svm, vm1: svm)
         
         let activeProducer = SignalProducer<Bool, NoError> { sink, compositeDisposable in
             var isActive = false
