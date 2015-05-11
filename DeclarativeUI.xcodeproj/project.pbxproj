@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C811AE175DC001F64B6 /* BaseViewModel.swift */; };
 		842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418521AFF4BE400BAB4C6 /* GoTo.swift */; };
+		842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */; };
 		B6347C881AE78CC100D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C871AE78CC100D70121 /* MVVMKit.framework */; };
 		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		84147C811AE175DC001F64B6 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		842418521AFF4BE400BAB4C6 /* GoTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTo.swift; sourceTree = "<group>"; };
+		842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
 		B6347C871AE78CC100D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MVVMKit.framework; path = "MVVMKit/build/Debug-iphoneos/MVVMKit.framework"; sourceTree = "<group>"; };
 		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,6 +104,7 @@
 				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
 				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
 				842418521AFF4BE400BAB4C6 /* GoTo.swift */,
+				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
 				84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
