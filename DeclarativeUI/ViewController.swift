@@ -62,21 +62,14 @@ class ViewController: UIViewController, ViewForViewModel {
         
         viewModel.didBecomeActiveSignal |> start(error: nil, completed: nil, interrupted: nil, next: { x in println("Become active!") })
         
-        /*timer(NSTimeInterval(1), onScheduler: QueueScheduler()).startWithSignal { signal, disposable in
-            let forwarded = self.viewModel.forwardSignalWhileActive(signal)
-            forwarded.observe(error: nil, completed: nil, interrupted: nil) { date in
-                println("\(date)")
-            }
-        }*/
-        
-        
         d = viewModel.forwardSignalWhileActive(timer(NSTimeInterval(1), onScheduler: QueueScheduler())).start(error: nil, completed: nil, interrupted: nil) { date in
-            println("\(date)")
+            //println("\(date)")
         }
     }
     
     deinit {
         println("deinit")
+        viewModel.dispose()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -86,5 +79,10 @@ class ViewController: UIViewController, ViewForViewModel {
     
     override func viewDidDisappear(animated: Bool) {
         viewModel.active.value = false
+    }
+    
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        println("parentVC: \(parent)")
+        super.didMoveToParentViewController(parent)
     }
 }

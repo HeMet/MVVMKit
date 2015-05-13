@@ -79,27 +79,37 @@ public func within<GV : GroupView>(gvType: GV.Type)(views: [UIViewController]) -
 // Transition
 
 /// Creates navigation item for given factory and transition.
-public func withTransition<ArgsType>(t: Transition)(factory: ArgsType -> UIViewController) -> (sender: AnyObject) -> (ArgsType) -> () {
+public func withTransition<ArgsType>(t: Transition)(factory: ArgsType -> UIViewController) -> (sender: AnyObject) -> (ArgsType) -> () -> () {
     return createNavItem(factory, t)
 }
 
 /// Creates root View.
-public func asRoot<ArgsType>(factory: ArgsType -> UIViewController) -> (ArgsType) -> () {
+public func asRoot<ArgsType>(factory: ArgsType -> UIViewController) -> (ArgsType) -> () -> () {
     return withTransition(Transitions.root)(factory: factory) *> noSender
 }
 
-func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () -> () {
     return { s in
         return { args in
             let toView = factory(args)
             let fromView = VMTracker.getFromView(s) ?? UIViewController()
             transition(from: fromView, to: toView)
+            
+            return { goBack(toView) }
         }
     }
 }
 
-func noSender<ArgsType>(navItem: (sender: AnyObject) -> ArgsType -> ()) -> ArgsType -> () {
+func noSender<ArgsType>(navItem: (sender: AnyObject) -> ArgsType -> () -> ()) -> ArgsType -> () -> () {
     return navItem(sender: dummyViewModel)
+}
+
+func goBack(fromView: UIViewController) {
+    if let nc = fromView.navigationController where nc.topViewController == fromView {
+        nc.popViewControllerAnimated(true)
+    } else if fromView.presentingViewController?.presentedViewController == fromView {
+        fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 class DummyViewModel {}

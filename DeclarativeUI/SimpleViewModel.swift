@@ -26,7 +26,11 @@ class SimpleViewModel : BaseViewModel {
                 return SignalProducer<Int, NoError> { observer, disposable in
 //                    self.value.value++
 //                    sendNext(observer, self.value.value)
-                    GoTo.next(sender: self)(SimpleViewModel(s: "child"))
+                    let goBack = GoTo.next(sender: self)(SimpleViewModel(s: "child"))
+                    
+                    NSTimer.schedule(delay: 3) { timer in
+                        goBack()
+                    }
                     
                     sendCompleted(observer)
                 }

@@ -8,6 +8,9 @@
 
 import Foundation
 
+public typealias ViewModelEventHandler = (ViewModel) -> ()
+
 public protocol ViewModel : class {
-    
+    var onDisposed: ViewModelEventHandler? { get set }
+    func dispose()
 }
