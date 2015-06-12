@@ -10,6 +10,7 @@
 		8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424184B1AFE72B500BAB4C6 /* Navigation.swift */; };
 		8424184F1AFE741E00BAB4C6 /* BuiltInTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */; };
 		842418511AFF488E00BAB4C6 /* GroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418501AFF488E00BAB4C6 /* GroupView.swift */; };
+		84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B931B2A0425000954CB /* NavigationGroupView.swift */; };
 		B60D982D1AF20A5D00262E3A /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982B1AF20A5D00262E3A /* Box.framework */; };
 		B60D982E1AF20A5D00262E3A /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B60D982C1AF20A5D00262E3A /* Result.framework */; };
 		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
@@ -41,6 +42,7 @@
 		8424184B1AFE72B500BAB4C6 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Navigation.swift; path = Navigation/Navigation.swift; sourceTree = "<group>"; };
 		8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuiltInTransitions.swift; path = Navigation/BuiltInTransitions.swift; sourceTree = "<group>"; };
 		842418501AFF488E00BAB4C6 /* GroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupView.swift; sourceTree = "<group>"; };
+		84619B931B2A0425000954CB /* NavigationGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationGroupView.swift; sourceTree = "<group>"; };
 		B60D982B1AF20A5D00262E3A /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Box/build/Debug-iphoneos/Box.framework"; sourceTree = "<group>"; };
 		B60D982C1AF20A5D00262E3A /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../External/ReactiveCocoa/Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
 		B60D982F1AF2392C00262E3A /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				8424184B1AFE72B500BAB4C6 /* Navigation.swift */,
 				8424184E1AFE741E00BAB4C6 /* BuiltInTransitions.swift */,
 				842418501AFF488E00BAB4C6 /* GroupView.swift */,
+				84619B931B2A0425000954CB /* NavigationGroupView.swift */,
 			);
 			name = Navigation;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */,
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				842418511AFF488E00BAB4C6 /* GroupView.swift in Sources */,
+				84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */,
 				B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */,
 				B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */,
 				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
