@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:External/Alamofire/Alamofire.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:External/ReactiveCocoa/Carthage/Checkouts/Result/Result.xcodeproj">
    </FileRef>
    <FileRef
