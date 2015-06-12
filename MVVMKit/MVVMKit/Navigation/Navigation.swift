@@ -27,14 +27,18 @@ prefix operator ! {}
 /// Factory operator
 ///
 /// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
-public prefix func ! <V : ViewForViewModel where V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    let view = vType(viewModel: viewModel)
+public prefix func ! <V : ViewForViewModel where V: AnyObject, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
+    //let view = vType(viewModel: viewModel)
+    let view = vType()
+    view.viewModel = viewModel
     
     let v = view as! UIViewController
     VMTracker.append(viewModel, view: v)
     
     return view
 }
+
+// func sbFactory(vType" V.Type, sb: UIStoryboard, id: String) -> (viewModel: VMType) -> V
 
 // Composition
 

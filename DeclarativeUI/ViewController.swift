@@ -12,15 +12,13 @@ import MVVMKit
 
 class ViewController: UIViewController, ViewForViewModel {
 
-    let viewModel : SimpleViewModel!
+    var viewModel : SimpleViewModel!
     
     var subviewHook : UILabel!
     var doButton: UIButton!
     
-    required init(viewModel: SimpleViewModel) {
-        self.viewModel = viewModel
+    required init() {
         super.init(nibName: nil, bundle: nil)
-        self.title = viewModel.data
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -55,6 +53,8 @@ class ViewController: UIViewController, ViewForViewModel {
     var ca: CocoaAction!
     var d: Disposable?
     func bindToViewModel() {
+        self.title = viewModel.data
+        
         DynamicProperty(object: self.subviewHook, keyPath: "text") <~ viewModel.value.producer |> map { "\($0)" }
         
         ca = CocoaAction(viewModel.increment)

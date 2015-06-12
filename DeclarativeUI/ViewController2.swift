@@ -11,14 +11,12 @@ import MVVMKit
 
 class ViewController2: UIViewController, ViewForViewModel {
     
-    let viewModel : SimpleViewModel!
+    var viewModel : SimpleViewModel!
     
     var subviewHook : UILabel!
     
-    required init(viewModel: SimpleViewModel) {
-        self.viewModel = viewModel
+    required init() {
         super.init(nibName: nil, bundle: nil)
-        self.title = viewModel.data
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -47,7 +45,7 @@ class ViewController2: UIViewController, ViewForViewModel {
     }
         
     func bindToViewModel() {
-        
+        self.title = viewModel.data
     }
     
     override func didMoveToParentViewController(parent: UIViewController?) {
