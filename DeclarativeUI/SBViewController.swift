@@ -17,14 +17,6 @@ class SBViewController : UIViewController, SBViewForViewModel {
     
     @IBOutlet weak var lblMessage: UILabel!
     
-    required init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     func bindToViewModel() {
         lblMessage.text = viewModel.data
     }

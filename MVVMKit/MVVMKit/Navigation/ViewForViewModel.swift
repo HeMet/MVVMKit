@@ -12,7 +12,6 @@ public protocol ViewForViewModel {
     typealias ViewModelType
     var viewModel: ViewModelType! { get set }
     func bindToViewModel()
-    init()
 }
 
 public protocol SBViewForViewModel: ViewForViewModel {
