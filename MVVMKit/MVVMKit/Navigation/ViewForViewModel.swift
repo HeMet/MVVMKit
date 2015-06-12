@@ -8,9 +8,12 @@
 
 import UIKit
 
-protocol ViewForViewModel {
+public protocol ViewForViewModel {
     typealias ViewModelType
-    var viewModel: ViewModelType! { get }
+    var viewModel: ViewModelType! { get set }
     func bindToViewModel()
-    init(viewModel: ViewModelType)
+}
+
+public protocol SBViewForViewModel: ViewForViewModel {
+    static var sbInfo: (sbID: String, viewID: String) { get }
 }

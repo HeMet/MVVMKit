@@ -7,22 +7,26 @@
 //
 
 import UIKit
+import MVVMKit
 
 class ViewController2: UIViewController, ViewForViewModel {
     
-    let viewModel : SimpleViewModel!
+    var viewModel : SimpleViewModel!
     
     var subviewHook : UILabel!
     
-    required init(viewModel: SimpleViewModel) {
-        self.viewModel = viewModel
+    required init() {
         super.init(nibName: nil, bundle: nil)
-        self.title = viewModel.data
     }
     
     required init(coder aDecoder: NSCoder) {
         self.viewModel = nil
         super.init(coder: aDecoder)
+    }
+    
+    deinit {
+        println("deinit2 \(viewModel)")
+        viewModel.dispose()
     }
     
     override func loadView() {
@@ -39,12 +43,13 @@ class ViewController2: UIViewController, ViewForViewModel {
             ]
         }
     }
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        router.navigate(self.viewModel, id: "next", viewModel: SimpleViewModel(s: "empty"))
+        
+    func bindToViewModel() {
+        self.title = viewModel.data
     }
     
-    func bindToViewModel() {
-        
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        println("parentVC2: \(parent)")
+        super.didMoveToParentViewController(parent)
     }
 }

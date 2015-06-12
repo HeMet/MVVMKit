@@ -8,36 +8,36 @@
 
 import Foundation
 
-struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, CollectionType {
+public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, CollectionType {
     typealias DictionaryItem = (KeyType, ValueType)
     var keys = [KeyType]()
     var data = Dictionary<KeyType, ValueType>()
     
-    init(dictionaryLiteral elements: DictionaryItem...) {
+    public init(dictionaryLiteral elements: DictionaryItem...) {
         for e in elements {
             self[e.0] = e.1
         }
     }
     
-    var count: Int {
+    public var count: Int {
         return keys.count
     }
     
     /// The first element, or `nil` if the array is empty
-    var first: DictionaryItem? {
+    public var first: DictionaryItem? {
         return data.isEmpty ? nil : self[0]
     }
     
     /// The last element, or `nil` if the array is empty
-    var last: DictionaryItem? {
+    public var last: DictionaryItem? {
         return data.isEmpty ? nil : self[count - 1]
     }
     
-    var startIndex: Int {
+    public var startIndex: Int {
         return keys.startIndex
     }
     
-    var endIndex: Int {
+    public var endIndex: Int {
         return keys.endIndex
     }
     
@@ -55,7 +55,7 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         }
     }
     
-    subscript(position: Int) -> DictionaryItem {
+    public subscript(position: Int) -> DictionaryItem {
         get {
             precondition(position < keys.count, "Index out-of-bounds")
             
@@ -66,7 +66,7 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         }
     }
     
-    mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Int) -> ValueType?
+    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Int) -> ValueType?
     {
         var adjustedIndex = index
         
@@ -86,7 +86,7 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         return existingValue
     }
     
-    mutating func removeAtIndex(index: Int) -> DictionaryItem
+    public mutating func removeAtIndex(index: Int) -> DictionaryItem
     {
         precondition(index < keys.count, "Index out-of-bounds")
         
@@ -102,18 +102,18 @@ struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConve
         }
     }
     
-    mutating func addElements(elements: [DictionaryItem]) {
+    public mutating func addElements(elements: [DictionaryItem]) {
         for e in elements {
             self[e.0] = e.1
         }
     }
     
-    func generate() -> OrderedDictionaryGenerator<KeyType, ValueType> {
+    public func generate() -> OrderedDictionaryGenerator<KeyType, ValueType> {
         return OrderedDictionaryGenerator(dictionary: self)
     }
 }
 
-struct OrderedDictionaryGenerator<KeyType: Hashable, ValueType> : GeneratorType {
+public struct OrderedDictionaryGenerator<KeyType: Hashable, ValueType> : GeneratorType {
     private let dictionary: OrderedDictionary<KeyType, ValueType>
     var index: Int
     
@@ -122,7 +122,7 @@ struct OrderedDictionaryGenerator<KeyType: Hashable, ValueType> : GeneratorType 
         index = -1
     }
     
-    mutating func next() -> (KeyType, ValueType)? {
+    mutating public func next() -> (KeyType, ValueType)? {
         index++
         if (index < dictionary.count) {
             return dictionary[index]

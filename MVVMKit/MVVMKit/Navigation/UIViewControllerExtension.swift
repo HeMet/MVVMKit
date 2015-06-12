@@ -1,5 +1,5 @@
 //
-//  UIMVVMApplicationDelegate.swift
+//  UIViewControllerExtension.swift
 //  DeclarativeUI
 //
 //  Created by Eugene Gubin on 03.04.15.
@@ -8,6 +8,6 @@
 
 import UIKit
 
-@objc protocol UIMVVMApplication {
-    var router: Router { get set }
+extension UIViewController {
+    
 }
