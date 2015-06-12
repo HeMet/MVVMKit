@@ -11,5 +11,5 @@ import MVVMKit
 
 struct GoTo {
     static let root = present(!ViewController.self *> withinNavView, !ViewController2.self) *> within(SplitView.self) *> asRoot
-    static let next = present(!ViewController2.self) *> withTransition(Transitions.show)
+    static let next = present(!SBViewController.self) *> withTransition(Transitions.show)
 }

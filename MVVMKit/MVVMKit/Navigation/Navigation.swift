@@ -28,8 +28,17 @@ prefix operator ! {}
 ///
 /// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
 public prefix func ! <V : ViewForViewModel where V: AnyObject, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    //let view = vType(viewModel: viewModel)
     let view = vType()
+    return afterViewInstantiated(view, viewModel)
+}
+
+public prefix func ! <V : SBViewForViewModel where V: AnyObject, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
+    let sb = UIStoryboard(name: vType.sbID, bundle: nil)
+    let view = sb.instantiateViewControllerWithIdentifier(vType.viewID) as! V
+    return afterViewInstantiated(view, viewModel)
+}
+
+func afterViewInstantiated <V : ViewForViewModel where V: AnyObject, V.ViewModelType: AnyObject>(view : V, viewModel: V.ViewModelType) -> V {
     view.viewModel = viewModel
     
     let v = view as! UIViewController
@@ -37,8 +46,6 @@ public prefix func ! <V : ViewForViewModel where V: AnyObject, V.ViewModelType :
     
     return view
 }
-
-// func sbFactory(vType" V.Type, sb: UIStoryboard, id: String) -> (viewModel: VMType) -> V
 
 // Composition
 

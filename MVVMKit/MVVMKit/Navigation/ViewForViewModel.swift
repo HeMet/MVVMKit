@@ -14,3 +14,8 @@ public protocol ViewForViewModel {
     func bindToViewModel()
     init()
 }
+
+public protocol SBViewForViewModel: ViewForViewModel {
+    static var sbID : String { get }
+    static var viewID: String { get }
+}

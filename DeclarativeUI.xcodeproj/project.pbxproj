@@ -10,6 +10,7 @@
 		84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C811AE175DC001F64B6 /* BaseViewModel.swift */; };
 		842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418521AFF4BE400BAB4C6 /* GoTo.swift */; };
 		842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */; };
+		84619B961B2ADC7E000954CB /* SBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B951B2ADC7E000954CB /* SBViewController.swift */; };
 		848FF1C71B27549500E53884 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1C61B27549500E53884 /* MVVMKit.framework */; };
 		848FF1C81B27549500E53884 /* MVVMKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1C61B27549500E53884 /* MVVMKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		848FF1CB1B27550300E53884 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */; };
@@ -60,6 +61,7 @@
 		84147C811AE175DC001F64B6 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		842418521AFF4BE400BAB4C6 /* GoTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTo.swift; sourceTree = "<group>"; };
 		842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
+		84619B951B2ADC7E000954CB /* SBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBViewController.swift; sourceTree = "<group>"; };
 		848FF1C61B27549500E53884 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1CD1B27553900E53884 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +140,7 @@
 				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
 				842418521AFF4BE400BAB4C6 /* GoTo.swift */,
 				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
+				84619B951B2ADC7E000954CB /* SBViewController.swift */,
 			);
 			path = DeclarativeUI;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
 				842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
+				84619B961B2ADC7E000954CB /* SBViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
