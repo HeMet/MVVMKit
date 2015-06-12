@@ -230,7 +230,7 @@ public func throttle<T, E>(# interval: NSTimeInterval)(_while: Signal<Bool, NoEr
     // while signal is not completed
     let result = _while |> takeUntil(signalCompletes) |> promoteErrors(E.self)
     // combine latest value from signal with active value
-    let result2 = combineLatestWith(result)(signal)
+    let result2 = combineLatestWith(result)(signal: signal)
     // throttle it when not active and forward it immediately in other case
     let result3 = result2 |> throttle(interval, onScheduler: QueueScheduler()) { !$0.1 } |> map { $0.0 }
     
