@@ -26,6 +26,11 @@ class ViewController2: UIViewController, ViewForViewModel {
         super.init(coder: aDecoder)
     }
     
+    deinit {
+        println("deinit2 \(viewModel)")
+        viewModel.dispose()
+    }
+    
     override func loadView() {
         view = UIView() => {
             $0.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -43,5 +48,10 @@ class ViewController2: UIViewController, ViewForViewModel {
         
     func bindToViewModel() {
         
+    }
+    
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        println("parentVC2: \(parent)")
+        super.didMoveToParentViewController(parent)
     }
 }

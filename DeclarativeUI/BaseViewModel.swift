@@ -29,4 +29,10 @@ class BaseViewModel : ViewModel {
     func throttleSignalWhileInactive<T, E>(signal: SignalProducer<T, E>) -> SignalProducer<T, E> {
         return signal |> throttle(interval: 1)(_while: self.active.producer |> map { !$0 })
     }
+    
+    var onDisposed: ViewModelEventHandler?
+    
+    func dispose() {
+        onDisposed?(self)
+    }
 }

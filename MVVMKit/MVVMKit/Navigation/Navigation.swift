@@ -51,7 +51,7 @@ public func *> <T, V, V2>(factory: T -> V, wrapper: V -> V2) -> T -> V2 {
 
 // Wraps given view controller in navigation controller and returns it.
 public func withinNavView(innerView: UIViewController) -> UINavigationController {
-    return UINavigationController(rootViewController: innerView)
+    return NavigationGroupView(rootViewController: innerView)
 }
 
 /// Present do two things:
@@ -102,6 +102,20 @@ func noSender<ArgsType>(navItem: (sender: AnyObject) -> ArgsType -> ()) -> ArgsT
     return navItem(sender: dummyViewModel)
 }
 
+func goBack(fromView: UIViewController) {
+    if let nc = fromView.navigationController where nc.topViewController == fromView {
+        nc.popViewControllerAnimated(true)
+    } else if fromView.presentingViewController?.presentedViewController == fromView {
+        fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+public func goBack(viewModel: AnyObject) {
+    if let v = VMTracker.getFromView(viewModel) {
+        goBack(v)
+    }
+}
+
 class DummyViewModel {}
 let dummyViewModel = DummyViewModel()
 
@@ -127,6 +141,11 @@ class VMTracker {
     static func getFromView(sender: AnyObject) -> UIViewController? {
         cleanDeadEntries()
         return entries.filter({ $0.vm === sender }).first?.view
+    }
+    
+    static func getViewModel(view: UIViewController) -> AnyObject? {
+        cleanDeadEntries()
+        return entries.filter({ $0.view == view }).first?.vm
     }
     
     static func cleanDeadEntries() {

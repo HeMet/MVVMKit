@@ -11,11 +11,11 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+    var window: UIWindow? = UIWindow(frame: UIScreen.mainScreen().bounds)
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let svm = SimpleViewModel(s: "Simple View Model")
-        GoTo.root(vm0: svm, vm1: svm)
+        _ = GoTo.root(vm0: svm, vm1: svm)
         
         return true
     }

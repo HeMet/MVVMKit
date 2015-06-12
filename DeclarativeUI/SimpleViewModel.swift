@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import MVVMKit
 
 class SimpleViewModel : BaseViewModel {
     var data: String
@@ -26,7 +27,12 @@ class SimpleViewModel : BaseViewModel {
                 return SignalProducer<Int, NoError> { observer, disposable in
 //                    self.value.value++
 //                    sendNext(observer, self.value.value)
-                    GoTo.next(sender: self)(SimpleViewModel(s: "child"))
+                    let svm = SimpleViewModel(s: "child")
+                    GoTo.next(sender: self)(svm)
+                    
+                    NSTimer.schedule(delay: 3) { timer in
+                        goBack(svm)
+                    }
                     
                     sendCompleted(observer)
                 }
