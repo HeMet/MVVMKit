@@ -33,8 +33,9 @@ public prefix func ! <V : ViewForViewModel where V: UIViewController, V.ViewMode
 }
 
 public prefix func ! <V : SBViewForViewModel where V: UIViewController, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    let sb = UIStoryboard(name: vType.sbID, bundle: nil)
-    let view = sb.instantiateViewControllerWithIdentifier(vType.viewID) as! V
+    let (sbID, viewID) = vType.sbInfo
+    let sb = UIStoryboard(name: sbID, bundle: nil)
+    let view = sb.instantiateViewControllerWithIdentifier(viewID) as! V
     return afterViewInstantiated(view, viewModel)
 }
 

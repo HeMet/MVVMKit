@@ -15,6 +15,5 @@ public protocol ViewForViewModel {
 }
 
 public protocol SBViewForViewModel: ViewForViewModel {
-    static var sbID : String { get }
-    static var viewID: String { get }
+    static var sbInfo: (sbID: String, viewID: String) { get }
 }

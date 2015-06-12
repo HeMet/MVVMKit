@@ -10,8 +10,7 @@ import UIKit
 import MVVMKit
 
 class SBViewController : UIViewController, SBViewForViewModel {
-    static let sbID = "Main"
-    static let viewID = "SBViewController"
+    static let sbInfo = (sbID: "Main", viewID: "SBViewController")
     
     var viewModel : SimpleViewModel!
     
