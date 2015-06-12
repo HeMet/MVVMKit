@@ -29,7 +29,7 @@
 		B67781591AC2B86A00D41721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B67781571AC2B86A00D41721 /* Main.storyboard */; };
 		B677815B1AC2B86A00D41721 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B677815A1AC2B86A00D41721 /* Images.xcassets */; };
 		B677815E1AC2B86A00D41721 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B677815C1AC2B86A00D41721 /* LaunchScreen.xib */; };
-		B677816A1AC2B86A00D41721 /* DeclarativeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */; };
+		B677816A1AC2B86A00D41721 /* DLifeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DLifeTests.swift */; };
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
 		B6797F161ADBB8740031420D /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6797F151ADBB8740031420D /* ViewController2.swift */; };
 /* End PBXBuildFile section */
@@ -40,7 +40,7 @@
 			containerPortal = B67781461AC2B86A00D41721 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B677814D1AC2B86A00D41721;
-			remoteInfo = DeclarativeUI;
+			remoteInfo = DLife;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -75,16 +75,16 @@
 		848FF1CD1B27553900E53884 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1D01B27554000E53884 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Box.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
-		B677814E1AC2B86A00D41721 /* DeclarativeUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeclarativeUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781521AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781531AC2B86A00D41721 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B67781551AC2B86A00D41721 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B67781581AC2B86A00D41721 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B677815A1AC2B86A00D41721 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B677815D1AC2B86A00D41721 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		B67781631AC2B86A00D41721 /* DeclarativeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeclarativeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B67781631AC2B86A00D41721 /* DLifeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DLifeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781681AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeclarativeUITests.swift; sourceTree = "<group>"; };
+		B67781691AC2B86A00D41721 /* DLifeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLifeTests.swift; sourceTree = "<group>"; };
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
 		B6797F151ADBB8740031420D /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,8 +122,8 @@
 				848FF1CD1B27553900E53884 /* Result.framework */,
 				848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */,
 				848FF1C61B27549500E53884 /* MVVMKit.framework */,
-				B67781501AC2B86A00D41721 /* DeclarativeUI */,
-				B67781661AC2B86A00D41721 /* DeclarativeUITests */,
+				B67781501AC2B86A00D41721 /* DLife */,
+				B67781661AC2B86A00D41721 /* DLifeTests */,
 				B677814F1AC2B86A00D41721 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -131,13 +131,13 @@
 		B677814F1AC2B86A00D41721 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B677814E1AC2B86A00D41721 /* DeclarativeUI.app */,
-				B67781631AC2B86A00D41721 /* DeclarativeUITests.xctest */,
+				B677814E1AC2B86A00D41721 /* DLife.app */,
+				B67781631AC2B86A00D41721 /* DLifeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B67781501AC2B86A00D41721 /* DeclarativeUI */ = {
+		B67781501AC2B86A00D41721 /* DLife */ = {
 			isa = PBXGroup;
 			children = (
 				B67781531AC2B86A00D41721 /* AppDelegate.swift */,
@@ -154,7 +154,7 @@
 				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
 				84619B951B2ADC7E000954CB /* SBViewController.swift */,
 			);
-			path = DeclarativeUI;
+			path = DLife;
 			sourceTree = "<group>";
 		};
 		B67781511AC2B86A00D41721 /* Supporting Files */ = {
@@ -165,13 +165,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B67781661AC2B86A00D41721 /* DeclarativeUITests */ = {
+		B67781661AC2B86A00D41721 /* DLifeTests */ = {
 			isa = PBXGroup;
 			children = (
-				B67781691AC2B86A00D41721 /* DeclarativeUITests.swift */,
+				B67781691AC2B86A00D41721 /* DLifeTests.swift */,
 				B67781671AC2B86A00D41721 /* Supporting Files */,
 			);
-			path = DeclarativeUITests;
+			path = DLifeTests;
 			sourceTree = "<group>";
 		};
 		B67781671AC2B86A00D41721 /* Supporting Files */ = {
@@ -185,9 +185,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B677814D1AC2B86A00D41721 /* DeclarativeUI */ = {
+		B677814D1AC2B86A00D41721 /* DLife */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B677816D1AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DeclarativeUI" */;
+			buildConfigurationList = B677816D1AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DLife" */;
 			buildPhases = (
 				B677814A1AC2B86A00D41721 /* Sources */,
 				B677814B1AC2B86A00D41721 /* Frameworks */,
@@ -198,14 +198,14 @@
 			);
 			dependencies = (
 			);
-			name = DeclarativeUI;
-			productName = DeclarativeUI;
-			productReference = B677814E1AC2B86A00D41721 /* DeclarativeUI.app */;
+			name = DLife;
+			productName = DLife;
+			productReference = B677814E1AC2B86A00D41721 /* DLife.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B67781621AC2B86A00D41721 /* DeclarativeUITests */ = {
+		B67781621AC2B86A00D41721 /* DLifeTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B67781701AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DeclarativeUITests" */;
+			buildConfigurationList = B67781701AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DLifeTests" */;
 			buildPhases = (
 				B677815F1AC2B86A00D41721 /* Sources */,
 				B67781601AC2B86A00D41721 /* Frameworks */,
@@ -216,9 +216,9 @@
 			dependencies = (
 				B67781651AC2B86A00D41721 /* PBXTargetDependency */,
 			);
-			name = DeclarativeUITests;
-			productName = DeclarativeUITests;
-			productReference = B67781631AC2B86A00D41721 /* DeclarativeUITests.xctest */;
+			name = DLifeTests;
+			productName = DLifeTests;
+			productReference = B67781631AC2B86A00D41721 /* DLifeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -252,8 +252,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B677814D1AC2B86A00D41721 /* DeclarativeUI */,
-				B67781621AC2B86A00D41721 /* DeclarativeUITests */,
+				B677814D1AC2B86A00D41721 /* DLife */,
+				B67781621AC2B86A00D41721 /* DLifeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -299,7 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B677816A1AC2B86A00D41721 /* DeclarativeUITests.swift in Sources */,
+				B677816A1AC2B86A00D41721 /* DLifeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,7 +308,7 @@
 /* Begin PBXTargetDependency section */
 		B67781651AC2B86A00D41721 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = B677814D1AC2B86A00D41721 /* DeclarativeUI */;
+			target = B677814D1AC2B86A00D41721 /* DLife */;
 			targetProxy = B67781641AC2B86A00D41721 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -421,7 +421,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/MVVM-buxtoxuarhlrataonxjvfzcflvjl/Build/Products/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/MVVM-buxtoxuarhlrataonxjvfzcflvjl/Build/Products/Debug-iphonesimulator",
 				);
-				INFOPLIST_FILE = DeclarativeUI/Info.plist;
+				INFOPLIST_FILE = DLife/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
@@ -438,7 +438,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/MVVM-buxtoxuarhlrataonxjvfzcflvjl/Build/Products/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/MVVM-buxtoxuarhlrataonxjvfzcflvjl/Build/Products/Debug-iphonesimulator",
 				);
-				INFOPLIST_FILE = DeclarativeUI/Info.plist;
+				INFOPLIST_FILE = DLife/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
@@ -458,10 +458,10 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = DeclarativeUITests/Info.plist;
+				INFOPLIST_FILE = DLifeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DeclarativeUI.app/DeclarativeUI";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DLife.app/DLife";
 			};
 			name = Debug;
 		};
@@ -473,10 +473,10 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = DeclarativeUITests/Info.plist;
+				INFOPLIST_FILE = DLifeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DeclarativeUI.app/DeclarativeUI";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DLife.app/DLife";
 			};
 			name = Release;
 		};
@@ -492,7 +492,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B677816D1AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DeclarativeUI" */ = {
+		B677816D1AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DLife" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B677816E1AC2B86A00D41721 /* Debug */,
@@ -501,7 +501,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B67781701AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DeclarativeUITests" */ = {
+		B67781701AC2B86A00D41721 /* Build configuration list for PBXNativeTarget "DLifeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B67781711AC2B86A00D41721 /* Debug */,

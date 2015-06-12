@@ -20,6 +20,6 @@
       location = "group:External/ReactiveCocoa/ReactiveCocoa.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:DeclarativeUI.xcodeproj">
+      location = "group:/Users/Hemet/Documents/Projects/DeclarativeUI/DLife.xcodeproj">
    </FileRef>
 </Workspace>
