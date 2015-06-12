@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:External/SDWebImage/SDWebImage.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:External/Alamofire/Alamofire.xcodeproj">
    </FileRef>
    <FileRef

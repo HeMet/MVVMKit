@@ -10,6 +10,8 @@
 		84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84147C811AE175DC001F64B6 /* BaseViewModel.swift */; };
 		842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418521AFF4BE400BAB4C6 /* GoTo.swift */; };
 		842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */; };
+		845E5DAA1B2AF61600D44299 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 845E5DA91B2AF61600D44299 /* SDWebImage.framework */; };
+		845E5DAB1B2AF61600D44299 /* SDWebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 845E5DA91B2AF61600D44299 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84619B961B2ADC7E000954CB /* SBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B951B2ADC7E000954CB /* SBViewController.swift */; };
 		84619B9A1B2AEEBA000954CB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; };
 		84619B9B1B2AEEBA000954CB /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -53,6 +55,7 @@
 				848FF1C81B27549500E53884 /* MVVMKit.framework in Embed Frameworks */,
 				848FF1D21B27554000E53884 /* Box.framework in Embed Frameworks */,
 				84619B9B1B2AEEBA000954CB /* Alamofire.framework in Embed Frameworks */,
+				845E5DAB1B2AF61600D44299 /* SDWebImage.framework in Embed Frameworks */,
 				848FF1CC1B27550300E53884 /* ReactiveCocoa.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -64,6 +67,7 @@
 		84147C811AE175DC001F64B6 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		842418521AFF4BE400BAB4C6 /* GoTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTo.swift; sourceTree = "<group>"; };
 		842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
+		845E5DA91B2AF61600D44299 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84619B951B2ADC7E000954CB /* SBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBViewController.swift; sourceTree = "<group>"; };
 		84619B991B2AEEBA000954CB /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1C61B27549500E53884 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,6 +98,7 @@
 				84619B9A1B2AEEBA000954CB /* Alamofire.framework in Frameworks */,
 				848FF1C71B27549500E53884 /* MVVMKit.framework in Frameworks */,
 				848FF1D11B27554000E53884 /* Box.framework in Frameworks */,
+				845E5DAA1B2AF61600D44299 /* SDWebImage.framework in Frameworks */,
 				848FF1CB1B27550300E53884 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +116,7 @@
 		B67781451AC2B86A00D41721 = {
 			isa = PBXGroup;
 			children = (
+				845E5DA91B2AF61600D44299 /* SDWebImage.framework */,
 				84619B991B2AEEBA000954CB /* Alamofire.framework */,
 				848FF1D01B27554000E53884 /* Box.framework */,
 				848FF1CD1B27553900E53884 /* Result.framework */,
