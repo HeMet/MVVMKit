@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Feed View Controller-->
+        <!--Лента-->
         <scene sceneID="Y7s-f8-art">
             <objects>
                 <tableViewController storyboardIdentifier="FeedViewController" id="tx9-Ph-vYr" customClass="FeedViewController" customModule="DLife" customModuleProvider="target" sceneMemberID="viewController">
@@ -87,11 +87,87 @@
                             <outlet property="delegate" destination="tx9-Ph-vYr" id="qKw-UQ-5YW"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Лента" id="paj-iW-SE1"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="joq-S4-fUy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="404" y="9"/>
+        </scene>
+        <!--Entry View Controller-->
+        <scene sceneID="dZ9-AL-UsO">
+            <objects>
+                <viewController storyboardIdentifier="EntryViewController" id="4eE-7G-4Pu" customClass="EntryViewController" customModule="DLife" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yc9-zP-Lwp"/>
+                        <viewControllerLayoutGuide type="bottom" id="mzB-Ga-dkL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bPe-A6-5we">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s15-Nf-U4p">
+                                <rect key="frame" x="16" y="20" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GuR-G3-JBu">
+                                <rect key="frame" x="16" y="565" width="59" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6d-kW-Sci">
+                                <rect key="frame" x="83" y="565" width="36" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="568" placeholderIntrinsicHeight="488" translatesAutoresizingMaskIntoConstraints="NO" id="Qnn-Ww-52e">
+                                <rect key="frame" x="16" y="59" width="568" height="488"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="s15-Nf-U4p" firstAttribute="top" secondItem="yc9-zP-Lwp" secondAttribute="bottom" id="0In-M7-N3m"/>
+                            <constraint firstItem="Qnn-Ww-52e" firstAttribute="leading" secondItem="s15-Nf-U4p" secondAttribute="leading" id="0ha-WS-fCJ"/>
+                            <constraint firstItem="Qnn-Ww-52e" firstAttribute="top" secondItem="s15-Nf-U4p" secondAttribute="bottom" constant="18" id="1rw-gu-m85"/>
+                            <constraint firstItem="GuR-G3-JBu" firstAttribute="top" secondItem="Qnn-Ww-52e" secondAttribute="bottom" constant="18" id="2Fv-N0-tXc"/>
+                            <constraint firstItem="Qnn-Ww-52e" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bPe-A6-5we" secondAttribute="trailingMargin" id="9Xa-dG-6WB"/>
+                            <constraint firstAttribute="centerX" secondItem="Qnn-Ww-52e" secondAttribute="centerX" id="Grx-Et-f9R"/>
+                            <constraint firstItem="O6d-kW-Sci" firstAttribute="leading" secondItem="GuR-G3-JBu" secondAttribute="trailing" constant="8" id="O2v-wd-8Rq"/>
+                            <constraint firstItem="s15-Nf-U4p" firstAttribute="leading" secondItem="bPe-A6-5we" secondAttribute="leadingMargin" id="OOy-Oo-Or8"/>
+                            <constraint firstItem="s15-Nf-U4p" firstAttribute="trailing" secondItem="bPe-A6-5we" secondAttribute="trailingMargin" id="Z69-4p-ONH"/>
+                            <constraint firstItem="GuR-G3-JBu" firstAttribute="leading" secondItem="bPe-A6-5we" secondAttribute="leadingMargin" id="eHy-B6-F3q"/>
+                            <constraint firstItem="mzB-Ga-dkL" firstAttribute="top" secondItem="GuR-G3-JBu" secondAttribute="bottom" constant="18" id="eM7-fI-vFo"/>
+                            <constraint firstItem="GuR-G3-JBu" firstAttribute="leading" secondItem="bPe-A6-5we" secondAttribute="leadingMargin" id="fAj-Sl-vgd"/>
+                            <constraint firstItem="Qnn-Ww-52e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bPe-A6-5we" secondAttribute="leadingMargin" id="fXF-3k-pOd"/>
+                            <constraint firstItem="s15-Nf-U4p" firstAttribute="centerX" secondItem="Qnn-Ww-52e" secondAttribute="centerX" id="gmb-HS-8Ku"/>
+                            <constraint firstItem="Qnn-Ww-52e" firstAttribute="leading" secondItem="GuR-G3-JBu" secondAttribute="leading" id="p2y-Xt-BVJ"/>
+                            <constraint firstItem="O6d-kW-Sci" firstAttribute="top" secondItem="Qnn-Ww-52e" secondAttribute="bottom" constant="24" id="uhQ-DF-Lib"/>
+                            <constraint firstItem="GuR-G3-JBu" firstAttribute="baseline" secondItem="O6d-kW-Sci" secondAttribute="baseline" id="zxV-88-Esy"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="gmb-HS-8Ku"/>
+                                <exclude reference="0ha-WS-fCJ"/>
+                                <exclude reference="p2y-Xt-BVJ"/>
+                                <exclude reference="fAj-Sl-vgd"/>
+                                <exclude reference="uhQ-DF-Lib"/>
+                                <exclude reference="eM7-fI-vFo"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imgPicture" destination="Qnn-Ww-52e" id="Sk3-iR-0Wi"/>
+                        <outlet property="lblDescription" destination="s15-Nf-U4p" id="OmW-5E-gBa"/>
+                        <outlet property="lblRatingValue" destination="O6d-kW-Sci" id="FBc-Gd-HeH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z0W-YU-gGp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1045" y="9"/>
         </scene>
     </scenes>
 </document>

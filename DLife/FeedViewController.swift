@@ -19,6 +19,10 @@ class FeedViewController : UITableViewController, SBViewForViewModel {
         adapter = TableViewArrayAdapter(tableView: view as! UITableView)
         adapter.registerCell(EntryCellView.self)
         adapter.setData(viewModel.entries)
+        adapter.onItemSelectedAtIndex = { [unowned self] in
+            self.viewModel.showEntryAtIndex($0)
+        }
+        
         viewModel.onDataChanged = {
             self.adapter.setData(self.viewModel.entries)
         }
