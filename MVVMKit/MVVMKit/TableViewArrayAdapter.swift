@@ -72,6 +72,10 @@ import UIKit
         fatalError("Unknown View Model type.")
     }
     
+    @objc public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        onItemSelectedAtIndex?(indexPath.row)
+    }
+    
     func handleItemChanged(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Left)
     }
@@ -83,4 +87,6 @@ import UIKit
     func handleItemRemoved(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
         tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Middle)
     }
+    
+    public var onItemSelectedAtIndex: (Int -> ())?
 }
