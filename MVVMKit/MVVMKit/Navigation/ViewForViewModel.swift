@@ -17,3 +17,7 @@ public protocol ViewForViewModel {
 public protocol SBViewForViewModel: ViewForViewModel {
     static var sbInfo: (sbID: String, viewID: String) { get }
 }
+
+public protocol BindableCellView: ViewForViewModel {
+    static var CellIdentifier: String { get }
+}

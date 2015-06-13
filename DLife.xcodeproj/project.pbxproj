@@ -12,7 +12,12 @@
 		842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */; };
 		845E5DB41B2B135500D44299 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 845E5DB31B2B135500D44299 /* WebImage.framework */; };
 		845E5DB51B2B135500D44299 /* WebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 845E5DB31B2B135500D44299 /* WebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		84619B961B2ADC7E000954CB /* SBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B951B2ADC7E000954CB /* SBViewController.swift */; };
+		845E5DDF1B2B3B1400D44299 /* EntryCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DDE1B2B3B1400D44299 /* EntryCellView.swift */; };
+		845E5DE11B2B3DB400D44299 /* DevsLifeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DE01B2B3DB400D44299 /* DevsLifeAPI.swift */; };
+		845E5DE41B2B3E1900D44299 /* DLEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DE31B2B3E1900D44299 /* DLEntry.swift */; };
+		845E5DE81B2B454200D44299 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DE71B2B454200D44299 /* FeedViewModel.swift */; };
+		845E5DEA1B2B4C9F00D44299 /* Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DE91B2B4C9F00D44299 /* Serialization.swift */; };
+		84619B961B2ADC7E000954CB /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B951B2ADC7E000954CB /* FeedViewController.swift */; };
 		84619B9A1B2AEEBA000954CB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; };
 		84619B9B1B2AEEBA000954CB /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		848FF1C71B27549500E53884 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1C61B27549500E53884 /* MVVMKit.framework */; };
@@ -68,7 +73,12 @@
 		842418521AFF4BE400BAB4C6 /* GoTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTo.swift; sourceTree = "<group>"; };
 		842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
 		845E5DB31B2B135500D44299 /* WebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		84619B951B2ADC7E000954CB /* SBViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBViewController.swift; sourceTree = "<group>"; };
+		845E5DDE1B2B3B1400D44299 /* EntryCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryCellView.swift; sourceTree = "<group>"; };
+		845E5DE01B2B3DB400D44299 /* DevsLifeAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevsLifeAPI.swift; sourceTree = "<group>"; };
+		845E5DE31B2B3E1900D44299 /* DLEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLEntry.swift; sourceTree = "<group>"; };
+		845E5DE71B2B454200D44299 /* FeedViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		845E5DE91B2B4C9F00D44299 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
+		84619B951B2ADC7E000954CB /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		84619B991B2AEEBA000954CB /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1C61B27549500E53884 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +123,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		845E5DE21B2B3DDF00D44299 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				845E5DE01B2B3DB400D44299 /* DevsLifeAPI.swift */,
+				845E5DE31B2B3E1900D44299 /* DLEntry.swift */,
+				845E5DE91B2B4C9F00D44299 /* Serialization.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		845E5DE51B2B450D00D44299 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				845E5DE71B2B454200D44299 /* FeedViewModel.swift */,
+			);
+			name = ViewModels;
+			sourceTree = "<group>";
+		};
+		845E5DE61B2B451F00D44299 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84619B951B2ADC7E000954CB /* FeedViewController.swift */,
+				845E5DDE1B2B3B1400D44299 /* EntryCellView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		B67781451AC2B86A00D41721 = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +177,9 @@
 		B67781501AC2B86A00D41721 /* DLife */ = {
 			isa = PBXGroup;
 			children = (
+				845E5DE61B2B451F00D44299 /* Views */,
+				845E5DE51B2B450D00D44299 /* ViewModels */,
+				845E5DE21B2B3DDF00D44299 /* Models */,
 				B67781531AC2B86A00D41721 /* AppDelegate.swift */,
 				B67781551AC2B86A00D41721 /* ViewController.swift */,
 				B67781571AC2B86A00D41721 /* Main.storyboard */,
@@ -152,7 +192,6 @@
 				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
 				842418521AFF4BE400BAB4C6 /* GoTo.swift */,
 				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
-				84619B951B2ADC7E000954CB /* SBViewController.swift */,
 			);
 			path = DLife;
 			sourceTree = "<group>";
@@ -284,6 +323,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */,
+				845E5DE41B2B3E1900D44299 /* DLEntry.swift in Sources */,
+				845E5DEA1B2B4C9F00D44299 /* Serialization.swift in Sources */,
+				845E5DE81B2B454200D44299 /* FeedViewModel.swift in Sources */,
+				845E5DDF1B2B3B1400D44299 /* EntryCellView.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
 				84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
@@ -291,7 +334,8 @@
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
 				842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
-				84619B961B2ADC7E000954CB /* SBViewController.swift in Sources */,
+				845E5DE11B2B3DB400D44299 /* DevsLifeAPI.swift in Sources */,
+				84619B961B2ADC7E000954CB /* FeedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

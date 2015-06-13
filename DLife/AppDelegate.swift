@@ -15,7 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let svm = SimpleViewModel(s: "Simple View Model")
-        _ = GoTo.root(vm0: svm, vm1: svm)
+        let feedVM = FeedViewModel()
+        GoTo.root(vm0: feedVM, vm1: svm)
         
         return true
     }
