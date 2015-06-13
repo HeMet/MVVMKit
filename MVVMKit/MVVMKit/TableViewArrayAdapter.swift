@@ -9,18 +9,11 @@
 import Foundation
 import UIKit
 
-@objc public class TableViewArrayAdapter<T: AnyObject>: NSObject, UITableViewDelegate{
+@objc public class TableViewArrayAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     
-    var data: ObservableArray<T> = ObservableArray<T>()
+    var data = ObservableArray<AnyObject>()
     let tableView: UITableView
-    lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
-        let proxy = UITableViewDataSourceProxy()
-        proxy.getCell = self.getCell
-        proxy.getCount = self.getCount
-        return proxy
-    }()
-    
     var cellBindings = [CellBinding]()
     
     public init(tableView: UITableView) {
@@ -29,7 +22,7 @@ import UIKit
         super.init()
         
         self.tableView.delegate = self
-        self.tableView.dataSource = dsProxy
+        self.tableView.dataSource = self
     }
     
     //public init(tableView: UITableView, array: ObservableArray<T>)
@@ -51,12 +44,12 @@ import UIKit
         return nil
     }
     
-    public func setData(newData: [T]) {
+    public func setData(newData: [AnyObject]) {
         data.onItemChanged = nil;
         data.onItemInserted = nil;
         data.onItemRemoved = nil;
         
-        data = ObservableArray(array: newData)
+        data = ObservableArray<AnyObject>(array: newData)
         
         data.onItemChanged = handleItemChanged
         data.onItemInserted = handleItemInserted
@@ -65,12 +58,12 @@ import UIKit
         tableView.reloadData()
     }
     
-    func getCount() -> Int {
+    @objc public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
     
-    func getCell(indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel = data[indexPath.row]
+    @objc public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let viewModel: AnyObject = data[indexPath.row]
         for bind in cellBindings {
             if let cell = bind(viewModel, indexPath) {
                 return cell
@@ -79,30 +72,15 @@ import UIKit
         fatalError("Unknown View Model type.")
     }
     
-    func handleItemChanged(sender: ObservableArray<T>, item: T, index: Int) {
+    func handleItemChanged(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Left)
     }
     
-    func handleItemInserted(sender: ObservableArray<T>, item: T, index: Int) {
+    func handleItemInserted(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
         tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Right)
     }
     
-    func handleItemRemoved(sender: ObservableArray<T>, item: T, index: Int) {
+    func handleItemRemoved(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
         tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Middle)
     }
-}
-
-
-class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
-    
-    @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getCount()
-    }
-    
-    @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return getCell(indexPath)
-    }
-    
-    var getCount: (() -> Int)!
-    var getCell: ((NSIndexPath) -> UITableViewCell)!
 }
