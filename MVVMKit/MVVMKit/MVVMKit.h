@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UITableViewDelegateForwarder.h"
 
 //! Project version number for MVVMKit.
 FOUNDATION_EXPORT double MVVMKitVersionNumber;

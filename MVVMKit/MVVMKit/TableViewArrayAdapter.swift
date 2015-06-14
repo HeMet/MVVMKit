@@ -22,9 +22,21 @@ public class TableViewArrayAdapter<T: AnyObject> {
         UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
     }()
     
+    var areDelegatesAreSetted = false
+    
+    public var delegate: UITableViewDelegate? {
+        get {
+            return dProxy.delegate
+        }
+        set {
+            let t = newValue!
+            dProxy.delegate = t
+            self.tableView.delegate = dProxy
+        }
+    }
+    
     public init(tableView: UITableView) {
         self.tableView = tableView
-        self.tableView.delegate = dProxy
         self.tableView.dataSource = dsProxy
     }
     
@@ -64,6 +76,7 @@ public class TableViewArrayAdapter<T: AnyObject> {
     var originOnItemsChanged, originOnItemsInserted, originOnItemsRemoved: ObservableArray<T>.RangeChangedCallback!
     
     public func setData(newData: ObservableArray<T>) {
+        
         data.onItemsChanged = originOnItemsChanged
         data.onItemsInserted = originOnItemsChanged
         data.onItemsRemoved = originOnItemsRemoved
@@ -103,7 +116,7 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
-        onItemSelectedAtIndex?(indexPath.row)
+        
     }
     
     func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
@@ -125,8 +138,6 @@ public class TableViewArrayAdapter<T: AnyObject> {
             NSIndexPath(forRow: $0, inSection: 0)
         }
     }
-    
-    public var onItemSelectedAtIndex: (Int -> ())?
 }
 
 @objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
@@ -148,13 +159,10 @@ public class TableViewArrayAdapter<T: AnyObject> {
     var getCell: ((UITableView, NSIndexPath) -> UITableViewCell)!
 }
 
-@objc class UITableViewDelegateProxy: NSObject, UITableViewDelegate {
+@objc class UITableViewDelegateProxy: UITableViewDelegateForwarder {
     init(onSelect: (UITableView, NSIndexPath) -> ()) {
         self.onSelect = onSelect
-    }
-    
-    @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        onSelect(tableView, indexPath)
+        super.init()
     }
     
     var onSelect:((UITableView, NSIndexPath) -> ())!

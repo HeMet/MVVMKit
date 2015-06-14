@@ -11,7 +11,7 @@ import MVVMKit
 
 class FeedViewModel: ViewModel {
     var entries = ObservableArray<DLEntry>()
-    var feedToken = FeedToken(category: .Latest, pageSize: 5)
+    var feedToken = FeedToken(category: .Latest, pageSize: 10)
     
     var onDisposed: ViewModelEventHandler?
     
