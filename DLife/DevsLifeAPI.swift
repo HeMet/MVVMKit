@@ -27,7 +27,57 @@ enum ApiResult<T> {
     case OK(Box<T>)
 }
 
+class FeedToken {
+    let pageSize: Int
+    let category: FeedCategory
+    
+    var page: Int = 0
+    var total: Int = 0
+    
+    convenience init() {
+        self.init(category: .Latest, pageSize: 5)
+    }
+    
+    init(category: FeedCategory, pageSize: Int) {
+        self.pageSize = pageSize
+        self.category = category
+    }
+    
+    func next() {
+        page++
+    }
+    
+    var isEndOfFeed: Bool {
+        return (page + 1) * pageSize >= total
+    }
+}
+
 class DevsLifeAPI {
+    func getEntries(token: FeedToken, callback: ApiResult<[DLEntry]> -> ()) {
+        let params: [String: AnyObject] = [
+            "json": "true",
+            "pageSize": token.pageSize,
+            "types": "gif"
+        ]
+        Alamofire.request(.GET, "http://developerslife.ru/\(token.category)/\(token.page)", parameters: params, encoding: .URL).responseJSON { (_, _, data, error) in
+            if  let data = data as? [String: AnyObject],
+                let result = data["result"] as? [[String: AnyObject]],
+                let totalCount = data["totalCount"] as? Int {
+                    
+                    println(data)
+                    var entries = map(result) {
+                        DLEntry(json: $0)
+                    }
+                    token.total = totalCount
+                    token.next()
+                    callback(.OK(Box(entries)))
+            } else if let error = error {
+                println(error)
+                callback(.Error(error))
+            }
+        }
+    }
+    
     func getEntries(category: FeedCategory, page: Int, count: Int, callback: ApiResult<[DLEntry]> -> ()) {
         let params: [String: AnyObject] = [
             "json": "true",

@@ -10,16 +10,17 @@ import Foundation
 import MVVMKit
 
 class FeedViewModel: ViewModel {
-    var entries: [DLEntry] = []
+    var entries = ObservableArray<DLEntry>()
+    var feedToken = FeedToken(category: .Latest, pageSize: 5)
     
     var onDisposed: ViewModelEventHandler?
     
     func loadEntries() {
         let api = DevsLifeAPI()
-        api.getEntries(.Latest, page: 0, count: 5) { result in
+        api.getEntries(feedToken) { result in
             switch result {
             case .OK(let boxedData):
-                self.entries = boxedData.value
+                self.entries.extend(boxedData.value)
                 self.onDataChanged?()
             case .Error(let error):
                 println(error)

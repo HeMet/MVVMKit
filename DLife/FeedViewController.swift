@@ -13,7 +13,7 @@ class FeedViewController : UITableViewController, SBViewForViewModel {
     static let sbInfo = (sbID: "Main", viewID: "FeedViewController")
     
     var viewModel : FeedViewModel!
-    var adapter: TableViewArrayAdapter!
+    var adapter: TableViewArrayAdapter<DLEntry>!
     
     func bindToViewModel() {
         adapter = TableViewArrayAdapter(tableView: view as! UITableView)

@@ -9,7 +9,7 @@
 import Foundation
 
 public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType {
-    public typealias ChangeCallback = (ObservableArray<T>, T, Int) -> ()
+    public typealias RangeChangedCallback = (ObservableArray<T>, [T], Range<Int>) -> ()
     
     var innerArray: [T] = []
     
@@ -39,7 +39,7 @@ public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType
         }
         set {
             innerArray[index] = newValue
-            onItemChanged?(self, newValue, index)
+            onItemsChanged?(self, [newValue], newRangeOf(index))
         }
     }
     
@@ -56,18 +56,28 @@ public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType
         insert(newElement, atIndex: count)
     }
     
+    public mutating func extend<S: SequenceType where S.Generator.Element == T>(newElements: S) {
+        let values = [T](newElements)
+        let start = innerArray.count
+        let end = start + values.count - 1
+        
+        innerArray.extend(values)
+        
+        onItemsInserted?(self, values, Range(start: start, end: end))
+    }
+    
     public mutating func removeLast() -> T {
         return removeAtIndex(count - 1)
     }
     
     public mutating func insert(newElement: T, atIndex i: Int) {
         innerArray.insert(newElement, atIndex: i)
-        onItemInserted?(self, newElement, i)
+        onItemsInserted?(self, [newElement], newRangeOf(i))
     }
     
     public mutating func removeAtIndex(index: Int) -> T {
         let item = innerArray.removeAtIndex(index)
-        onItemRemoved?(self, item, index)
+        onItemsRemoved?(self, [item], newRangeOf(index))
         return item
     }
     
@@ -75,7 +85,12 @@ public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType
         return innerArray.generate()
     }
     
-    public var onItemInserted: ChangeCallback?
-    public var onItemRemoved: ChangeCallback?
-    public var onItemChanged: ChangeCallback?
+    
+    func newRangeOf(value: Int) -> Range<Int> {
+        return Range(start: value, end: value)
+    }
+    
+    public var onItemsInserted: RangeChangedCallback?
+    public var onItemsRemoved: RangeChangedCallback?
+    public var onItemsChanged: RangeChangedCallback?
 }

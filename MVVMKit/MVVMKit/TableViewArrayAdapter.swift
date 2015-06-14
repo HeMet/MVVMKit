@@ -9,20 +9,23 @@
 import Foundation
 import UIKit
 
-@objc public class TableViewArrayAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
+public class TableViewArrayAdapter<T: AnyObject> {
     typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     
-    var data = ObservableArray<AnyObject>()
+    var data = ObservableArray<T>()
     let tableView: UITableView
     var cellBindings = [CellBinding]()
+    lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
+        UITableViewDataSourceProxy(getCount: self.numberOfRowsInSection, getCell: self.cellForRowAtIndexPath)
+    }()
+    lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
+        UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
+    }()
     
     public init(tableView: UITableView) {
         self.tableView = tableView
-        
-        super.init()
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        self.tableView.delegate = dProxy
+        self.tableView.dataSource = dsProxy
     }
     
     //public init(tableView: UITableView, array: ObservableArray<T>)
@@ -44,25 +47,52 @@ import UIKit
         return nil
     }
     
-    public func setData(newData: [AnyObject]) {
-        data.onItemChanged = nil;
-        data.onItemInserted = nil;
-        data.onItemRemoved = nil;
+    public func setData(newData: [T]) {
+        data.onItemsChanged = nil;
+        data.onItemsInserted = nil;
+        data.onItemsRemoved = nil;
         
-        data = ObservableArray<AnyObject>(array: newData)
+        data = ObservableArray<T>(array: newData)
         
-        data.onItemChanged = handleItemChanged
-        data.onItemInserted = handleItemInserted
-        data.onItemRemoved = handleItemRemoved
+        data.onItemsChanged = handleItemsChanged
+        data.onItemsInserted = handleItemsInserted
+        data.onItemsRemoved = handleItemsRemoved
         
         tableView.reloadData()
     }
     
-    @objc public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    var originOnItemsChanged, originOnItemsInserted, originOnItemsRemoved: ObservableArray<T>.RangeChangedCallback!
+    
+    public func setData(newData: ObservableArray<T>) {
+        data.onItemsChanged = originOnItemsChanged
+        data.onItemsInserted = originOnItemsChanged
+        data.onItemsRemoved = originOnItemsRemoved
+        
+        originOnItemsChanged = newData.onItemsChanged
+        originOnItemsInserted = newData.onItemsInserted
+        originOnItemsRemoved = newData.onItemsRemoved
+        
+        data = newData
+        
+        data.onItemsChanged = intercept(data.onItemsChanged, hook: handleItemsChanged)
+        data.onItemsInserted = intercept(data.onItemsInserted, hook: handleItemsInserted)
+        data.onItemsRemoved = intercept(data.onItemsRemoved, hook: handleItemsRemoved)
+        
+        tableView.reloadData()
+    }
+    
+    private func intercept<ArgsType>(origin: (ArgsType -> ())?, hook: ArgsType -> ()) -> ArgsType -> () {
+        return { args in
+            origin?(args)
+            hook(args)
+        }
+    }
+    
+    func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
         return data.count
     }
     
-    @objc public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         let viewModel: AnyObject = data[indexPath.row]
         for bind in cellBindings {
             if let cell = bind(viewModel, indexPath) {
@@ -72,21 +102,60 @@ import UIKit
         fatalError("Unknown View Model type.")
     }
     
-    @objc public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
         onItemSelectedAtIndex?(indexPath.row)
     }
     
-    func handleItemChanged(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
-        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Left)
+    func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        
+        
+        tableView.reloadRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Left)
     }
     
-    func handleItemInserted(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
-        tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Right)
+    func handleItemsInserted(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        tableView.insertRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Right)
     }
     
-    func handleItemRemoved(sender: ObservableArray<AnyObject>, item: AnyObject, index: Int) {
-        tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Middle)
+    func handleItemsRemoved(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        tableView.deleteRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Middle)
+    }
+    
+    func pathsOf(itemIndexes: Range<Int>) -> [NSIndexPath] {
+        return map(itemIndexes) {
+            NSIndexPath(forRow: $0, inSection: 0)
+        }
     }
     
     public var onItemSelectedAtIndex: (Int -> ())?
+}
+
+@objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
+    
+    init(getCount: ((UITableView, Int) -> Int), getCell: ((UITableView, NSIndexPath) -> UITableViewCell)) {
+        self.getCell = getCell
+        self.getCount = getCount
+    }
+    
+    @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return getCount(tableView, section)
+    }
+    
+    @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        return getCell(tableView, indexPath)
+    }
+    
+    var getCount: ((UITableView, Int) -> Int)!
+    var getCell: ((UITableView, NSIndexPath) -> UITableViewCell)!
+}
+
+@objc class UITableViewDelegateProxy: NSObject, UITableViewDelegate {
+    init(onSelect: (UITableView, NSIndexPath) -> ()) {
+        self.onSelect = onSelect
+    }
+    
+    @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        onSelect(tableView, indexPath)
+    }
+    
+    var onSelect:((UITableView, NSIndexPath) -> ())!
 }
