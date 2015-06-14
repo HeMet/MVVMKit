@@ -8,12 +8,12 @@
 
 import Foundation
 
-public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType {
+public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType {
     public typealias RangeChangedCallback = (ObservableArray<T>, [T], Range<Int>) -> ()
     
     var innerArray: [T] = []
     
-    public init(arrayLiteral array: T...) {
+    public required convenience init(arrayLiteral array: T...) {
         self.init(array: array)
     }
     
@@ -52,30 +52,30 @@ public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType
     }
 
     
-    public mutating func append(newElement: T) {
+    public func append(newElement: T) {
         insert(newElement, atIndex: count)
     }
     
-    public mutating func extend<S: SequenceType where S.Generator.Element == T>(newElements: S) {
+    public func extend<S: SequenceType where S.Generator.Element == T>(newElements: S) {
         let values = [T](newElements)
         let start = innerArray.count
-        let end = start + values.count - 1
+        let end = start + values.count
         
         innerArray.extend(values)
         
         onItemsInserted?(self, values, Range(start: start, end: end))
     }
     
-    public mutating func removeLast() -> T {
+    public func removeLast() -> T {
         return removeAtIndex(count - 1)
     }
     
-    public mutating func insert(newElement: T, atIndex i: Int) {
+    public func insert(newElement: T, atIndex i: Int) {
         innerArray.insert(newElement, atIndex: i)
         onItemsInserted?(self, [newElement], newRangeOf(i))
     }
     
-    public mutating func removeAtIndex(index: Int) -> T {
+    public func removeAtIndex(index: Int) -> T {
         let item = innerArray.removeAtIndex(index)
         onItemsRemoved?(self, [item], newRangeOf(index))
         return item
@@ -87,7 +87,7 @@ public struct ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType
     
     
     func newRangeOf(value: Int) -> Range<Int> {
-        return Range(start: value, end: value)
+        return Range(start: value, end: value + 1)
     }
     
     public var onItemsInserted: RangeChangedCallback?

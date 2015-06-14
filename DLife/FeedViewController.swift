@@ -22,10 +22,6 @@ class FeedViewController : UITableViewController, SBViewForViewModel {
         adapter.onItemSelectedAtIndex = { [unowned self] in
             self.viewModel.showEntryAtIndex($0)
         }
-        
-        viewModel.onDataChanged = {
-            self.adapter.setData(self.viewModel.entries)
-        }
     }
     
     override func viewDidLoad() {

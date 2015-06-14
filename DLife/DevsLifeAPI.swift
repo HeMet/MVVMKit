@@ -64,7 +64,6 @@ class DevsLifeAPI {
                 let result = data["result"] as? [[String: AnyObject]],
                 let totalCount = data["totalCount"] as? Int {
                     
-                    println(data)
                     var entries = map(result) {
                         DLEntry(json: $0)
                     }
@@ -72,7 +71,6 @@ class DevsLifeAPI {
                     token.next()
                     callback(.OK(Box(entries)))
             } else if let error = error {
-                println(error)
                 callback(.Error(error))
             }
         }
