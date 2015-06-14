@@ -22,8 +22,6 @@ public class TableViewArrayAdapter<T: AnyObject> {
         UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
     }()
     
-    var areDelegatesAreSetted = false
-    
     public var delegate: UITableViewDelegate? {
         get {
             return dProxy.delegate
@@ -109,6 +107,7 @@ public class TableViewArrayAdapter<T: AnyObject> {
         let viewModel: AnyObject = data[indexPath.row]
         for bind in cellBindings {
             if let cell = bind(viewModel, indexPath) {
+                onCellBinded?(cell, indexPath)
                 return cell
             }
         }
@@ -120,13 +119,13 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
-        
-        
         tableView.reloadRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Left)
     }
     
     func handleItemsInserted(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
-        tableView.insertRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Right)
+        let paths = pathsOf(range)
+        tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        tableView.scrollToRowAtIndexPath(paths[0], atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
     }
     
     func handleItemsRemoved(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
@@ -138,6 +137,8 @@ public class TableViewArrayAdapter<T: AnyObject> {
             NSIndexPath(forRow: $0, inSection: 0)
         }
     }
+    
+    public var onCellBinded: ((UITableViewCell, NSIndexPath) -> ())?
 }
 
 @objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {

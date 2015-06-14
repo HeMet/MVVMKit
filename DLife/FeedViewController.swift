@@ -16,8 +16,16 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
     var adapter: TableViewArrayAdapter<DLEntry>!
     
     func bindToViewModel() {
-        adapter = TableViewArrayAdapter(tableView: view as! UITableView)
+        let tv = view as! UITableView
+        tv.estimatedRowHeight = 150
+        tv.rowHeight = UITableViewAutomaticDimension
+        adapter = TableViewArrayAdapter(tableView: tv)
         adapter.registerCell(EntryCellView.self)
+        adapter.onCellBinded = { cell, _ in
+            if let ec = cell as? EntryCellView {
+                ec.tableView = self.tableView
+            }
+        }
         adapter.delegate = self
         adapter.setData(viewModel.entries)
         
@@ -38,8 +46,13 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        (cell as! EntryCellView).visible = true
         if indexPath.row == viewModel.entries.endIndex - 1 {
-            viewModel.loadEntries()
+            self.viewModel.loadEntries()
         }
+    }
+    
+    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        (cell as! EntryCellView).visible = false
     }
 }

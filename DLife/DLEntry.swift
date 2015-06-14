@@ -14,4 +14,5 @@ class DLEntry {
     var votes: Int!
     var gifURL: String!
     var previewURL: String!
+    var imgSize: (Float, Float) = (10.0, 10.0)
 }
