@@ -7,3 +7,6 @@
 [submodule "External/SDWebImage"]
 	path = External/SDWebImage
 	url = git@github.com:HeMet/SDWebImage.git
+[submodule "External/Cartography"]
+	path = External/Cartography
+	url = git@github.com:HeMet/Cartography.git
