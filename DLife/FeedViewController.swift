@@ -26,6 +26,10 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
                 ec.tableView = self.tableView
             }
         }
+        adapter.onCellsInserted = { [unowned self] _, paths in
+            var path = NSIndexPath(forRow: paths[0].row - 1, inSection: 0)
+            self.tableView.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        }
         adapter.delegate = self
         adapter.setData(viewModel.entries)
         

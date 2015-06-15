@@ -13,6 +13,11 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
     
     var innerArray: [T] = []
     
+    // there is no good way in swift to compare two closures (it's intentional)
+    var insertObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
+    var removeObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
+    var changeObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
+    
     public required convenience init(arrayLiteral array: T...) {
         self.init(array: array)
     }
@@ -39,7 +44,7 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         }
         set {
             innerArray[index] = newValue
-            onItemsChanged?(self, [newValue], newRangeOf(index))
+            broadcast([newValue], indexes: newRangeOf(index), observers: changeObservers)
         }
     }
     
@@ -62,8 +67,7 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         let end = start + values.count
         
         innerArray.extend(values)
-        
-        onItemsInserted?(self, values, Range(start: start, end: end))
+        broadcast(values, indexes: Range(start: start, end: end), observers: insertObservers)
     }
     
     public func removeLast() -> T {
@@ -72,12 +76,12 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
     
     public func insert(newElement: T, atIndex i: Int) {
         innerArray.insert(newElement, atIndex: i)
-        onItemsInserted?(self, [newElement], newRangeOf(i))
+        broadcast([newElement], indexes: newRangeOf(i), observers: insertObservers)
     }
     
     public func removeAtIndex(index: Int) -> T {
         let item = innerArray.removeAtIndex(index)
-        onItemsRemoved?(self, [item], newRangeOf(index))
+        broadcast([item], indexes: newRangeOf(index), observers: removeObservers)
         return item
     }
     
@@ -90,7 +94,33 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         return Range(start: value, end: value + 1)
     }
     
-    public var onItemsInserted: RangeChangedCallback?
-    public var onItemsRemoved: RangeChangedCallback?
-    public var onItemsChanged: RangeChangedCallback?
+    public func registerInsertObserver(tag: String, observer: RangeChangedCallback) {
+        insertObservers[tag] = observer
+    }
+    
+    public func registerRemoveObserver(tag: String, observer: RangeChangedCallback) {
+        removeObservers[tag] = observer
+    }
+    
+    public func registerChangeObserver(tag: String, observer: RangeChangedCallback) {
+        insertObservers[tag] = observer
+    }
+    
+    public func unregisterInsertObserver(tag: String) {
+        insertObservers.removeValueForKey(tag)
+    }
+    
+    public func unregisterRemoveObserver(tag: String) {
+        removeObservers.removeValueForKey(tag)
+    }
+
+    public func unregisterChangeObserver(tag: String) {
+        changeObservers.removeValueForKey(tag)
+    }
+
+    func broadcast(items: [T], indexes: Range<Int>, observers: [String: RangeChangedCallback]) {
+        for (_, o) in observers {
+            o(self, items, indexes)
+        }
+    }
 }

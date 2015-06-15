@@ -11,6 +11,9 @@ import UIKit
 
 public class TableViewArrayAdapter<T: AnyObject> {
     typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
+    typealias CellsChangedEvent = (TableViewArrayAdapter<T>, [NSIndexPath]) -> ()
+    
+    let tag = "observable_array_tag"
     
     var data = ObservableArray<T>()
     let tableView: UITableView
@@ -38,6 +41,12 @@ public class TableViewArrayAdapter<T: AnyObject> {
         self.tableView.dataSource = dsProxy
     }
     
+    deinit {
+        data.unregisterChangeObserver(tag)
+        data.unregisterInsertObserver(tag)
+        data.unregisterRemoveObserver(tag)
+    }
+    
     //public init(tableView: UITableView, array: ObservableArray<T>)
     
     //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
@@ -58,15 +67,11 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     public func setData(newData: [T]) {
-        data.onItemsChanged = nil;
-        data.onItemsInserted = nil;
-        data.onItemsRemoved = nil;
-        
         data = ObservableArray<T>(array: newData)
         
-        data.onItemsChanged = handleItemsChanged
-        data.onItemsInserted = handleItemsInserted
-        data.onItemsRemoved = handleItemsRemoved
+        data.registerChangeObserver(tag, observer: handleItemsChanged)
+        data.registerInsertObserver(tag, observer: handleItemsInserted)
+        data.registerRemoveObserver(tag, observer: handleItemsRemoved)
         
         tableView.reloadData()
     }
@@ -74,20 +79,15 @@ public class TableViewArrayAdapter<T: AnyObject> {
     var originOnItemsChanged, originOnItemsInserted, originOnItemsRemoved: ObservableArray<T>.RangeChangedCallback!
     
     public func setData(newData: ObservableArray<T>) {
-        
-        data.onItemsChanged = originOnItemsChanged
-        data.onItemsInserted = originOnItemsChanged
-        data.onItemsRemoved = originOnItemsRemoved
-        
-        originOnItemsChanged = newData.onItemsChanged
-        originOnItemsInserted = newData.onItemsInserted
-        originOnItemsRemoved = newData.onItemsRemoved
+        data.unregisterChangeObserver(tag)
+        data.unregisterInsertObserver(tag)
+        data.unregisterRemoveObserver(tag)
         
         data = newData
         
-        data.onItemsChanged = intercept(data.onItemsChanged, hook: handleItemsChanged)
-        data.onItemsInserted = intercept(data.onItemsInserted, hook: handleItemsInserted)
-        data.onItemsRemoved = intercept(data.onItemsRemoved, hook: handleItemsRemoved)
+        data.registerChangeObserver(tag, observer: handleItemsChanged)
+        data.registerInsertObserver(tag, observer: handleItemsInserted)
+        data.registerRemoveObserver(tag, observer: handleItemsRemoved)
         
         tableView.reloadData()
     }
@@ -119,17 +119,21 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
-        tableView.reloadRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Left)
+        let paths = pathsOf(range)
+        tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Left)
+        onCellsReloaded?(self, paths)
     }
     
     func handleItemsInserted(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
         let paths = pathsOf(range)
         tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
-        tableView.scrollToRowAtIndexPath(paths[0], atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+        onCellsInserted?(self, paths)
     }
     
     func handleItemsRemoved(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
-        tableView.deleteRowsAtIndexPaths(pathsOf(range), withRowAnimation: .Middle)
+        let paths = pathsOf(range)
+        tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Middle)
+        onCellsRemoved?(self, paths)
     }
     
     func pathsOf(itemIndexes: Range<Int>) -> [NSIndexPath] {
@@ -139,6 +143,9 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     public var onCellBinded: ((UITableViewCell, NSIndexPath) -> ())?
+    public var onCellsInserted: CellsChangedEvent?
+    public var onCellsRemoved: CellsChangedEvent?
+    public var onCellsReloaded: CellsChangedEvent?
 }
 
 @objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
