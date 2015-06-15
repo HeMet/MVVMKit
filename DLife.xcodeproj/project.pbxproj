@@ -30,6 +30,7 @@
 		848FF1D21B27554000E53884 /* Box.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1D01B27554000E53884 /* Box.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84A57FE31B2F5DAE009A560E /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A57FE21B2F5DAE009A560E /* Cartography.framework */; };
 		84A57FE41B2F5DAE009A560E /* Cartography.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84A57FE21B2F5DAE009A560E /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		84A57FDF1B2F54A7009A560E /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FDE1B2F54A7009A560E /* EntryView.swift */; };
 		84C0A6961B2CAD8F00999E2E /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0A6951B2CAD8F00999E2E /* EntryViewController.swift */; };
 		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -89,6 +90,7 @@
 		848FF1CD1B27553900E53884 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1D01B27554000E53884 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Box.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A57FE21B2F5DAE009A560E /* Cartography.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cartography.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84A57FDE1B2F54A7009A560E /* EntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
 		84C0A6951B2CAD8F00999E2E /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +156,7 @@
 				84619B951B2ADC7E000954CB /* FeedViewController.swift */,
 				845E5DDE1B2B3B1400D44299 /* EntryCellView.swift */,
 				84C0A6951B2CAD8F00999E2E /* EntryViewController.swift */,
+				84A57FDE1B2F54A7009A560E /* EntryView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				845E5DDF1B2B3B1400D44299 /* EntryCellView.swift in Sources */,
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
 				84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */,
+				84A57FDF1B2F54A7009A560E /* EntryView.swift in Sources */,
 				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
 				B6797F161ADBB8740031420D /* ViewController2.swift in Sources */,
 				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
