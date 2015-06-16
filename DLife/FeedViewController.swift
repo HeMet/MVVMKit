@@ -23,12 +23,6 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
         adapter = TableViewArrayAdapter(tableView: tv)
         adapter.registerCell(EntryCellView.self)
         
-        adapter.onCellBinded = { cell, _ in
-            if let ec = cell as? EntryCellView {
-                ec.tableView = self.tableView
-            }
-        }
-        
         adapter.onCellsInserted = { [unowned self] _, paths in
             var path = NSIndexPath(forRow: paths[0].row - 1, inSection: 0)
             self.tableView.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
@@ -50,13 +44,8 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        (cell as! EntryCellView).visible = true
         if indexPath.row == viewModel.entries.endIndex - 1 {
             self.viewModel.loadEntries()
         }
-    }
-    
-    override func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        (cell as! EntryCellView).visible = false
     }
 }

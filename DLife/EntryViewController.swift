@@ -12,16 +12,12 @@ import MVVMKit
 class EntryViewController: UIViewController, SBViewForViewModel {
     static let sbInfo = (sbID: "Main", viewID: "EntryViewController")
     
-    @IBOutlet weak var imgPicture: UIImageView!
-    @IBOutlet weak var lblDescription: UILabel!
-    @IBOutlet weak var lblRatingValue: UILabel!
+    @IBOutlet weak var entryView: EntryView!
     
     var viewModel: DLEntry!
     
     func bindToViewModel() {
-        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.gifURL))
-        lblDescription.text = viewModel.description
-        lblRatingValue.text = "\(viewModel.votes)"
+        entryView.viewModel = viewModel
     }
     
     override func viewDidLoad() {

@@ -8,27 +8,42 @@
 
 import UIKit
 import Cartography
+import MVVMKit
 
 @IBDesignable
-class EntryView: UIView {
+class EntryView: UIView, ViewForViewModel {
+    let placeholder_image = "placeholder_image"
+    let designer_image = "designer_image"
+    
     var imgPicture: UIImageView = UIImageView()
     var lblDescription: UILabel = UILabel()
-    @IBInspectable var lblRating: UILabel = UILabel()
-    @IBInspectable var lblRatingValue: UILabel = UILabel()
+    var lblRating: UILabel = UILabel()
+    var lblRatingValue: UILabel = UILabel()
+    
+    var viewModel: DLEntry! {
+        didSet {
+            bindToViewModel()
+        }
+    }
     
     @IBInspectable var picture: UIImage? {
-        return imgPicture.image
+        didSet {
+            viewModel.previewURL = designer_image
+            bindToViewModel()
+        }
     }
     
     @IBInspectable var title: String = "Description" {
         didSet {
-            lblDescription.text = title
+            viewModel.description = title
+            bindToViewModel()
         }
     }
     
     @IBInspectable var ratingValue: Int = 0 {
         didSet {
-            lblRatingValue.text = "\(ratingValue)"
+            viewModel.votes = ratingValue
+            bindToViewModel()
         }
     }
     
@@ -48,16 +63,21 @@ class EntryView: UIView {
     }
     
     func setup() {
-        setDefaultValues()
         setupHierarchy()
         setupLayout()
+        setDefaultValues()
     }
     
     func setDefaultValues() {
-        lblDescription.text = "Descriptions"
-        lblRating.text = "Raring:"
-        lblRatingValue.text = "over 9000"
-        imgPicture.image = placeholderImage(50, 50)
+        lblRating.text = "Rating:"
+        
+        let dvm = DLEntry()
+        dvm.description = "Descriptions"
+        dvm.votes = 9000
+        dvm.previewURL = placeholder_image
+        dvm.imgSize = (50, 50)
+        
+        viewModel = dvm
     }
     
     func setupHierarchy() {
@@ -65,6 +85,10 @@ class EntryView: UIView {
         addSubview(imgPicture)
         addSubview(lblRating)
         addSubview(lblRatingValue)
+        
+        let tr = UITapGestureRecognizer(target: self, action: Selector("handlePictureTap:"))
+        imgPicture.addGestureRecognizer(tr)
+        imgPicture.userInteractionEnabled = true
     }
     
     func setupLayout() {
@@ -91,13 +115,39 @@ class EntryView: UIView {
         }
     }
     
-    func placeholderImage(width: Float, _ height: Float) -> UIImage {
+    func bindToViewModel() {
+        lblDescription.text = viewModel.description
+        lblRatingValue.text = "\(viewModel.votes)"
+        updatePicture()
+    }
+    
+    func handlePictureTap(recognizer: UITapGestureRecognizer) {
+        if !viewModel.gifURL.isEmpty {
+            imgPicture.sd_setImageWithURL(NSURL(string: viewModel.gifURL), placeholderImage: imgPicture.image!)
+        }
+    }
+    
+    func updatePicture() {
+        switch viewModel.previewURL {
+        case placeholder_image:
+            imgPicture.image = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1, transparent: false)
+        case designer_image:
+            imgPicture.image = picture
+        default:
+            let ph = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1)
+            imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph)
+        }
+    }
+    
+    func placeholderImage(width: Float, _ height: Float, transparent: Bool = true) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height))
         UIGraphicsBeginImageContext(CGSize(width: rect.width, height: rect.height))
         
-        let ctx = UIGraphicsGetCurrentContext()
-        UIColor.blackColor().set()
-        CGContextFillRect(ctx, rect)
+        if (!transparent) {
+            let ctx = UIGraphicsGetCurrentContext()
+            UIColor.blackColor().set()
+            CGContextFillRect(ctx, rect)
+        }
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
