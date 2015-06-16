@@ -57,6 +57,7 @@ class EntryView: UIView {
         lblDescription.text = "Descriptions"
         lblRating.text = "Raring:"
         lblRatingValue.text = "over 9000"
+        imgPicture.image = placeholderImage(50, 50)
     }
     
     func setupHierarchy() {
@@ -86,11 +87,18 @@ class EntryView: UIView {
             
             rating.right == value.left - 8
             rating.baseline == value.baseline
+            rating.left >= value.superview!.left + 8
         }
     }
     
     func placeholderImage(width: Float, _ height: Float) -> UIImage {
-        UIGraphicsBeginImageContext(CGSize(width: CGFloat(width), height: CGFloat(height)))
+        let rect = CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height))
+        UIGraphicsBeginImageContext(CGSize(width: rect.width, height: rect.height))
+        
+        let ctx = UIGraphicsGetCurrentContext()
+        UIColor.blackColor().set()
+        CGContextFillRect(ctx, rect)
+        
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img
