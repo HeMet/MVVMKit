@@ -33,6 +33,7 @@
 		84A57FE41B2F5DAE009A560E /* Cartography.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84A57FE21B2F5DAE009A560E /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84A57FE71B30986A009A560E /* DebugUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FE61B30986A009A560E /* DebugUtils.swift */; };
 		84A57FE91B30A2BF009A560E /* EntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FE81B30A2BF009A560E /* EntryViewModel.swift */; };
+		84A57FEB1B30B005009A560E /* DLComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEA1B30B005009A560E /* DLComment.swift */; };
 		84C0A6961B2CAD8F00999E2E /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C0A6951B2CAD8F00999E2E /* EntryViewController.swift */; };
 		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -95,6 +96,7 @@
 		84A57FE21B2F5DAE009A560E /* Cartography.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Cartography.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A57FE61B30986A009A560E /* DebugUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugUtils.swift; sourceTree = "<group>"; };
 		84A57FE81B30A2BF009A560E /* EntryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewModel.swift; sourceTree = "<group>"; };
+		84A57FEA1B30B005009A560E /* DLComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLComment.swift; sourceTree = "<group>"; };
 		84C0A6951B2CAD8F00999E2E /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +144,7 @@
 				845E5DE01B2B3DB400D44299 /* DevsLifeAPI.swift */,
 				845E5DE31B2B3E1900D44299 /* DLEntry.swift */,
 				845E5DE91B2B4C9F00D44299 /* Serialization.swift */,
+				84A57FEA1B30B005009A560E /* DLComment.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */,
 				84C0A6961B2CAD8F00999E2E /* EntryViewController.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
+				84A57FEB1B30B005009A560E /* DLComment.swift in Sources */,
 				84A57FE91B30A2BF009A560E /* EntryViewModel.swift in Sources */,
 				845E5DE11B2B3DB400D44299 /* DevsLifeAPI.swift in Sources */,
 				84619B961B2ADC7E000954CB /* FeedViewController.swift in Sources */,

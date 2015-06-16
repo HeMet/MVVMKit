@@ -45,6 +45,7 @@ public class TableViewArrayAdapter<T: AnyObject> {
         data.unregisterChangeObserver(tag)
         data.unregisterInsertObserver(tag)
         data.unregisterRemoveObserver(tag)
+        data.unregisterUpdatePhaseObserver(tag)
     }
     
     //public init(tableView: UITableView, array: ObservableArray<T>)
@@ -72,6 +73,7 @@ public class TableViewArrayAdapter<T: AnyObject> {
         data.registerChangeObserver(tag, observer: handleItemsChanged)
         data.registerInsertObserver(tag, observer: handleItemsInserted)
         data.registerRemoveObserver(tag, observer: handleItemsRemoved)
+        data.registerUpdatePhaseObserver(tag, observer: handleUpdatePhase)
         
         tableView.reloadData()
     }
@@ -82,12 +84,14 @@ public class TableViewArrayAdapter<T: AnyObject> {
         data.unregisterChangeObserver(tag)
         data.unregisterInsertObserver(tag)
         data.unregisterRemoveObserver(tag)
+        data.unregisterUpdatePhaseObserver(tag)
         
         data = newData
         
         data.registerChangeObserver(tag, observer: handleItemsChanged)
         data.registerInsertObserver(tag, observer: handleItemsInserted)
         data.registerRemoveObserver(tag, observer: handleItemsRemoved)
+        data.registerUpdatePhaseObserver(tag, observer: handleUpdatePhase)
         
         tableView.reloadData()
     }
@@ -116,6 +120,15 @@ public class TableViewArrayAdapter<T: AnyObject> {
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
         
+    }
+    
+    func handleUpdatePhase(sender: ObservableArray<T>, phase: UpdatePhase) {
+        switch phase {
+        case .Begin:
+            tableView.beginUpdates()
+        case .End:
+            tableView.endUpdates()
+        }
     }
     
     func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {

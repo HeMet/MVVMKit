@@ -19,3 +19,16 @@ extension DLEntry {
         previewURL = json["previewURL"] as! String
     }
 }
+
+extension DLComment {
+    convenience init(json: [String: AnyObject]) {
+        self.init()
+        
+        id = json["id"] as! Int
+        entryId = json["entryId"] as! Int
+        text = json["text"] as! String
+        date = json["date"] as! String
+        voteCount = json["voteCount"] as! Int
+        authorName = json["authorName"] as! String
+    }
+}

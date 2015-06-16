@@ -126,4 +126,23 @@ class DevsLifeAPI {
             }
         }
     }
+    
+    func getComments(entryId: Int, callback: ApiResult<[DLComment]> -> ()) {
+        let params: [String: AnyObject] = [
+            "json": "true",
+        ]
+        Alamofire.request(.GET, "http://developerslife.ru/comments/entry/\(entryId)", parameters: params, encoding: .URL).responseJSON { (_, _, data, error) in
+            if  let data = data as? [String: AnyObject],
+                let result = data["comments"] as? [[String: AnyObject]] {
+            
+                var comments = map(result) {
+                    DLComment(json: $0)
+                }
+                
+                callback(.OK(Box(comments)))
+            } else if let error = error {
+                callback(.Error(error))
+            }
+        }
+    }
 }

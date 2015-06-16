@@ -8,8 +8,13 @@
 
 import Foundation
 
+public enum UpdatePhase {
+    case Begin, End
+}
+
 public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType {
     public typealias RangeChangedCallback = (ObservableArray<T>, [T], Range<Int>) -> ()
+    public typealias UpdatePhaseCallback = (ObservableArray<T>, UpdatePhase) -> ()
     
     var innerArray: [T] = []
     
@@ -17,6 +22,8 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
     var insertObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
     var removeObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
     var changeObservers: [String:RangeChangedCallback] = [String:RangeChangedCallback]()
+    
+    var updatePhaseObservers: [String: UpdatePhaseCallback] = [String: UpdatePhaseCallback]()
     
     public required convenience init(arrayLiteral array: T...) {
         self.init(array: array)
@@ -85,6 +92,23 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         return item
     }
     
+    public func removeAll(keepCapacity: Bool) {
+        let start = 0
+        let end = innerArray.count
+        
+        let removed = innerArray
+        
+        innerArray.removeAll(keepCapacity: keepCapacity)
+        broadcast(removed, indexes: Range(start: start, end: end), observers: removeObservers)
+    }
+    
+    public func replaceAll<S: SequenceType where S.Generator.Element == T>(newElements: S) {
+        broadcast(.Begin, observers: updatePhaseObservers)
+        removeAll(true)
+        extend(newElements)
+        broadcast(.End, observers: updatePhaseObservers)
+    }
+    
     public func generate() -> IndexingGenerator<Array<T>> {
         return innerArray.generate()
     }
@@ -106,6 +130,10 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         insertObservers[tag] = observer
     }
     
+    public func registerUpdatePhaseObserver(tag: String, observer: UpdatePhaseCallback) {
+        updatePhaseObservers[tag] = observer
+    }
+    
     public func unregisterInsertObserver(tag: String) {
         insertObservers.removeValueForKey(tag)
     }
@@ -118,9 +146,19 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType 
         changeObservers.removeValueForKey(tag)
     }
 
+    public func unregisterUpdatePhaseObserver(tag: String) {
+        updatePhaseObservers.removeValueForKey(tag)
+    }
+    
     func broadcast(items: [T], indexes: Range<Int>, observers: [String: RangeChangedCallback]) {
         for (_, o) in observers {
             o(self, items, indexes)
+        }
+    }
+    
+    func broadcast(phase: UpdatePhase, observers: [String: UpdatePhaseCallback]) {
+        for (_, o) in observers {
+            o(self, phase)
         }
     }
 }

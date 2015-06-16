@@ -14,8 +14,11 @@ class EntryViewModel: BaseViewModel {
     var currentEntry: DLEntry {
         didSet {
             onEntryChanged?()
+            loadComments()
         }
     }
+    
+    var comments = ObservableArray<DLComment>()
     
     var onEntryChanged: (() -> ())?
     
@@ -35,6 +38,16 @@ class EntryViewModel: BaseViewModel {
                 println(error)
             }
         }
-
+    }
+    
+    func loadComments() {
+        api.getComments(currentEntry.id) { [unowned self] result in
+            switch result {
+            case .OK(let box):
+                self.comments.replaceAll(box.value)
+            case .Error(let error):
+                println(error)
+            }
+        }
     }
 }
