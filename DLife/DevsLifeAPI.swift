@@ -107,4 +107,23 @@ class DevsLifeAPI {
             self.value = value
         }
     }
+    
+    func getRandomEntry(callback: ApiResult<DLEntry> -> ()) {
+        let params: [String: AnyObject] = [
+            "json": "true",
+            "types": "gif"
+        ]
+        Alamofire.request(.GET, "http://developerslife.ru/random", parameters: params, encoding: .URL).responseJSON { (_, _, data, error) in
+            if  let result = data as? [String: AnyObject] {
+                    
+                var entry = DLEntry(json: result)
+                
+                self.loadPreviews([entry]) {
+                    callback(.OK(Box(entry)))
+                }
+            } else if let error = error {
+                callback(.Error(error))
+            }
+        }
+    }
 }

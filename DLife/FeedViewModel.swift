@@ -30,7 +30,7 @@ class FeedViewModel: ViewModel {
     
     func showEntryAtIndex(index: Int) {
         let entry = entries[index]
-        GoTo.entry(sender: self)(entry)
+        GoTo.entry(sender: self)(EntryViewModel(entry: entry))
     }
     
     func dispose() {

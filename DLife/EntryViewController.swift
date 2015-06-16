@@ -14,14 +14,22 @@ class EntryViewController: UIViewController, SBViewForViewModel {
     
     @IBOutlet weak var entryView: EntryView!
     
-    var viewModel: DLEntry!
+    var viewModel: EntryViewModel!
     
     func bindToViewModel() {
-        entryView.viewModel = viewModel
+        entryView.viewModel = viewModel.currentEntry
+        
+        viewModel.onEntryChanged = {
+            self.entryView.viewModel = self.viewModel.currentEntry
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bindToViewModel()
+    }
+    
+    @IBAction func nextRandomPostTapped(sender: AnyObject) {
+        viewModel.nextRandomPost()
     }
 }
