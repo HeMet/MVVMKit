@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, CollectionType {
+public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, MutableCollectionType {
     typealias DictionaryItem = (KeyType, ValueType)
     var keys = [KeyType]()
     var data = Dictionary<KeyType, ValueType>()
@@ -63,6 +63,9 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             let value = data[key]!
             
             return (key, value)
+        }
+        set {
+            insert(newValue.1, forKey: newValue.0, atIndex: position)
         }
     }
     
