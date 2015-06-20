@@ -14,7 +14,11 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     var data = Dictionary<KeyType, ValueType>()
     
     public init(dictionaryLiteral elements: DictionaryItem...) {
-        for e in elements {
+        self.init(pairs: elements)
+    }
+    
+    public init(pairs: [DictionaryItem]) {
+        for e in pairs {
             self[e.0] = e.1
         }
     }
@@ -46,12 +50,15 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             return data[key]
         }
         set {
-            if let index = find(keys, key) {
+            if newValue == nil {
+                removeValueForKey(key)
             } else {
-                keys.append(key)
+                if find(keys, key) == nil {
+                    keys.append(key)
+                }
+                
+                data[key] = newValue
             }
-            
-            data[key] = newValue
         }
     }
     
@@ -89,6 +96,10 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return existingValue
     }
     
+    public mutating func removeValueForKey(key: KeyType) {
+        data.removeValueForKey(key)
+    }
+    
     public mutating func removeAtIndex(index: Int) -> DictionaryItem
     {
         precondition(index < keys.count, "Index out-of-bounds")
@@ -99,37 +110,22 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return (key, value)
     }
     
-    mutating func addDictionaryUnordered(dictionary: Dictionary<KeyType, ValueType>) {
-        for e in dictionary {
-            self[e.0] = e.1
+    public mutating func extend<S: SequenceType where S.Generator.Element == DictionaryItem>(newElements: S) {
+        let values = [DictionaryItem](newElements)
+        let start = data.count
+        let end = start + values.count
+        
+        for (k, v) in newElements {
+            if data[k] != nil {
+                fatalError("Key \(k) already exists. Extend is not designed for replacement.")
+            }
+            
+            data[k] = v
+            keys.append(k)
         }
     }
     
-    public mutating func addElements(elements: [DictionaryItem]) {
-        for e in elements {
-            self[e.0] = e.1
-        }
-    }
-    
-    public func generate() -> OrderedDictionaryGenerator<KeyType, ValueType> {
-        return OrderedDictionaryGenerator(dictionary: self)
-    }
-}
-
-public struct OrderedDictionaryGenerator<KeyType: Hashable, ValueType> : GeneratorType {
-    private let dictionary: OrderedDictionary<KeyType, ValueType>
-    var index: Int
-    
-    init(dictionary: OrderedDictionary<KeyType, ValueType>) {
-        self.dictionary = dictionary
-        index = -1
-    }
-    
-    mutating public func next() -> (KeyType, ValueType)? {
-        index++
-        if (index < dictionary.count) {
-            return dictionary[index]
-        }
-        return nil
+    public func generate() -> IndexingGenerator<OrderedDictionary<KeyType, ValueType>> {
+        return IndexingGenerator(self)
     }
 }

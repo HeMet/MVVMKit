@@ -42,10 +42,10 @@ public class TableViewArrayAdapter<T: AnyObject> {
     }
     
     deinit {
-        data.unregisterChangeObserver(tag)
-        data.unregisterInsertObserver(tag)
-        data.unregisterRemoveObserver(tag)
-        data.unregisterUpdatePhaseObserver(tag)
+        data.onDidChangeRange.unregister(tag)
+        data.onDidInsertRange.unregister(tag)
+        data.onDidRemoveRange.unregister(tag)
+        data.onBatchUpdate.unregister(tag)
     }
     
     //public init(tableView: UITableView, array: ObservableArray<T>)
@@ -70,28 +70,38 @@ public class TableViewArrayAdapter<T: AnyObject> {
     public func setData(newData: [T]) {
         data = ObservableArray<T>(array: newData)
         
-        data.registerChangeObserver(tag, observer: handleItemsChanged)
-        data.registerInsertObserver(tag, observer: handleItemsInserted)
-        data.registerRemoveObserver(tag, observer: handleItemsRemoved)
-        data.registerUpdatePhaseObserver(tag, observer: handleUpdatePhase)
+        data.onDidInsertRange.register(tag) {
+            self.handleItemsInserted($0, items: $1.0, range: $1.1)
+        }
+        data.onDidRemoveRange.register(tag) {
+            self.handleItemsRemoved($0, items: $1.0, range: $1.1)
+        }
+        data.onDidChangeRange.register(tag) {
+            self.handleItemsChanged($0, items: $1.0, range: $1.1)
+        }
+        data.onBatchUpdate.register(tag, listener: handleUpdatePhase)
         
         tableView.reloadData()
     }
     
-    var originOnItemsChanged, originOnItemsInserted, originOnItemsRemoved: ObservableArray<T>.RangeChangedCallback!
-    
     public func setData(newData: ObservableArray<T>) {
-        data.unregisterChangeObserver(tag)
-        data.unregisterInsertObserver(tag)
-        data.unregisterRemoveObserver(tag)
-        data.unregisterUpdatePhaseObserver(tag)
+        data.onDidChangeRange.unregister(tag)
+        data.onDidInsertRange.unregister(tag)
+        data.onDidRemoveRange.unregister(tag)
+        data.onBatchUpdate.unregister(tag)
         
         data = newData
         
-        data.registerChangeObserver(tag, observer: handleItemsChanged)
-        data.registerInsertObserver(tag, observer: handleItemsInserted)
-        data.registerRemoveObserver(tag, observer: handleItemsRemoved)
-        data.registerUpdatePhaseObserver(tag, observer: handleUpdatePhase)
+        data.onDidInsertRange.register(tag) {
+            self.handleItemsInserted($0, items: $1.0, range: $1.1)
+        }
+        data.onDidRemoveRange.register(tag) {
+            self.handleItemsRemoved($0, items: $1.0, range: $1.1)
+        }
+        data.onDidChangeRange.register(tag) {
+            self.handleItemsChanged($0, items: $1.0, range: $1.1)
+        }
+        data.onBatchUpdate.register(tag, listener: handleUpdatePhase)
         
         tableView.reloadData()
     }
