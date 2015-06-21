@@ -41,8 +41,6 @@ public class TableViewBaseAdapter {
         self.tableView.dataSource = dsProxy
     }
     
-    //public init(tableView: UITableView, array: ObservableArray<T>)
-    
     //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
     
     public func registerCell<CellType: UITableViewCell where CellType: BindableCellView, CellType: ViewForViewModel>(cellType: CellType.Type) {
