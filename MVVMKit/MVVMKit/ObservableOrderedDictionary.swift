@@ -176,15 +176,15 @@ public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: Ba
 
 // Keep it here, otherwise complier will crash.
 
-public final class ObservableOrderedMultiDictionary2<KeyType : Hashable, SubValueType>: BaseObservableOrderedDictionary<KeyType, ObservableArray<SubValueType>>, ObservableCollection {
+public final class ObservableOrderedMultiDictionary<KeyType : Hashable, SubValueType>: BaseObservableOrderedDictionary<KeyType, ObservableArray<SubValueType>>, ObservableCollection {
     typealias ValueType = ObservableArray<SubValueType>
     typealias InnerDictionary = OrderedDictionary<KeyType, ValueType>
     
     typealias ItemType = (KeyType, ValueType)
-    public typealias RangeChangedEvent = MulticastEvent<ObservableOrderedMultiDictionary2, ([ItemType], Range<Int>)>
-    public typealias UpdatePhaseEvent = MulticastEvent<ObservableOrderedMultiDictionary2, UpdatePhase>
+    public typealias RangeChangedEvent = MulticastEvent<ObservableOrderedMultiDictionary, ([ItemType], Range<Int>)>
+    public typealias UpdatePhaseEvent = MulticastEvent<ObservableOrderedMultiDictionary, UpdatePhase>
     
-    typealias SubItemsChangedEvent = MulticastEvent<ObservableOrderedMultiDictionary2, [(SubValueType, Int, Int)]>
+    typealias SubItemsChangedEvent = MulticastEvent<ObservableOrderedMultiDictionary, [(SubValueType, Int, Int)]>
     
     let observerTag = "ObservableOrderedMultiDictionary_observer_tag"
     

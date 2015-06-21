@@ -21,18 +21,33 @@ public class TableViewArrayAdapter<T: AnyObject> : TableViewBaseAdapter<Observab
         super.init(tableView: tableView)
     }
     
+    override func numberOfSections(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     override func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
         return data.count
     }
     
-    override func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel: AnyObject = data[indexPath.row]
-        for bind in cellBindings {
-            if let cell = bind(viewModel, indexPath) {
-                onCellBinded?(cell, indexPath)
-                return cell
-            }
-        }
-        fatalError("Unknown View Model type.")
+    override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
+        return data[indexPath.row]
+    }
+    
+    override func handleItemsChanged(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        let paths = pathsOf(range)
+        tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Left)
+        onCellsReloaded?(self, paths)
+    }
+    
+    override func handleItemsInserted(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        let paths = pathsOf(range)
+        tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        onCellsInserted?(self, paths)
+    }
+    
+    override func handleItemsRemoved(sender: ObservableArray<T>, items: [T], range: Range<Int>) {
+        let paths = pathsOf(range)
+        tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Middle)
+        onCellsRemoved?(self, paths)
     }
 }

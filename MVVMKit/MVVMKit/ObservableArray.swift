@@ -59,6 +59,15 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         }
     }
     
+    public subscript (range: Range<Int>) -> [T] {
+        get {
+            return Array(innerArray[range])
+        }
+        set {
+            replaceRange(range, with: newValue)
+        }
+    }
+    
     public var startIndex: Int {
         return innerArray.startIndex
     }
@@ -96,6 +105,12 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         return item
     }
     
+    public func removeRange(subRange: Range<Int>) {
+        let removed = Array(innerArray[subRange])
+        innerArray.removeRange(subRange)
+        onDidRemoveRange.fire(removed, subRange)
+    }
+    
     public func removeAll(keepCapacity: Bool) {
         let start = 0
         let end = innerArray.count
@@ -104,6 +119,19 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         
         innerArray.removeAll(keepCapacity: keepCapacity)
         onDidRemoveRange.fire(removed, Range(start: start, end: end))
+    }
+    
+    public func replaceRange<C : CollectionType where C.Generator.Element == T>(subRange: Range<Int>, with newElements: C) {
+        let removed = Array(innerArray[subRange])
+        let inserted = Array(newElements)
+        let newRange = Range(start: subRange.startIndex, end: subRange.startIndex + inserted.count)
+        
+        innerArray.replaceRange(subRange, with: newElements)
+
+        batchUpdate(self) {
+            self.onDidRemoveRange.fire(removed, subRange)
+            self.onDidInsertRange.fire(inserted, newRange)
+        }
     }
     
     public func replaceAll<S: SequenceType where S.Generator.Element == T>(newElements: S) {

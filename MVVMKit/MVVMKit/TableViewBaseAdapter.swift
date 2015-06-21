@@ -19,7 +19,9 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
     let tableView: UITableView
     var cellBindings = [CellBinding]()
     lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
-        UITableViewDataSourceProxy(getCount: self.numberOfRowsInSection, getCell: self.cellForRowAtIndexPath)
+        var proxy = UITableViewDataSourceProxy(getCount: self.numberOfRowsInSection, getCell: self.cellForRowAtIndexPath)
+        proxy.getSectionCount = self.numberOfSections
+        return proxy
         }()
     lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
         UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
@@ -100,11 +102,26 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
         data.onBatchUpdate.unregister(tag)
     }
     
+    func numberOfSections(tableView: UITableView) -> Int {
+        fatalError("Abstract method")
+    }
+    
     func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
         fatalError("Abstract method")
     }
     
     func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
+        let viewModel: AnyObject = viewModelForIndexPath(indexPath)
+        for bind in cellBindings {
+            if let cell = bind(viewModel, indexPath) {
+                onCellBinded?(cell, indexPath)
+                return cell
+            }
+        }
+        fatalError("Unknown View Model type.")
+    }
+    
+    func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
         fatalError("Abstract method")
     }
     
@@ -122,21 +139,14 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
     }
     
     func handleItemsChanged(sender: T, items: [T.ItemType], range: Range<Int>) {
-        let paths = pathsOf(range)
-        tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Left)
-        onCellsReloaded?(self, paths)
-    }
+        fatalError("Abstract method")    }
     
     func handleItemsInserted(sender: T, items: [T.ItemType], range: Range<Int>) {
-        let paths = pathsOf(range)
-        tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
-        onCellsInserted?(self, paths)
+        fatalError("Abstract method")
     }
     
     func handleItemsRemoved(sender: T, items: [T.ItemType], range: Range<Int>) {
-        let paths = pathsOf(range)
-        tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Middle)
-        onCellsRemoved?(self, paths)
+        fatalError("Abstract method")
     }
     
     func pathsOf(itemIndexes: Range<Int>) -> [NSIndexPath] {
@@ -166,6 +176,11 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
         return getCell(tableView, indexPath)
     }
     
+    @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return getSectionCount(tableView)
+    }
+    
+    var getSectionCount: (UITableView -> Int)!
     var getCount: ((UITableView, Int) -> Int)!
     var getCell: ((UITableView, NSIndexPath) -> UITableViewCell)!
 }
