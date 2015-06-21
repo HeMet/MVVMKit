@@ -8,21 +8,24 @@
 
 import Foundation
 
+public struct RangeOf<T> {
+    typealias Changed = ([T], Range<Int>)
+}
+
 public protocol ObservableCollection: class {
     typealias ItemType
-    typealias RangeChangedEvent = MulticastEvent<Self, ([ItemType], Range<Int>)>
-    typealias UpdatePhaseEvent = MulticastEvent<Self, UpdatePhase>
     
-    var onDidInsertRange: RangeChangedEvent! { get }
-    var onDidRemoveRange: RangeChangedEvent! { get }
-    var onDidChangeRange: RangeChangedEvent! { get }
+    var onDidInsertRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
+    var onDidRemoveRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
+    var onDidChangeRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
     
-    var onBatchUpdate: UpdatePhaseEvent! { get }
+    var onBatchUpdate: MulticastEvent<Self, UpdatePhase>! { get set }
+    
+    init(data: [ItemType])
 }
 
 public func batchUpdate<T: ObservableCollection>(c: T, updateLogic: () -> ()) {
-    let event = c.onBatchUpdate as! MulticastEvent<T, UpdatePhase>
-    event.fire(.Begin)
+    c.onBatchUpdate.fire(.Begin)
     updateLogic()
-    event.fire(.End)
+    c.onBatchUpdate.fire(.End)
 }

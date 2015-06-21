@@ -76,8 +76,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         }
     }
     
-    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Int) -> ValueType?
-    {
+    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Int) -> ValueType? {
         var adjustedIndex = index
         
         let existingValue = data[key]
@@ -100,8 +99,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         data.removeValueForKey(key)
     }
     
-    public mutating func removeAtIndex(index: Int) -> DictionaryItem
-    {
+    public mutating func removeAtIndex(index: Int) -> DictionaryItem {
         precondition(index < keys.count, "Index out-of-bounds")
         
         let key = keys.removeAtIndex(index)
@@ -123,6 +121,10 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             data[k] = v
             keys.append(k)
         }
+    }
+    
+    public func indexOfKey(key: KeyType) -> Int? {
+        return find(keys, key)
     }
     
     public func generate() -> IndexingGenerator<OrderedDictionary<KeyType, ValueType>> {

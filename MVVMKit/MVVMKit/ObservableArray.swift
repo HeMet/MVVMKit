@@ -12,10 +12,10 @@ public enum UpdatePhase {
     case Begin, End
 }
 
-public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType, ObservableCollection {
+public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType, ObservableCollection {
     typealias ItemType = T
-    public typealias RangeChangedEvent = MulticastEvent<ObservableArray<T>, ([T], Range<Int>)>
-    public typealias UpdatePhaseEvent = MulticastEvent<ObservableArray<T>, UpdatePhase>
+    public typealias RangeChangedEvent = MulticastEvent<ObservableArray, ([T], Range<Int>)>
+    public typealias UpdatePhaseEvent = MulticastEvent<ObservableArray, UpdatePhase>
     
     var innerArray: [T] = []
     
@@ -26,12 +26,12 @@ public class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType,
     public var onBatchUpdate: UpdatePhaseEvent!
     
     public required convenience init(arrayLiteral array: T...) {
-        self.init(array: array)
+        self.init(data: array)
     }
     
-    public convenience init(array: [T]) {
+    public convenience required init(data: [T]) {
         self.init()
-        innerArray = array
+        innerArray = data
     }
     
     public init() {
