@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class TableViewArrayAdapter<T: AnyObject> : TableViewBaseAdapter<ObservableArray<T>> {
+public class TableViewArrayAdapter<T: AnyObject> : TableViewSinglePartAdapter<ObservableArray<T>> {
     typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     typealias CellsChangedEvent = (TableViewArrayAdapter<T>, [NSIndexPath]) -> ()
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class TableViewDictionaryAdapter<K: Hashable, T: AnyObject>: TableViewBaseAdapter<ObservableOrderedMultiDictionary<K, T>> {
+public class TableViewDictionaryAdapter<K: Hashable, T: AnyObject>: TableViewSinglePartAdapter<ObservableOrderedMultiDictionary<K, T>> {
     
     public override init(tableView: UITableView) {
         super.init(tableView: tableView)

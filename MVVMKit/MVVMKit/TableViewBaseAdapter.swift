@@ -8,13 +8,11 @@
 
 import Foundation
 
-public class TableViewBaseAdapter<T: ObservableCollection> {
-    typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
-    typealias CellsChangedEvent = (TableViewBaseAdapter<T>, [NSIndexPath]) -> ()
+public class TableViewBaseAdapter {
+    public typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
+    public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     
     let tag = "observable_array_tag"
-    
-    var data: T = T(data: [])
     
     let tableView: UITableView
     var cellBindings = [CellBinding]()
@@ -43,10 +41,6 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
         self.tableView.dataSource = dsProxy
     }
     
-    deinit {
-        stopListeningForData()
-    }
-    
     //public init(tableView: UITableView, array: ObservableArray<T>)
     
     //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
@@ -64,42 +58,6 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
             return cell
         }
         return nil
-    }
-    
-    public func setData(newData: [T.ItemType]) {
-        let data = T(data: newData)
-        setData(data)
-    }
-    
-    public func setData(newData: T) {
-        stopListeningForData()
-        data = newData
-        beginListeningForData()
-        
-        tableView.reloadData()
-    }
-    
-    func beginListeningForData() {
-        data.onDidInsertRange.register(tag) {
-            self.handleItemsInserted($0, items: $1.0, range: $1.1)
-        }
-        
-        data.onDidRemoveRange.register(tag) {
-            self.handleItemsRemoved($0, items: $1.0, range: $1.1)
-        }
-        
-        data.onDidChangeRange.register(tag) {
-            self.handleItemsChanged($0, items: $1.0, range: $1.1)
-        }
-        
-        data.onBatchUpdate.register(tag, listener: handleUpdatePhase)
-    }
-    
-    func stopListeningForData() {
-        data.onDidInsertRange.unregister(tag)
-        data.onDidRemoveRange.unregister(tag)
-        data.onDidChangeRange.unregister(tag)
-        data.onBatchUpdate.unregister(tag)
     }
     
     func numberOfSections(tableView: UITableView) -> Int {
@@ -127,32 +85,6 @@ public class TableViewBaseAdapter<T: ObservableCollection> {
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
         
-    }
-    
-    func handleUpdatePhase(sender: T, phase: UpdatePhase) {
-        switch phase {
-        case .Begin:
-            tableView.beginUpdates()
-        case .End:
-            tableView.endUpdates()
-        }
-    }
-    
-    func handleItemsChanged(sender: T, items: [T.ItemType], range: Range<Int>) {
-        fatalError("Abstract method")    }
-    
-    func handleItemsInserted(sender: T, items: [T.ItemType], range: Range<Int>) {
-        fatalError("Abstract method")
-    }
-    
-    func handleItemsRemoved(sender: T, items: [T.ItemType], range: Range<Int>) {
-        fatalError("Abstract method")
-    }
-    
-    func pathsOf(itemIndexes: Range<Int>) -> [NSIndexPath] {
-        return map(itemIndexes) {
-            NSIndexPath(forRow: $0, inSection: 0)
-        }
     }
     
     public var onCellBinded: ((UITableViewCell, NSIndexPath) -> ())?
