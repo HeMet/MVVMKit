@@ -8,16 +8,16 @@
 
 import Foundation
 
-public struct RangeOf<T> {
-    typealias Changed = ([T], Range<Int>)
+public struct OCEvents<C: ObservableCollection> {
+    typealias RangeChanged = MulticastEvent<C, ([C.ItemType], Range<Int>)>
 }
 
 public protocol ObservableCollection: class {
     typealias ItemType
     
-    var onDidInsertRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
-    var onDidRemoveRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
-    var onDidChangeRange: MulticastEvent<Self, RangeOf<ItemType>.Changed>! { get set }
+    var onDidInsertRange: OCEvents<Self>.RangeChanged! { get set }
+    var onDidRemoveRange: OCEvents<Self>.RangeChanged! { get set }
+    var onDidChangeRange: OCEvents<Self>.RangeChanged! { get set }
     
     var onBatchUpdate: MulticastEvent<Self, UpdatePhase>! { get set }
     
