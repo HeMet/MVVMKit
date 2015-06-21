@@ -1,27 +1,31 @@
 //
-//  EntryViewController.swift
+//  EntryViewController2.swift
 //  DLife
 //
-//  Created by Евгений Губин on 13.06.15.
+//  Created by Евгений Губин on 21.06.15.
 //  Copyright (c) 2015 SimbirSoft. All rights reserved.
 //
 
 import UIKit
 import MVVMKit
 
-class EntryViewController: UIViewController, SBViewForViewModel {
-    static let sbInfo = (sbID: "Main", viewID: "EntryViewController")
-    
-    @IBOutlet weak var entryView: EntryView!
+class EntryViewController: UITableViewController, SBViewForViewModel {
+    static let sbInfo = (sbID: "Main", viewID: "EntryViewController2")
     
     var viewModel: EntryViewModel!
+    var adapter: TableViewArrayAdapter<AnyObject>!
     
     func bindToViewModel() {
-        entryView.viewModel = viewModel.currentEntry
+        tableView.estimatedRowHeight = 50
+        tableView.rowHeight = UITableViewAutomaticDimension
         
-        viewModel.onEntryChanged = {
-            self.entryView.viewModel = self.viewModel.currentEntry
-        }
+        tableView.registerNib(UINib(nibName: "EntryCellView", bundle: nil), forCellReuseIdentifier: EntryCellView.CellIdentifier)
+        
+        adapter = TableViewArrayAdapter(tableView: tableView)
+        adapter.registerCell(EntryCellView.self)
+        adapter.registerCell(CommentCellView.self)
+        
+        adapter.setData(viewModel.data)
     }
     
     override func viewDidLoad() {
@@ -31,5 +35,10 @@ class EntryViewController: UIViewController, SBViewForViewModel {
     
     @IBAction func nextRandomPostTapped(sender: AnyObject) {
         viewModel.nextRandomPost()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadComments()
     }
 }

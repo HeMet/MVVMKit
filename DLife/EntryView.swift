@@ -89,6 +89,8 @@ class EntryView: UIView, ViewForViewModel {
         let tr = UITapGestureRecognizer(target: self, action: Selector("handlePictureTap:"))
         imgPicture.addGestureRecognizer(tr)
         imgPicture.userInteractionEnabled = true
+        
+        lblDescription.numberOfLines = 0
     }
     
     func setupLayout() {
