@@ -9,7 +9,7 @@
 import UIKit
 import MVVMKit
 
-class EntryViewController: UITableViewController, SBViewForViewModel {
+class EntryViewController: UITableViewController, SBViewForViewModel, UITableViewDelegate {
     static let sbInfo = (sbID: "Main", viewID: "EntryViewController2")
     
     var viewModel: EntryViewModel!
@@ -45,5 +45,11 @@ class EntryViewController: UITableViewController, SBViewForViewModel {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadComments()
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if let ecv = cell as? EntryCellView {
+            ecv.entryView.loadGif()
+        }
     }
 }

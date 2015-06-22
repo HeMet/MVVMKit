@@ -11,6 +11,7 @@ import Foundation
 public class TableViewBaseAdapter {
     public typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
+    public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
     
     let tag = "observable_array_tag"
     
@@ -52,7 +53,9 @@ public class TableViewBaseAdapter {
         if let vm = viewModel as? CellType.ViewModelType {
             let cell = tableView.dequeueReusableCellWithIdentifier(CellType.CellIdentifier, forIndexPath: indexPath) as! CellType
             cell.viewModel = vm
+            onWillBindCell?(cell, indexPath)
             cell.bindToViewModel()
+            onCellBinded?(cell, indexPath)
             return cell
         }
         return nil
@@ -70,7 +73,7 @@ public class TableViewBaseAdapter {
         let viewModel: AnyObject = viewModelForIndexPath(indexPath)
         for bind in cellBindings {
             if let cell = bind(viewModel, indexPath) {
-                onCellBinded?(cell, indexPath)
+                
                 return cell
             }
         }
@@ -85,7 +88,8 @@ public class TableViewBaseAdapter {
         
     }
     
-    public var onCellBinded: ((UITableViewCell, NSIndexPath) -> ())?
+    public var onWillBindCell: CellAction?
+    public var onCellBinded: CellAction?
     public var onCellsInserted: CellsChangedEvent?
     public var onCellsRemoved: CellsChangedEvent?
     public var onCellsReloaded: CellsChangedEvent?

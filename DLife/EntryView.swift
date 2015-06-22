@@ -22,9 +22,13 @@ class EntryView: UIView, ViewForViewModel {
     
     var viewModel: DLEntry! {
         didSet {
+            #if TARGET_INTERFACE_BUILDER
             bindToViewModel()
+            #endif
         }
     }
+    
+    var instantGifLoading = false
     
     @IBInspectable var picture: UIImage? {
         didSet {
@@ -124,8 +128,17 @@ class EntryView: UIView, ViewForViewModel {
     }
     
     func handlePictureTap(recognizer: UITapGestureRecognizer) {
-        if !viewModel.gifURL.isEmpty {
-            imgPicture.sd_setImageWithURL(NSURL(string: viewModel.gifURL), placeholderImage: imgPicture.image!)
+        loadGif()
+    }
+    
+    func loadPreview() {
+        let ph = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1)
+        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph)
+    }
+    
+    func loadGif() {
+        if !self.viewModel.gifURL.isEmpty {
+            imgPicture.sd_setImageWithURL(NSURL(string: self.viewModel.gifURL), placeholderImage: self.imgPicture.image!)
         }
     }
     
@@ -136,8 +149,7 @@ class EntryView: UIView, ViewForViewModel {
         case designer_image:
             imgPicture.image = picture
         default:
-            let ph = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1)
-            imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph)
+            loadPreview()
         }
     }
     

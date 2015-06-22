@@ -145,10 +145,6 @@ protocol TableViewMultiDataAdapterItem {
     var onBatchUpdate: ((String, UpdatePhase) -> ()) { get set }
 }
 
-func ==<T: TableViewMultiDataAdapterItem>(lhs: T, rhs: T) -> Bool {
-    return lhs.id == rhs.id
-}
-
 struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     let data: T
     

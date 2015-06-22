@@ -29,6 +29,6 @@ class EntryCellView: UITableViewCell, ViewForViewModel, BindableCellView
     }
     
     func bindToViewModel() {
-        // Entry view binding viewModel in didSet.
+        entryView.bindToViewModel()
     }
 }
