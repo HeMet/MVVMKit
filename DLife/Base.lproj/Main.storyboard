@@ -50,7 +50,7 @@
             </objects>
             <point key="canvasLocation" x="404" y="9"/>
         </scene>
-        <!--Entry View Controller-->
+        <!--Entry777-->
         <scene sceneID="ftV-TE-54X">
             <objects>
                 <tableViewController storyboardIdentifier="EntryViewController2" id="6TA-qZ-399" customClass="EntryViewController" customModule="DLife" customModuleProvider="target" sceneMemberID="viewController">
@@ -115,7 +115,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="pp2-FR-rSr">
+                    <navigationItem key="navigationItem" title="Entry777" id="pp2-FR-rSr">
                         <connections>
                             <outlet property="rightBarButtonItem" destination="BBx-6F-NYQ" id="WvS-VA-m1N"/>
                         </connections>

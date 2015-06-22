@@ -30,7 +30,10 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         
         viewModel.onEntryChanged = {
             self.adapter.changeData(self.viewModel.currentEntry, forSection: 0)
+            self.navigationItem.title = "Entry\(self.viewModel.currentEntry.id)"
         }
+        
+        navigationItem.title = "Entry\(viewModel.currentEntry.id)"
     }
     
     override func viewDidLoad() {
