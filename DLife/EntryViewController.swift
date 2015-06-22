@@ -13,7 +13,7 @@ class EntryViewController: UITableViewController, SBViewForViewModel {
     static let sbInfo = (sbID: "Main", viewID: "EntryViewController2")
     
     var viewModel: EntryViewModel!
-    var adapter: TableViewArrayAdapter<AnyObject>!
+    var adapter: TableViewMultiDataAdapter!
     
     func bindToViewModel() {
         tableView.estimatedRowHeight = 50
@@ -21,11 +21,16 @@ class EntryViewController: UITableViewController, SBViewForViewModel {
         
         tableView.registerNib(UINib(nibName: "EntryCellView", bundle: nil), forCellReuseIdentifier: EntryCellView.CellIdentifier)
         
-        adapter = TableViewArrayAdapter(tableView: tableView)
+        adapter = TableViewMultiDataAdapter(tableView: tableView)
         adapter.registerCell(EntryCellView.self)
         adapter.registerCell(CommentCellView.self)
         
-        adapter.setData(viewModel.data)
+        adapter.addData(viewModel.currentEntry)
+        adapter.addData(viewModel.comments)
+        
+        viewModel.onEntryChanged = {
+            self.adapter.changeData(self.viewModel.currentEntry, forSection: 0)
+        }
     }
     
     override func viewDidLoad() {

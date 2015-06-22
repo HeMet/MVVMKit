@@ -13,7 +13,7 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     var items: ObservableArray<TableViewMultiDataAdapterItem> = []
     var updateCounter = 0
     
-    override init(tableView: UITableView) {
+    override public init(tableView: UITableView) {
         super.init(tableView: tableView)
         
         items.onDidInsertRange.register(tag) {
@@ -50,6 +50,18 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
     public func changeData<T: AnyObject>(data: T, forSection sIndex: Int) {
         items[sIndex] = createSimpleItem(data: data)
+    }
+    
+    public func addData<T: AnyObject>(data: ObservableArray<T>) {
+        insertData(data, forSection: items.count)
+    }
+    
+    public func insertData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
+        items.insert(createCollectionItem(data: data), atIndex: sIndex)
+    }
+    
+    public func changeData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
+        items[sIndex] = createCollectionItem(data: data)
     }
     
     override func numberOfSections(tableView: UITableView) -> Int {
