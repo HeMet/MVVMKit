@@ -13,7 +13,6 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     var items: ObservableArray<TableViewMultiDataAdapterItem> = []
     var headers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
     var footers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
-    var updateCounter = 0
     
     override public init(tableView: UITableView) {
         super.init(tableView: tableView)
@@ -184,25 +183,10 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     func batchUpdate(phase: UpdatePhase) {
         switch phase {
         case .Begin:
-            self.updateCounter++
-            if (self.updateCounter == 1) {
-                self.tableView.beginUpdates()
-            }
+            beginUpdate()
         case .End:
-            precondition(self.updateCounter >= 0, "Batch update calls are unbalanced")
-            self.updateCounter--
-            if (self.updateCounter == 0) {
-                self.tableView.endUpdates()
-            }
+            endUpdate()
         }
-    }
-    
-    public func beginUpdate() {
-        batchUpdate(.Begin)
-    }
-    
-    public func endUpdate() {
-        batchUpdate(.End)
     }
 }
 

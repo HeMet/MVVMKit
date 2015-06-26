@@ -20,12 +20,14 @@ public class TableViewBaseAdapter {
     var cellBindings = [CellBinding]()
     var headerBindings = [SectionBinding]()
     var footerBindings = [SectionBinding]()
+    
     lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
         var proxy = UITableViewDataSourceProxy(getCount: self.numberOfRowsInSection, getCell: self.cellForRowAtIndexPath)
         proxy.getSectionCount = self.numberOfSections
         proxy.getTitleForHeader = self.titleForHeader
         return proxy
         }()
+    
     lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
         var proxy = UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
         proxy.getViewForHeader = self.viewForHeader
@@ -34,6 +36,8 @@ public class TableViewBaseAdapter {
         proxy.getHeightForFooter = self.heightForFooter
         return proxy
         }()
+    
+    var updateCounter = 0
     
     public var delegate: UITableViewDelegate? {
         get {
@@ -140,6 +144,43 @@ public class TableViewBaseAdapter {
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
         
+    }
+    
+    public func beginUpdate() {
+        self.updateCounter++
+        if (self.updateCounter == 1) {
+            self.tableView.beginUpdates()
+        }
+    }
+    
+    public func endUpdate() {
+        precondition(self.updateCounter >= 0, "Batch update calls are unbalanced")
+        self.updateCounter--
+        if (self.updateCounter == 0) {
+            self.tableView.endUpdates()
+            performDelayedActions()
+        }
+    }
+    
+    var delayedActions: [UITableView -> ()] = []
+    
+    public func performAfterUpdate(action: UITableView -> ()) {
+        
+        if self.updateCounter == 0 {
+            action(self.tableView)
+        } else {
+            delayedActions.append(action)
+        }
+    }
+    
+    func performDelayedActions() {
+        let actions = delayedActions
+        
+        delayedActions.removeAll(keepCapacity: false)
+        
+        for action in actions {
+            action(self.tableView)
+        }
     }
     
     public var onWillBindCell: CellAction?

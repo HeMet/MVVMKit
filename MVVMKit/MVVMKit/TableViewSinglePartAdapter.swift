@@ -58,9 +58,9 @@ public class TableViewSinglePartAdapter<T: ObservableCollection>: TableViewBaseA
     func handleUpdatePhase(sender: T, phase: UpdatePhase) {
         switch phase {
         case .Begin:
-            tableView.beginUpdates()
+            beginUpdate()
         case .End:
-            tableView.endUpdates()
+            endUpdate()
         }
     }
     
