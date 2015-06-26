@@ -11,6 +11,8 @@ import UIKit
 public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
     var items: ObservableArray<TableViewMultiDataAdapterItem> = []
+    var headers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
+    var footers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
     var updateCounter = 0
     
     override public init(tableView: UITableView) {
@@ -64,6 +66,30 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         items[sIndex] = createCollectionItem(data: data)
     }
     
+    public func setTitle(title: String, forSectionHeader sIndex: Int) {
+        headers[sIndex] = TableViewMultiDataAdapterSimpleSection(title: title)
+    }
+    
+    public func setData(data: AnyObject, forSectionHeader sIndex: Int) {
+        headers[sIndex] = TableViewMultiDataAdapterCustomViewSection(viewModel: data)
+    }
+    
+    public func removeSectionHeader(sIndex: Int) {
+        headers[sIndex] = nil
+    }
+    
+    public func setTitle(title: String, forSectionFooter sIndex: Int) {
+        footers[sIndex] = TableViewMultiDataAdapterSimpleSection(title: title)
+    }
+    
+    public func setData(data: AnyObject, forSectionFooter sIndex: Int) {
+        footers[sIndex] = TableViewMultiDataAdapterCustomViewSection(viewModel: data)
+    }
+    
+    public func removeSectionFooters(sIndex: Int) {
+        headers[sIndex] = nil
+    }
+    
     override func numberOfSections(tableView: UITableView) -> Int {
         return items.count
     }
@@ -74,6 +100,44 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
     override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
         return items[indexPath.section].getDataAtIndex(indexPath.row)
+    }
+    
+    override func titleForHeader(tableView: UITableView, section: Int) -> String? {
+        return headers[section]?.title
+    }
+    
+    override func titleForFooter(tableView: UITableView, section: Int) -> String? {
+        return footers[section]?.title
+    }
+    
+    override func heightForHeader(tableView: UITableView, section: Int) -> CGFloat {
+        return headers[section] != nil ? UITableViewAutomaticDimension : 0
+    }
+    
+    override func heightForFooter(tableView: UITableView, section: Int) -> CGFloat {
+        return footers[section] != nil ? UITableViewAutomaticDimension : 0
+    }
+    
+    override func viewForHeader(tableView: UITableView, section: Int) -> UIView? {
+        if let vm: AnyObject = headers[section]?.viewModel {
+            for bind in headerBindings {
+                if let view = bind(vm) {
+                    return view
+                }
+            }
+        }
+        return nil
+    }
+
+    override func viewForFooter(tableView: UITableView, section: Int) -> UIView? {
+        if let vm: AnyObject = footers[section]?.viewModel {
+            for bind in headerBindings {
+                if let view = bind(vm) {
+                    return view
+                }
+            }
+        }
+        return nil
     }
     
     func indexSetOf(range: Range<Int>) -> NSIndexSet {
@@ -131,6 +195,14 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
                 self.tableView.endUpdates()
             }
         }
+    }
+    
+    public func beginUpdate() {
+        batchUpdate(.Begin)
+    }
+    
+    public func endUpdate() {
+        batchUpdate(.End)
     }
 }
 
@@ -200,4 +272,19 @@ struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     var onDidRemove: ((String, [Int]) -> ())
     var onDidChange: ((String, [Int]) -> ())
     var onBatchUpdate: ((String, UpdatePhase) -> ())
+}
+
+protocol TableViewMultiDataAdapterSection {
+    var title: String? { get }
+    var viewModel: AnyObject? { get }
+}
+
+struct TableViewMultiDataAdapterSimpleSection : TableViewMultiDataAdapterSection {
+    var title: String?
+    let viewModel: AnyObject? = nil
+}
+
+struct TableViewMultiDataAdapterCustomViewSection : TableViewMultiDataAdapterSection {
+    let title: String? = nil
+    var viewModel: AnyObject?
 }
