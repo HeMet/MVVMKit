@@ -51,6 +51,10 @@ class FeedToken {
     var isEndOfFeed: Bool {
         return (page + 1) * pageSize >= total
     }
+    
+    var isUsed: Bool {
+        return page > 0
+    }
 }
 
 class DevsLifeAPI {

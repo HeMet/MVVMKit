@@ -12,15 +12,26 @@ import MVVMKit
 class FeedViewModel: ViewModel {
     var entries = ObservableArray<DLEntry>()
     var feedToken = FeedToken(category: .Latest, pageSize: 10)
+    var category = FeedCategory.Latest {
+        didSet {
+            feedToken = FeedToken(category: category, pageSize: 10)
+            loadEntries()
+        }
+    }
     
     var onDisposed: ViewModelEventHandler?
     
     func loadEntries() {
         let api = DevsLifeAPI()
+        let append = feedToken.isUsed
         api.getEntries(feedToken) { result in
             switch result {
             case .OK(let boxedData):
-                self.entries.extend(boxedData.value)
+                if append {
+                    self.entries.extend(boxedData.value)
+                } else {
+                    self.entries.replaceAll(boxedData.value)
+                }
                 self.onDataChanged?()
             case .Error(let error):
                 println(error)

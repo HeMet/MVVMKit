@@ -24,8 +24,15 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
         adapter.registerCell(EntryCellView.self)
         
         adapter.onCellsInserted = { [unowned self] _, paths in
-            var path = NSIndexPath(forRow: paths[0].row - 1, inSection: 0)
-            self.tableView.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+            let row = max(paths[0].row - 1, 0)
+            self.adapter.performAfterUpdate {
+                if (row > 0) {
+                    var path = NSIndexPath(forRow: row, inSection: 0)
+                    $0.scrollToRowAtIndexPath(path, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+                } else {
+                    $0.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+                }
+            }
         }
         
         adapter.delegate = self
@@ -46,6 +53,20 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == viewModel.entries.endIndex - 1 {
             self.viewModel.loadEntries()
+        }
+    }
+    
+    @IBAction func handleCategoryChanged(sender: AnyObject) {
+        let sc = sender as! UISegmentedControl
+        switch sc.selectedSegmentIndex {
+        case 0:
+            viewModel.category = .Latest
+        case 1:
+            viewModel.category = .Top
+        case 2:
+            viewModel.category = .Hot
+        default:
+            break
         }
     }
 }
