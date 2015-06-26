@@ -18,6 +18,8 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
     func bindToViewModel() {
         tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = 20
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         
         tableView.registerNib(UINib(nibName: "EntryCellView", bundle: nil), forCellReuseIdentifier: EntryCellView.CellIdentifier)
         
@@ -25,8 +27,13 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         adapter.registerCell(EntryCellView.self)
         adapter.registerCell(CommentCellView.self)
         
+        adapter.delegate = self
+        
+        adapter.beginUpdate()
         adapter.addData(viewModel.currentEntry)
         adapter.addData(viewModel.comments)
+        adapter.setTitle("Комментарии:", forSectionHeader: 1)
+        adapter.endUpdate()
         
         viewModel.onEntryChanged = {
             self.adapter.changeData(self.viewModel.currentEntry, forSection: 0)

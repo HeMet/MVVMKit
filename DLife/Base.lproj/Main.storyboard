@@ -103,10 +103,6 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="6TA-qZ-399" id="kTw-q1-9Ik"/>
-                            <outlet property="delegate" destination="6TA-qZ-399" id="1BS-zL-Y9u"/>
-                        </connections>
                     </tableView>
                     <toolbarItems>
                         <barButtonItem systemItem="refresh" id="BBx-6F-NYQ">
