@@ -99,6 +99,25 @@ public func asRoot<ArgsType>(factory: ArgsType -> UIViewController) -> (ArgsType
     return withTransition(Transitions.root)(factory: factory) *> noSender
 }
 
+public func asPopoverOn<V: UIViewController, ArgsType>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ())(factory: ArgsType -> UIViewController) -> (sender: AnyObject) -> (ArgsType) -> () {
+    
+    return { s in
+        return { args in
+            var view = factory(args)
+            view.modalPresentationStyle = .Popover
+            let popoverPC = view.popoverPresentationController!
+            let presentingVC = VMTracker.getFromView(s) as! V
+            if let delegate = presentingVC as? UIPopoverPresentationControllerDelegate {
+                popoverPC.delegate = delegate
+            }
+
+            popoverSetup(presentingVC, popoverPC)
+            
+            presentingVC.presentViewController(view, animated: true, completion: nil)
+        }
+    }
+}
+
 func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
     return { s in
         return { args in
