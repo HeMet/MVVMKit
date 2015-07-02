@@ -152,6 +152,8 @@ func goBack(fromView: UIViewController) {
         nc.popViewControllerAnimated(true)
     } else if fromView.presentingViewController?.presentedViewController == fromView {
         fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    } else if let _ = fromView.popoverPresentationController {
+        fromView.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
