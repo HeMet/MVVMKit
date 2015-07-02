@@ -41,19 +41,6 @@ func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.Vi
     return view
 }
 
-// Composition
-
-/// Wrap operator
-///
-/// For given factory function using given wrapper function it returns new factory function.
-/// It's useful for placing ViewForViewModel inside another content view.
-
-
-
-public func withinNavView(innerView: UIViewController) -> UINavigationController {
-    return NavigationGroupView(rootViewController: innerView)
-}
-
 /// Present do two things:
 ///
 /// -- Denotes ViewForViewModel's we want to use.
