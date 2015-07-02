@@ -30,8 +30,6 @@
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
 		B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */; };
 		B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */; };
-		B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */; };
-		B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */; };
 		B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */; };
 		B6347C8C1AE78CD900D70121 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C8A1AE78CD900D70121 /* ReactiveCocoa.framework */; };
 		B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */; };
@@ -77,8 +75,6 @@
 		B6347C6B1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6347C6C1AE78B8300D70121 /* MVVMKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVMKitTests.swift; sourceTree = "<group>"; };
 		B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuiltInGroupViews.swift; path = Navigation/BuiltInGroupViews.swift; sourceTree = "<group>"; };
-		B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMVVMApplication.swift; path = Navigation/UIMVVMApplication.swift; sourceTree = "<group>"; };
-		B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExtension.swift; path = Navigation/UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewForViewModel.swift; path = Navigation/ViewForViewModel.swift; sourceTree = "<group>"; };
 		B6347C8A1AE78CD900D70121 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = "../External/ReactiveCocoa/build/Debug-iphoneos/ReactiveCocoa.framework"; sourceTree = "<group>"; };
 		B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DynamicPropertyTyped.swift; path = Utils/DynamicPropertyTyped.swift; sourceTree = "<group>"; };
@@ -195,8 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */,
-				B6347C7B1AE78C8700D70121 /* UIMVVMApplication.swift */,
-				B6347C7C1AE78C8700D70121 /* UIViewControllerExtension.swift */,
 				B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */,
 				B60D982F1AF2392C00262E3A /* ViewModel.swift */,
 				8424184B1AFE72B500BAB4C6 /* Navigation.swift */,
@@ -345,11 +339,9 @@
 				842418511AFF488E00BAB4C6 /* GroupView.swift in Sources */,
 				84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */,
 				845E5DED1B2C5CFE00D44299 /* ObservableArray.swift in Sources */,
-				B6347C831AE78C8700D70121 /* UIMVVMApplication.swift in Sources */,
 				B6CF71AC1AEE1A2C001A248A /* RACExtensions.swift in Sources */,
 				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
 				847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */,
-				B6347C841AE78C8700D70121 /* UIViewControllerExtension.swift in Sources */,
 				B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */,
 				8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */,
 				84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */,
