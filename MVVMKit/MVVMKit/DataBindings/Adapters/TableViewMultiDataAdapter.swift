@@ -37,6 +37,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         }
     }
     
+    /// One-to-One
+    
     public func addData<T: AnyObject>(data: T) {
         insertData(data, forSection: items.count)
     }
@@ -53,6 +55,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         items[sIndex] = createSimpleItem(data: data)
     }
     
+    /// One-to-Many
+    
     public func addData<T: AnyObject>(data: ObservableArray<T>) {
         insertData(data, forSection: items.count)
     }
@@ -64,6 +68,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     public func changeData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
         items[sIndex] = createCollectionItem(data: data)
     }
+    
+    /// Section headers
     
     public func setTitle(title: String, forSectionHeader sIndex: Int) {
         headers[sIndex] = TableViewMultiDataAdapterSimpleSection(title: title)
@@ -77,6 +83,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         headers[sIndex] = nil
     }
     
+    /// Section footers
+    
     public func setTitle(title: String, forSectionFooter sIndex: Int) {
         footers[sIndex] = TableViewMultiDataAdapterSimpleSection(title: title)
     }
@@ -88,6 +96,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     public func removeSectionFooters(sIndex: Int) {
         headers[sIndex] = nil
     }
+    
+    /// Implementation details
     
     override func numberOfSections(tableView: UITableView) -> Int {
         return items.count
