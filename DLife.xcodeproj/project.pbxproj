@@ -37,15 +37,12 @@
 		84A57FEB1B30B005009A560E /* DLComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEA1B30B005009A560E /* DLComment.swift */; };
 		84C51CF91B372B45007C8108 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CF81B372B45007C8108 /* EntryViewController.swift */; };
 		84C51CFB1B372C07007C8108 /* CommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CFA1B372C07007C8108 /* CommentCellView.swift */; };
-		B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
-		B67781561AC2B86A00D41721 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781551AC2B86A00D41721 /* ViewController.swift */; };
 		B67781591AC2B86A00D41721 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B67781571AC2B86A00D41721 /* Main.storyboard */; };
 		B677815B1AC2B86A00D41721 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B677815A1AC2B86A00D41721 /* Images.xcassets */; };
 		B677815E1AC2B86A00D41721 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B677815C1AC2B86A00D41721 /* LaunchScreen.xib */; };
 		B677816A1AC2B86A00D41721 /* DLifeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781691AC2B86A00D41721 /* DLifeTests.swift */; };
 		B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781731AC2B88000D41721 /* DeclarativeUI.swift */; };
-		B6797F161ADBB8740031420D /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6797F151ADBB8740031420D /* ViewController2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,11 +99,9 @@
 		84A57FEA1B30B005009A560E /* DLComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLComment.swift; sourceTree = "<group>"; };
 		84C51CF81B372B45007C8108 /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		84C51CFA1B372C07007C8108 /* CommentCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellView.swift; sourceTree = "<group>"; };
-		B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewModel.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67781521AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781531AC2B86A00D41721 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B67781551AC2B86A00D41721 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B67781581AC2B86A00D41721 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B677815A1AC2B86A00D41721 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B677815D1AC2B86A00D41721 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -114,7 +109,6 @@
 		B67781681AC2B86A00D41721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B67781691AC2B86A00D41721 /* DLifeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLifeTests.swift; sourceTree = "<group>"; };
 		B67781731AC2B88000D41721 /* DeclarativeUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeclarativeUI.swift; sourceTree = "<group>"; };
-		B6797F151ADBB8740031420D /* ViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +180,8 @@
 		84A57FE51B309857009A560E /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
+				B67781731AC2B88000D41721 /* DeclarativeUI.swift */,
 				84A57FE61B30986A009A560E /* DebugUtils.swift */,
 			);
 			name = Misc;
@@ -224,17 +220,12 @@
 				845E5DE21B2B3DDF00D44299 /* Models */,
 				84A57FE51B309857009A560E /* Misc */,
 				B67781531AC2B86A00D41721 /* AppDelegate.swift */,
-				B67781551AC2B86A00D41721 /* ViewController.swift */,
+				842418521AFF4BE400BAB4C6 /* GoTo.swift */,
+				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
 				B67781571AC2B86A00D41721 /* Main.storyboard */,
 				B677815A1AC2B86A00D41721 /* Images.xcassets */,
 				B677815C1AC2B86A00D41721 /* LaunchScreen.xib */,
 				B67781511AC2B86A00D41721 /* Supporting Files */,
-				B67781731AC2B88000D41721 /* DeclarativeUI.swift */,
-				B6797F151ADBB8740031420D /* ViewController2.swift */,
-				B66457BE1ADE5E720078B05B /* SimpleViewModel.swift */,
-				84147C811AE175DC001F64B6 /* BaseViewModel.swift */,
-				842418521AFF4BE400BAB4C6 /* GoTo.swift */,
-				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
 			);
 			path = DLife;
 			sourceTree = "<group>";
@@ -377,10 +368,7 @@
 				B67781741AC2B88000D41721 /* DeclarativeUI.swift in Sources */,
 				84147C821AE175DC001F64B6 /* BaseViewModel.swift in Sources */,
 				84A57FDF1B2F54A7009A560E /* EntryView.swift in Sources */,
-				B66457BF1ADE5E720078B05B /* SimpleViewModel.swift in Sources */,
 				84C51CFB1B372C07007C8108 /* CommentCellView.swift in Sources */,
-				B6797F161ADBB8740031420D /* ViewController2.swift in Sources */,
-				B67781561AC2B86A00D41721 /* ViewController.swift in Sources */,
 				842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
 				84A57FEB1B30B005009A560E /* DLComment.swift in Sources */,
