@@ -21,6 +21,7 @@
 		84619B961B2ADC7E000954CB /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B951B2ADC7E000954CB /* FeedViewController.swift */; };
 		84619B9A1B2AEEBA000954CB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; };
 		84619B9B1B2AEEBA000954CB /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 84619B991B2AEEBA000954CB /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		846F4CEA1B4CF71600AA9291 /* AsyncUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F4CE91B4CF71600AA9291 /* AsyncUtils.swift */; };
 		848FF1C71B27549500E53884 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1C61B27549500E53884 /* MVVMKit.framework */; };
 		848FF1C81B27549500E53884 /* MVVMKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1C61B27549500E53884 /* MVVMKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		848FF1CB1B27550300E53884 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */; };
@@ -35,6 +36,7 @@
 		84A57FE71B30986A009A560E /* DebugUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FE61B30986A009A560E /* DebugUtils.swift */; };
 		84A57FE91B30A2BF009A560E /* EntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FE81B30A2BF009A560E /* EntryViewModel.swift */; };
 		84A57FEB1B30B005009A560E /* DLComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEA1B30B005009A560E /* DLComment.swift */; };
+		84BF931B1B4EB7C900E8F0F2 /* CommentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BF931A1B4EB7C900E8F0F2 /* CommentUtils.swift */; };
 		84C51CF91B372B45007C8108 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CF81B372B45007C8108 /* EntryViewController.swift */; };
 		84C51CFB1B372C07007C8108 /* CommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CFA1B372C07007C8108 /* CommentCellView.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -88,6 +90,7 @@
 		845E5DE91B2B4C9F00D44299 /* Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serialization.swift; sourceTree = "<group>"; };
 		84619B951B2ADC7E000954CB /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		84619B991B2AEEBA000954CB /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		846F4CE91B4CF71600AA9291 /* AsyncUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncUtils.swift; sourceTree = "<group>"; };
 		848FF1C61B27549500E53884 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1CA1B27550300E53884 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		848FF1CD1B27553900E53884 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +100,7 @@
 		84A57FE61B30986A009A560E /* DebugUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugUtils.swift; sourceTree = "<group>"; };
 		84A57FE81B30A2BF009A560E /* EntryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewModel.swift; sourceTree = "<group>"; };
 		84A57FEA1B30B005009A560E /* DLComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLComment.swift; sourceTree = "<group>"; };
+		84BF931A1B4EB7C900E8F0F2 /* CommentUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentUtils.swift; path = Views/Utils/CommentUtils.swift; sourceTree = "<group>"; };
 		84C51CF81B372B45007C8108 /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		84C51CFA1B372C07007C8108 /* CommentCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellView.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,6 +171,7 @@
 		845E5DE61B2B451F00D44299 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				84BF93191B4EB75F00E8F0F2 /* Utils */,
 				844507C91B37307500A08A78 /* layout */,
 				84619B951B2ADC7E000954CB /* FeedViewController.swift */,
 				845E5DDE1B2B3B1400D44299 /* EntryCellView.swift */,
@@ -183,8 +188,17 @@
 				842418541B00DB7400BAB4C6 /* NSTimerExtension.swift */,
 				B67781731AC2B88000D41721 /* DeclarativeUI.swift */,
 				84A57FE61B30986A009A560E /* DebugUtils.swift */,
+				846F4CE91B4CF71600AA9291 /* AsyncUtils.swift */,
 			);
 			name = Misc;
+			sourceTree = "<group>";
+		};
+		84BF93191B4EB75F00E8F0F2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				84BF931A1B4EB7C900E8F0F2 /* CommentUtils.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		B67781451AC2B86A00D41721 = {
@@ -362,6 +376,7 @@
 				842418551B00DB7400BAB4C6 /* NSTimerExtension.swift in Sources */,
 				845E5DE41B2B3E1900D44299 /* DLEntry.swift in Sources */,
 				84A57FE71B30986A009A560E /* DebugUtils.swift in Sources */,
+				846F4CEA1B4CF71600AA9291 /* AsyncUtils.swift in Sources */,
 				845E5DEA1B2B4C9F00D44299 /* Serialization.swift in Sources */,
 				845E5DE81B2B454200D44299 /* FeedViewModel.swift in Sources */,
 				845E5DDF1B2B3B1400D44299 /* EntryCellView.swift in Sources */,
@@ -371,6 +386,7 @@
 				84C51CFB1B372C07007C8108 /* CommentCellView.swift in Sources */,
 				842418531AFF4BE400BAB4C6 /* GoTo.swift in Sources */,
 				B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */,
+				84BF931B1B4EB7C900E8F0F2 /* CommentUtils.swift in Sources */,
 				84A57FEB1B30B005009A560E /* DLComment.swift in Sources */,
 				84A57FE91B30A2BF009A560E /* EntryViewModel.swift in Sources */,
 				845E5DE11B2B3DB400D44299 /* DevsLifeAPI.swift in Sources */,

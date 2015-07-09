@@ -12,8 +12,13 @@ import MVVMKit
 class EntryViewController: UITableViewController, SBViewForViewModel, UITableViewDelegate {
     static let sbInfo = (sbID: "Main", viewID: "EntryViewController2")
     
+    let cbTag = "EntryViewController"
+    
     var viewModel: EntryViewModel!
     var adapter: TableViewMultiDataAdapter!
+    
+    var htmlTexts: [NSAttributedString?] = []
+    var commentsProxy: ObservableArray<DLComment> = []
     
     func bindToViewModel() {
         tableView.estimatedRowHeight = 50
@@ -28,10 +33,13 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         adapter.registerCell(CommentCellView.self)
         
         adapter.delegate = self
+        adapter.onWillBindCell = setCommentTextForCell
+        
+        commentsProxy = ObservableArray(observableArray: viewModel.comments)
         
         adapter.beginUpdate()
         adapter.addData(viewModel.currentEntry)
-        adapter.addData(viewModel.comments)
+        adapter.addData(commentsProxy)
         adapter.setTitle("Комментарии:", forSectionHeader: 1)
         adapter.endUpdate()
         
@@ -40,7 +48,32 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
             self.navigationItem.title = "Entry\(self.viewModel.currentEntry.id)"
         }
         
+        viewModel.comments.onBatchUpdate.register(cbTag, listener: parseCommentsTextAndUpdate)
         navigationItem.title = "Entry\(viewModel.currentEntry.id)"
+    }
+    
+    func parseCommentsTextAndUpdate(comments: ObservableArray<DLComment>, phase: UpdatePhase) {
+        switch phase {
+        case .Begin:
+            self.adapter.beginUpdate()
+            self.commentsProxy.removeAll(false)
+        case .End:
+            let copy = ObservableArray(observableArray: comments)
+            backgroundTask {
+                var htmls = map(copy) { parseCommentText($0.text) }
+                uiTask {
+                    self.htmlTexts = htmls
+                    self.commentsProxy.replaceAll(comments)
+                    self.adapter.endUpdate()
+                }
+            }
+        }
+    }
+    
+    func setCommentTextForCell(cell: UITableViewCell, path: NSIndexPath) {
+        if let commentCell = cell as? CommentCellView {
+            commentCell.tvMessage.attributedText = self.htmlTexts[path.row]
+        }
     }
     
     override func viewDidLoad() {

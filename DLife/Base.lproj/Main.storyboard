@@ -84,24 +84,34 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SVL-a2-O6q">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EU8-B5-xEE">
                                             <rect key="frame" x="8" y="45" width="584" height="26"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="26" id="tdI-NS-utR"/>
+                                            </constraints>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Lorem ipsum dolor sit er elit lamet...">
+                                                    <attributes>
+                                                        <font key="NSFont" size="14" name="HelveticaNeue"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="SVL-a2-O6q" firstAttribute="top" secondItem="bum-KB-U2t" secondAttribute="bottom" constant="16" id="0CH-h2-zFt"/>
                                         <constraint firstAttribute="trailing" secondItem="bum-KB-U2t" secondAttribute="trailing" constant="8" id="8pd-nQ-xV1"/>
-                                        <constraint firstAttribute="trailing" secondItem="SVL-a2-O6q" secondAttribute="trailing" constant="8" id="NQB-cE-DFA"/>
+                                        <constraint firstItem="EU8-B5-xEE" firstAttribute="leading" secondItem="jqt-4Y-L6r" secondAttribute="leading" constant="8" id="BG2-nD-fa6"/>
+                                        <constraint firstItem="EU8-B5-xEE" firstAttribute="top" secondItem="bum-KB-U2t" secondAttribute="bottom" constant="16" id="ISf-AH-Rge"/>
+                                        <constraint firstAttribute="bottom" secondItem="EU8-B5-xEE" secondAttribute="bottom" constant="8" id="LKi-hw-oUu"/>
                                         <constraint firstItem="bum-KB-U2t" firstAttribute="leading" secondItem="jqt-4Y-L6r" secondAttribute="leadingMargin" id="XEo-nz-lp6"/>
                                         <constraint firstItem="bum-KB-U2t" firstAttribute="trailing" secondItem="jqt-4Y-L6r" secondAttribute="trailingMargin" id="YFw-zS-JlL"/>
                                         <constraint firstItem="bum-KB-U2t" firstAttribute="top" secondItem="jqt-4Y-L6r" secondAttribute="topMargin" id="aGp-TZ-Gu6"/>
-                                        <constraint firstAttribute="bottom" secondItem="SVL-a2-O6q" secondAttribute="bottom" constant="8" id="cmH-hE-V01"/>
-                                        <constraint firstItem="SVL-a2-O6q" firstAttribute="leading" secondItem="jqt-4Y-L6r" secondAttribute="leading" constant="8" id="pfA-L1-lNr"/>
                                         <constraint firstItem="bum-KB-U2t" firstAttribute="top" secondItem="jqt-4Y-L6r" secondAttribute="top" constant="8" id="rFN-gk-MwK"/>
                                         <constraint firstItem="bum-KB-U2t" firstAttribute="leading" secondItem="jqt-4Y-L6r" secondAttribute="leading" constant="8" id="xXY-Bu-ZJS"/>
+                                        <constraint firstAttribute="trailing" secondItem="EU8-B5-xEE" secondAttribute="trailing" constant="8" id="yP1-FK-iHS"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -113,7 +123,8 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="lblHeader" destination="bum-KB-U2t" id="lL3-Zk-SkY"/>
-                                    <outlet property="lblMessage" destination="SVL-a2-O6q" id="2LZ-IP-5x8"/>
+                                    <outlet property="lcTextHeight" destination="tdI-NS-utR" id="IJj-2V-ba4"/>
+                                    <outlet property="tvMessage" destination="EU8-B5-xEE" id="EY2-1r-0hj"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

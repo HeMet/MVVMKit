@@ -15,10 +15,14 @@ class CommentCellView: UITableViewCell, ViewForViewModel, BindableCellView {
     var viewModel: DLComment!
     
     @IBOutlet weak var lblHeader: UILabel!
-    @IBOutlet weak var lblMessage: UILabel!
+    @IBOutlet weak var tvMessage: UITextView!
+    @IBOutlet weak var lcTextHeight: NSLayoutConstraint!
     
     func bindToViewModel() {
         lblHeader.text = "@rating: \(viewModel.voteCount) @author: \(viewModel.authorName) @date: \(viewModel.date)"
-        lblMessage.text = viewModel.text
+        
+        // tvMessage.attributesText setted up by table view
+        
+        lcTextHeight.constant = tvMessage.sizeThatFits(tvMessage.frame.size).height
     }
 }
