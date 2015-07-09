@@ -34,6 +34,10 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         innerArray = data
     }
     
+    public convenience init(observableArray: ObservableArray<T>) {
+        self.init(data: observableArray.innerArray)
+    }
+    
     public init() {
         onDidInsertRange = RangeChangedEvent(context: self)
         onDidRemoveRange = RangeChangedEvent(context: self)
@@ -83,6 +87,11 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
     
     public func extend<S: SequenceType where S.Generator.Element == T>(newElements: S) {
         let values = [T](newElements)
+        
+        if values.isEmpty {
+            return
+        }
+        
         let start = innerArray.count
         let end = start + values.count
         
@@ -107,11 +116,20 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
     
     public func removeRange(subRange: Range<Int>) {
         let removed = Array(innerArray[subRange])
+        
+        if removed.isEmpty {
+            return
+        }
+        
         innerArray.removeRange(subRange)
         onDidRemoveRange.fire(removed, subRange)
     }
     
     public func removeAll(keepCapacity: Bool) {
+        if isEmpty {
+            return
+        }
+        
         let start = 0
         let end = innerArray.count
         
@@ -129,8 +147,12 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         innerArray.replaceRange(subRange, with: newElements)
 
         batchUpdate(self) {
-            self.onDidRemoveRange.fire(removed, subRange)
-            self.onDidInsertRange.fire(inserted, newRange)
+            if !removed.isEmpty {
+                self.onDidRemoveRange.fire(removed, subRange)
+            }
+            if !inserted.isEmpty {
+                self.onDidInsertRange.fire(inserted, newRange)
+            }
         }
     }
     
