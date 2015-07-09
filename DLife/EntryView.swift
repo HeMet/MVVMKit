@@ -159,24 +159,27 @@ class EntryView: UIView, ViewForViewModel {
     }
     
     func handlePictureTap(recognizer: UITapGestureRecognizer) {
-        loadGif()
+        loadGif(imgPicture.image!)
     }
     
     func loadPreview() {
         let ph = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1)
-        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph) { _ in
+        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph) { img, _, _, _ in
             if (self.instantGifLoading) {
-                self.loadGif()
+                // Workaround: in some cases (first load in our case) completition block is not called
+                NSTimer.schedule(delay: 0.1) { _ in
+                    self.loadGif(img)
+                }
             }
         }
     }
     
-    func loadGif() {
+    func loadGif(preview: UIImage) {
         if !self.viewModel.gifURL.isEmpty {
             loadingOverlay.hidden = false
             
             imgPicture.sd_setImageWithURL(NSURL(string: self.viewModel.gifURL),
-                placeholderImage: self.imgPicture.image!,
+                placeholderImage: preview,
                 options: SDWebImageOptions(0),
                 progress: { receivedSize, expectedSize in
                     self.loadingPercentage = CGFloat(receivedSize * 100 / expectedSize)
