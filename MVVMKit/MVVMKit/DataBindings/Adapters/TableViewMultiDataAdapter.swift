@@ -10,6 +10,7 @@ import UIKit
 
 public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
+    // todo: use dictionary to support empty sections
     var items: ObservableArray<TableViewMultiDataAdapterItem> = []
     var headers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
     var footers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
@@ -47,11 +48,8 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         items.insert(createSimpleItem(data: data), atIndex: sIndex)
     }
     
-    public func removeDataForSection(sIndex: Int) {
-        items.removeAtIndex(sIndex)
-    }
-    
     public func changeData<T: AnyObject>(data: T, forSection sIndex: Int) {
+        items[sIndex].dispose()
         items[sIndex] = createSimpleItem(data: data)
     }
     
@@ -66,7 +64,19 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     }
     
     public func changeData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
+        items[sIndex].dispose()
         items[sIndex] = createCollectionItem(data: data)
+    }
+    
+    /// One-to-Any
+    
+    public func hasDataForSection(sIndex: Int) -> Bool {
+        return items.count > sIndex
+    }
+    
+    public func removeDataForSection(sIndex: Int) {
+        items[sIndex].dispose()
+        items.removeAtIndex(sIndex)
     }
     
     /// Section headers
@@ -209,6 +219,8 @@ protocol TableViewMultiDataAdapterItem {
     var onDidRemove: ((String, [Int]) -> ()) { get set }
     var onDidChange: ((String, [Int]) -> ()) { get set }
     var onBatchUpdate: ((String, UpdatePhase) -> ()) { get set }
+    
+    func dispose()
 }
 
 struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
@@ -225,6 +237,10 @@ struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     var onDidRemove: ((String, [Int]) -> ())
     var onDidChange: ((String, [Int]) -> ())
     var onBatchUpdate: ((String, UpdatePhase) -> ())
+    
+    func dispose() {
+        
+    }
 }
 
 struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
@@ -266,6 +282,15 @@ struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     var onDidRemove: ((String, [Int]) -> ())
     var onDidChange: ((String, [Int]) -> ())
     var onBatchUpdate: ((String, UpdatePhase) -> ())
+    
+    func dispose() {
+        data.onDidChangeRange.unregister(tag)
+        data.onDidInsertRange.unregister(tag)
+        data.onDidRemoveRange.unregister(tag)
+        data.onBatchUpdate.unregister(tag)
+        
+        println("destroyed \(id)")
+    }
 }
 
 protocol TableViewMultiDataAdapterSection {
