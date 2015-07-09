@@ -33,7 +33,7 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         adapter.registerCell(CommentCellView.self)
         
         adapter.delegate = self
-        adapter.onWillBindCell = setCommentTextForCell
+        adapter.onWillBindCell = handleWillBindCell
         
         commentsProxy = ObservableArray(observableArray: viewModel.comments)
         
@@ -70,9 +70,14 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         }
     }
     
-    func setCommentTextForCell(cell: UITableViewCell, path: NSIndexPath) {
-        if let commentCell = cell as? CommentCellView {
+    func handleWillBindCell(cell: UITableViewCell, path: NSIndexPath) {
+        switch cell {
+        case let commentCell as CommentCellView:
             commentCell.tvMessage.attributedText = self.htmlTexts[path.row]
+        case let entryCell as EntryCellView:
+            entryCell.entryView.instantGifLoading = true
+        default:
+            break
         }
     }
     
@@ -88,11 +93,5 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadComments()
-    }
-    
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if let ecv = cell as? EntryCellView {
-            ecv.entryView.loadGif()
-        }
     }
 }

@@ -37,6 +37,7 @@
 		84A57FE91B30A2BF009A560E /* EntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FE81B30A2BF009A560E /* EntryViewModel.swift */; };
 		84A57FEB1B30B005009A560E /* DLComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEA1B30B005009A560E /* DLComment.swift */; };
 		84BF931B1B4EB7C900E8F0F2 /* CommentUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BF931A1B4EB7C900E8F0F2 /* CommentUtils.swift */; };
+		84BF931F1B4EC05200E8F0F2 /* LoadingOverlayLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BF931E1B4EC05200E8F0F2 /* LoadingOverlayLayer.swift */; };
 		84C51CF91B372B45007C8108 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CF81B372B45007C8108 /* EntryViewController.swift */; };
 		84C51CFB1B372C07007C8108 /* CommentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C51CFA1B372C07007C8108 /* CommentCellView.swift */; };
 		B67781541AC2B86A00D41721 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67781531AC2B86A00D41721 /* AppDelegate.swift */; };
@@ -101,6 +102,7 @@
 		84A57FE81B30A2BF009A560E /* EntryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewModel.swift; sourceTree = "<group>"; };
 		84A57FEA1B30B005009A560E /* DLComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DLComment.swift; sourceTree = "<group>"; };
 		84BF931A1B4EB7C900E8F0F2 /* CommentUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentUtils.swift; path = Views/Utils/CommentUtils.swift; sourceTree = "<group>"; };
+		84BF931E1B4EC05200E8F0F2 /* LoadingOverlayLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadingOverlayLayer.swift; path = Views/LoadingOverlayLayer.swift; sourceTree = "<group>"; };
 		84C51CF81B372B45007C8108 /* EntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		84C51CFA1B372C07007C8108 /* CommentCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellView.swift; sourceTree = "<group>"; };
 		B677814E1AC2B86A00D41721 /* DLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +180,7 @@
 				84A57FDE1B2F54A7009A560E /* EntryView.swift */,
 				84C51CF81B372B45007C8108 /* EntryViewController.swift */,
 				84C51CFA1B372C07007C8108 /* CommentCellView.swift */,
+				84BF931E1B4EC05200E8F0F2 /* LoadingOverlayLayer.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				845E5DE41B2B3E1900D44299 /* DLEntry.swift in Sources */,
 				84A57FE71B30986A009A560E /* DebugUtils.swift in Sources */,
 				846F4CEA1B4CF71600AA9291 /* AsyncUtils.swift in Sources */,
+				84BF931F1B4EC05200E8F0F2 /* LoadingOverlayLayer.swift in Sources */,
 				845E5DEA1B2B4C9F00D44299 /* Serialization.swift in Sources */,
 				845E5DE81B2B454200D44299 /* FeedViewModel.swift in Sources */,
 				845E5DDF1B2B3B1400D44299 /* EntryCellView.swift in Sources */,

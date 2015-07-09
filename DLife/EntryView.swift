@@ -9,6 +9,7 @@
 import UIKit
 import Cartography
 import MVVMKit
+import WebImage
 
 @IBDesignable
 class EntryView: UIView, ViewForViewModel {
@@ -30,6 +31,8 @@ class EntryView: UIView, ViewForViewModel {
     
     var instantGifLoading = false
     
+    var loadingOverlay : LoadingOverlayLayer = LoadingOverlayLayer()
+    
     @IBInspectable var picture: UIImage? {
         didSet {
             viewModel.previewURL = designer_image
@@ -48,6 +51,24 @@ class EntryView: UIView, ViewForViewModel {
         didSet {
             viewModel.votes = ratingValue
             bindToViewModel()
+        }
+    }
+
+    @IBInspectable var overlay: Bool {
+        get {
+            return !loadingOverlay.hidden
+        }
+        set {
+            loadingOverlay.hidden = !newValue
+        }
+    }
+    
+    @IBInspectable var loadingPercentage: CGFloat {
+        get {
+            return loadingOverlay.percentage
+        }
+        set {
+            loadingOverlay.percentage = newValue
         }
     }
     
@@ -75,6 +96,8 @@ class EntryView: UIView, ViewForViewModel {
     func setDefaultValues() {
         lblRating.text = "Rating:"
         
+        loadingOverlay.hidden = true
+        
         let dvm = DLEntry()
         dvm.description = "Descriptions"
         dvm.votes = 9000
@@ -89,6 +112,8 @@ class EntryView: UIView, ViewForViewModel {
         addSubview(imgPicture)
         addSubview(lblRating)
         addSubview(lblRatingValue)
+        
+        imgPicture.layer.addSublayer(loadingOverlay)
         
         let tr = UITapGestureRecognizer(target: self, action: Selector("handlePictureTap:"))
         imgPicture.addGestureRecognizer(tr)
@@ -121,6 +146,12 @@ class EntryView: UIView, ViewForViewModel {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        loadingOverlay.frame = imgPicture.layer.bounds
+    }
+    
     func bindToViewModel() {
         lblDescription.text = viewModel.description
         lblRatingValue.text = "\(viewModel.votes)"
@@ -133,12 +164,25 @@ class EntryView: UIView, ViewForViewModel {
     
     func loadPreview() {
         let ph = placeholderImage(viewModel.imgSize.0, viewModel.imgSize.1)
-        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph)
+        imgPicture.sd_setImageWithURL(NSURL(string: viewModel.previewURL), placeholderImage: ph) { _ in
+            if (self.instantGifLoading) {
+                self.loadGif()
+            }
+        }
     }
     
     func loadGif() {
         if !self.viewModel.gifURL.isEmpty {
-            imgPicture.sd_setImageWithURL(NSURL(string: self.viewModel.gifURL), placeholderImage: self.imgPicture.image!)
+            loadingOverlay.hidden = false
+            
+            imgPicture.sd_setImageWithURL(NSURL(string: self.viewModel.gifURL),
+                placeholderImage: self.imgPicture.image!,
+                options: SDWebImageOptions(0),
+                progress: { receivedSize, expectedSize in
+                    self.loadingPercentage = CGFloat(receivedSize * 100 / expectedSize)
+                }) { _ in
+                self.loadingOverlay.hidden = true
+            }
         }
     }
     
