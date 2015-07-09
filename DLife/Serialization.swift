@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension DLEntry {
     convenience init(json: [String: AnyObject]) {
@@ -15,7 +16,7 @@ extension DLEntry {
         id = json["id"] as! Int
         description = json["description"] as! String
         votes = json["votes"] as! Int
-        gifURL = json["gifURL"] as! String
+        gifURL = json["gifURL"] as? String ?? ""
         previewURL = json["previewURL"] as! String
     }
 }
