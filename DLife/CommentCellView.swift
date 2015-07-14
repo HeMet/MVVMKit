@@ -16,13 +16,12 @@ class CommentCellView: UITableViewCell, ViewForViewModel, BindableCellView {
     
     @IBOutlet weak var lblHeader: UILabel!
     @IBOutlet weak var tvMessage: UITextView!
-    @IBOutlet weak var lcTextHeight: NSLayoutConstraint!
     
     func bindToViewModel() {
         lblHeader.text = "@rating: \(viewModel.voteCount) @author: \(viewModel.authorName) @date: \(viewModel.date)"
         
         // tvMessage.attributesText setted up by table view
-        
-        lcTextHeight.constant = tvMessage.sizeThatFits(tvMessage.frame.size).height
+
+        // Workaround: bottom and right constraint's priorities are setted to 999 because of UIView-Encapsulated-Layout-... bug
     }
 }
