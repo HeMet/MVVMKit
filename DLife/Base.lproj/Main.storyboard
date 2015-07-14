@@ -161,13 +161,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ya-AE-8NH" customClass="EntryView" customModule="DLife" customModuleProvider="target">
-                                <rect key="frame" x="241" y="230" width="118" height="140"/>
+                                <rect key="frame" x="0.0" y="220" width="600" height="160"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Шутки..."/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="overlayIsHidden" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="title" value="Пишу программы для микроконтроллеров? а все друзья говорят, что я ни капли не программист."/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="loadingPercentage">
-                                        <real key="value" value="10"/>
+                                        <real key="value" value="33"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="overlay" value="YES"/>
                                 </userDefinedRuntimeAttributes>
@@ -175,9 +174,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="0ya-AE-8NH" secondAttribute="trailing" id="3cm-tt-woF"/>
                             <constraint firstAttribute="centerY" secondItem="0ya-AE-8NH" secondAttribute="centerY" id="5AS-kS-fPC"/>
                             <constraint firstAttribute="centerX" secondItem="0ya-AE-8NH" secondAttribute="centerX" id="txe-NI-Khc"/>
+                            <constraint firstItem="0ya-AE-8NH" firstAttribute="leading" secondItem="coX-tk-Kej" secondAttribute="leading" id="u3Y-oC-Cuy"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="txe-NI-Khc"/>
+                            </mask>
+                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fX-Qw-bco" userLabel="First Responder" sceneMemberID="firstResponder"/>

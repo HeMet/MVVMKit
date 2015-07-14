@@ -34,6 +34,10 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         
         adapter.delegate = self
         adapter.onWillBindCell = handleWillBindCell
+        adapter.onCellBinded = { cell, path in
+            cell.setNeedsUpdateConstraints()
+            cell.updateConstraintsIfNeeded()
+        }
         
         commentsProxy = ObservableArray(observableArray: viewModel.comments)
         
