@@ -15,7 +15,7 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
     let cbTag = "EntryViewController"
     
     var viewModel: EntryViewModel!
-    var adapter: TableViewMultiDataAdapter!
+    var adapter: TableViewAdapter!
     
     var htmlTexts: [NSAttributedString?] = []
     var commentsProxy: ObservableArray<DLComment> = []
@@ -26,7 +26,7 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         tableView.estimatedSectionHeaderHeight = 20
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         
-        adapter = TableViewMultiDataAdapter(tableView: tableView)
+        adapter = TableViewAdapter(tableView: tableView)
         adapter.delegate = self
         
         adapter.cells.register(EntryCellView.self)

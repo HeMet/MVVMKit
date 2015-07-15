@@ -8,11 +8,11 @@
 
 import UIKit
 
-public class TableViewMultiDataAdapter: TableViewBaseAdapter, ObservableArrayListener {
+public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
-    var items: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterItem> = [:]
-    var headers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
-    var footers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
+    var items: ObservableOrderedDictionary<Int, TableViewSectionDataModel> = [:]
+    var headers: ObservableOrderedDictionary<Int, TableViewSectionModel> = [:]
+    var footers: ObservableOrderedDictionary<Int, TableViewSectionModel> = [:]
     
     override public init(tableView: UITableView) {
         super.init(tableView: tableView)
@@ -78,12 +78,12 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter, ObservableArrayLis
     
     public func setTitle(title: String, forSection: TableViewSectionView, atIndex: Int) {
         var models = getModelsForSectionView(forSection)
-        models[atIndex] = TableViewMultiDataAdapterSimpleSection(title: title)
+        models[atIndex] = TableViewSimpleSection(title: title)
     }
     
     public func setData(data: AnyObject, forSection: TableViewSectionView, atIndex: Int) {
         var models = getModelsForSectionView(forSection)
-        models[atIndex] = TableViewMultiDataAdapterCustomViewSection(viewModel: data)
+        models[atIndex] = TableViewCustomViewSection(viewModel: data)
     }
     
     public func removeSectionView(sectionView: TableViewSectionView, atIndex: Int) {
@@ -93,7 +93,7 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter, ObservableArrayLis
     
     /// Implementation details
     
-    func getModelsForSectionView(sv: TableViewSectionView) -> ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> {
+    func getModelsForSectionView(sv: TableViewSectionView) -> ObservableOrderedDictionary<Int, TableViewSectionModel> {
         return sv == .Header ? headers : footers
     }
     
@@ -140,16 +140,19 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter, ObservableArrayLis
     func handleDidInsertItems(section: Int, idxs: [Int]) {
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        onCellsInserted?(self, paths)
     }
     
     func handleDidRemoveItems(section: Int, idxs: [Int]) {
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        onCellsRemoved?(self, paths)
     }
     
     func handleDidChangeItems(section: Int, idxs: [Int]) {
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        onCellsReloaded?(self, paths)
     }
     
     func handleItemsBatchUpdate(section: Int, phase: UpdatePhase) {
@@ -166,7 +169,7 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter, ObservableArrayLis
     }
 }
 
-protocol TableViewMultiDataAdapterItem {
+protocol TableViewSectionDataModel {
     var count: Int { get }
     func getDataAtIndex(index: Int) -> AnyObject
     func dispose()
@@ -180,7 +183,7 @@ protocol ObservableArrayListener: class {
 }
 
 // AnyObject is a protocol hence we cann't extend it to support TableViewMultiDataAdapterItem
-struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
+struct SimpleItem<T: AnyObject>: TableViewSectionDataModel {
     let data: T
     
     let count = 1
@@ -194,7 +197,7 @@ struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     }
 }
 
-extension ObservableArray: TableViewMultiDataAdapterItem {
+extension ObservableArray: TableViewSectionDataModel {
     var tag: String {
         return "CollectionItem<T: AnyObject>"
     }
@@ -227,17 +230,17 @@ extension ObservableArray: TableViewMultiDataAdapterItem {
     }
 }
 
-protocol TableViewMultiDataAdapterSection {
+protocol TableViewSectionModel {
     var title: String? { get }
     var viewModel: AnyObject? { get }
 }
 
-struct TableViewMultiDataAdapterSimpleSection : TableViewMultiDataAdapterSection {
+struct TableViewSimpleSection : TableViewSectionModel {
     var title: String?
     let viewModel: AnyObject? = nil
 }
 
-struct TableViewMultiDataAdapterCustomViewSection : TableViewMultiDataAdapterSection {
+struct TableViewCustomViewSection : TableViewSectionModel {
     let title: String? = nil
     var viewModel: AnyObject?
 }

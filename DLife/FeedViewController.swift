@@ -13,14 +13,14 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
     static let sbInfo = (sbID: "Main", viewID: "FeedViewController")
     
     var viewModel : FeedViewModel!
-    var adapter: TableViewArrayAdapter<DLEntry>!
+    var adapter: TableViewAdapter!
     
     func bindToViewModel() {
         let tv = view as! UITableView
         tv.estimatedRowHeight = 150
         tv.rowHeight = UITableViewAutomaticDimension
         
-        adapter = TableViewArrayAdapter(tableView: tv)
+        adapter = TableViewAdapter(tableView: tv)
         adapter.cells.register(EntryCellView.self)
         
         adapter.onCellsInserted = { [unowned self] _, paths in
@@ -36,7 +36,7 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
         }
         
         adapter.delegate = self
-        adapter.setData(viewModel.entries)
+        adapter.setData(viewModel.entries, forSectionAtIndex: 0)
         
         viewModel.loadEntries()
     }
