@@ -15,6 +15,8 @@
 		845E5DED1B2C5CFE00D44299 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DEC1B2C5CFE00D44299 /* ObservableArray.swift */; };
 		845E5DF21B2C6A5000D44299 /* TableViewArrayAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DF11B2C6A5000D44299 /* TableViewArrayAdapter.swift */; };
 		84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B931B2A0425000954CB /* NavigationGroupView.swift */; };
+		846360DB1B568E5000D463BA /* ViewBindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846360DA1B568E5000D463BA /* ViewBindingManager.swift */; };
+		846360DD1B56A5FE00D463BA /* CellViewBindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */; };
 		847DAA151B35A66A008C4B83 /* RangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA141B35A66A008C4B83 /* RangeExtension.swift */; };
 		847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */; };
 		847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */; };
@@ -58,6 +60,8 @@
 		845E5DEC1B2C5CFE00D44299 /* ObservableArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObservableArray.swift; path = DataBindings/ObservableCollections/ObservableArray.swift; sourceTree = "<group>"; };
 		845E5DF11B2C6A5000D44299 /* TableViewArrayAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewArrayAdapter.swift; path = DataBindings/Adapters/TableViewArrayAdapter.swift; sourceTree = "<group>"; };
 		84619B931B2A0425000954CB /* NavigationGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationGroupView.swift; path = BuiltInViews/NavigationGroupView.swift; sourceTree = "<group>"; };
+		846360DA1B568E5000D463BA /* ViewBindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewBindingManager.swift; path = DataBindings/Adapters/Utils/ViewBindingManager.swift; sourceTree = "<group>"; };
+		846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellViewBindingManager.swift; path = DataBindings/Adapters/Utils/CellViewBindingManager.swift; sourceTree = "<group>"; };
 		847DAA141B35A66A008C4B83 /* RangeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RangeExtension.swift; path = Utils/RangeExtension.swift; sourceTree = "<group>"; };
 		847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewDictionaryAdapter.swift; path = DataBindings/Adapters/TableViewDictionaryAdapter.swift; sourceTree = "<group>"; };
 		847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewBaseAdapter.swift; path = DataBindings/Adapters/TableViewBaseAdapter.swift; sourceTree = "<group>"; };
@@ -164,6 +168,8 @@
 			children = (
 				84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */,
 				84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */,
+				846360DA1B568E5000D463BA /* ViewBindingManager.swift */,
+				846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -376,8 +382,10 @@
 				84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */,
 				8424184F1AFE741E00BAB4C6 /* BuiltInTransitions.swift in Sources */,
 				844507CD1B37539E00A08A78 /* TableViewMultiDataAdapter.swift in Sources */,
+				846360DD1B56A5FE00D463BA /* CellViewBindingManager.swift in Sources */,
 				84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */,
 				847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */,
+				846360DB1B568E5000D463BA /* ViewBindingManager.swift in Sources */,
 				B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */,
 				B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */,
 				845E5DF21B2C6A5000D44299 /* TableViewArrayAdapter.swift in Sources */,

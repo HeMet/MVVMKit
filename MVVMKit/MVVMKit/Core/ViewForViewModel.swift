@@ -21,3 +21,7 @@ public protocol SBViewForViewModel: ViewForViewModel {
 public protocol BindableCellView: ViewForViewModel {
     static var CellIdentifier: String { get }
 }
+
+public protocol NibSource {
+    static var NibIdentifier: String { get }
+}

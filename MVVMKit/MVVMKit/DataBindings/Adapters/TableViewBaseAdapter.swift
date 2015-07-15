@@ -8,19 +8,20 @@
 
 import Foundation
 
+public enum TableViewSectionView {
+    case Header, Footer
+}
+
 public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftDelegate {
-    public typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
-    public typealias SectionBinding = (AnyObject) -> UIView?
     
     let tag = "observable_array_tag"
     
     // Workaround: anowned(safe) cause random crashes for NSObject descendants
     unowned(unsafe) let tableView: UITableView
-    var cellBindings = [CellBinding]()
-    var headerBindings = [SectionBinding]()
-    var footerBindings = [SectionBinding]()
+    public let cells: CellViewBindingManager
+    public let views = ViewBindingManager()
     
     lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
         UITableViewDataSourceProxy(dataSource: self)
@@ -45,50 +46,13 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     
     public init(tableView: UITableView) {
         self.tableView = tableView
+        cells = CellViewBindingManager(tableView: tableView)
+        
         self.tableView.dataSource = dsProxy
         self.tableView.delegate = dProxy
     }
     
     //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
-    
-    public func registerCell<CellType: UITableViewCell where CellType: BindableCellView, CellType: ViewForViewModel>(cellType: CellType.Type) {
-        let binding = createCellBinding(cellType)
-        cellBindings.append(binding)
-    }
-    
-    public func registerHeader<HeaderType: UIView where HeaderType: ViewForViewModel>(headerType: HeaderType.Type) {
-        let binding = createSectionBinding(headerType)
-        headerBindings.append(binding)
-    }
-    
-    public func registerFooter<HeaderType: UIView where HeaderType: ViewForViewModel>(headerType: HeaderType.Type) {
-        let binding = createSectionBinding(headerType)
-        footerBindings.append(binding)
-    }
-    
-    func createCellBinding<CellType: UITableViewCell where CellType: BindableCellView>(cellType: CellType.Type) -> (viewModel: AnyObject, indexPath: NSIndexPath) -> UITableViewCell? {
-        return { [unowned self] viewModel, indexPath in
-            if let vm = viewModel as? CellType.ViewModelType {
-                let cell = self.tableView.dequeueReusableCellWithIdentifier(CellType.CellIdentifier, forIndexPath: indexPath) as! CellType
-                cell.viewModel = vm
-                self.onWillBindCell?(cell, indexPath)
-                cell.bindToViewModel()
-                self.onCellBinded?(cell, indexPath)
-                return cell
-            }
-            return nil
-        }
-    }
-    
-    func createSectionBinding<ViewType: UIView where ViewType: ViewForViewModel>(viewTypeType: ViewType.Type)(viewModel: AnyObject) -> UIView? {
-        if let vm = viewModel as? ViewType.ViewModelType {
-            let view = ViewType()
-            view.viewModel = vm
-            view.bindToViewModel()
-            return view
-        }
-        return nil
-    }
     
     func numberOfSections(tableView: UITableView) -> Int {
         fatalError("Abstract method")
@@ -100,16 +64,19 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     
     func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
         let viewModel: AnyObject = viewModelForIndexPath(indexPath)
-        for bind in cellBindings {
-            if let cell = bind(viewModel, indexPath) {
-                return cell
-            }
-        }
-        fatalError("Unknown View Model type.")
+        return cells.bindViewModel(viewModel, indexPath: indexPath)
     }
     
     func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
         fatalError("Abstract method")
+    }
+    
+    func viewModelForSectionHeaderAtIndex(index: Int) -> AnyObject? {
+        return nil
+    }
+    
+    func viewModelForSectionFooterAtIndex(index: Int) -> AnyObject? {
+        return nil
     }
     
     func titleForHeader(tableView: UITableView, section: Int) -> String? {
@@ -121,19 +88,31 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     }
     
     func viewForHeader(tableView: UITableView, section: Int) -> UIView? {
+        if let viewModel: AnyObject = viewModelForSectionHeaderAtIndex(section) {
+            return views.bindViewModel(viewModel)
+        }
         return nil
     }
     
     func viewForFooter(tableView: UITableView, section: Int) -> UIView? {
+        if let viewModel: AnyObject = viewModelForSectionFooterAtIndex(section) {
+            return views.bindViewModel(viewModel)
+        }
         return nil
     }
     
     func heightForHeader(tableView: UITableView, section: Int) -> CGFloat {
-        return 0
+        let hasTitle = titleForHeader(tableView, section: section) != nil
+        let hasVM = viewModelForSectionHeaderAtIndex(section) != nil
+        
+        return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
     }
     
     func heightForFooter(tableView: UITableView, section: Int) -> CGFloat {
-        return 0
+        let hasTitle = titleForFooter(tableView, section: section) != nil
+        let hasVM = viewModelForSectionFooterAtIndex(section) != nil
+        
+        return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
     }
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
@@ -180,9 +159,7 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     deinit {
         println("deinit Adapter")
     }
-    
-    public var onWillBindCell: CellAction?
-    public var onCellBinded: CellAction?
+
     public var onCellsInserted: CellsChangedEvent?
     public var onCellsRemoved: CellsChangedEvent?
     public var onCellsReloaded: CellsChangedEvent?

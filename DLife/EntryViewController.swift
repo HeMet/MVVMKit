@@ -26,15 +26,13 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         tableView.estimatedSectionHeaderHeight = 20
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         
-        tableView.registerNib(UINib(nibName: "EntryCellView", bundle: nil), forCellReuseIdentifier: EntryCellView.CellIdentifier)
-        
         adapter = TableViewMultiDataAdapter(tableView: tableView)
-        adapter.registerCell(EntryCellView.self)
-        adapter.registerCell(CommentCellView.self)
-        
         adapter.delegate = self
-        adapter.onWillBindCell = unowned(self, EntryViewController.handleWillBindCell)
-        adapter.onCellBinded = { cell, path in
+        
+        adapter.cells.register(EntryCellView.self)
+        adapter.cells.register(CommentCellView.self)
+        adapter.cells.onWillBind = unowned(self, EntryViewController.handleWillBindCell)
+        adapter.cells.onDidBind = { cell, path in
             cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
         }
@@ -42,13 +40,13 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         commentsProxy = ObservableArray(observableArray: viewModel.comments)
         
         adapter.beginUpdate()
-        adapter.setData(viewModel.currentEntry, forSection: 0)
-        adapter.setData(commentsProxy, forSection: 1)
-        adapter.setTitle("Комментарии:", forSectionHeader: 1)
+        adapter.setData(viewModel.currentEntry, forSectionAtIndex: 0)
+        adapter.setData(commentsProxy, forSectionAtIndex: 1)
+        adapter.setTitle("Комментарии:", forSection: .Header, atIndex: 1)
         adapter.endUpdate()
         
         viewModel.onEntryChanged = { [unowned self] in
-            self.adapter.setData(self.viewModel.currentEntry, forSection: 0)
+            self.adapter.setData(self.viewModel.currentEntry, forSectionAtIndex: 0)
             self.navigationItem.title = "Entry\(self.viewModel.currentEntry.id)"
         }
         

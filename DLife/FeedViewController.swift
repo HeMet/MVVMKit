@@ -21,7 +21,7 @@ class FeedViewController : UITableViewController, SBViewForViewModel, UITableVie
         tv.rowHeight = UITableViewAutomaticDimension
         
         adapter = TableViewArrayAdapter(tableView: tv)
-        adapter.registerCell(EntryCellView.self)
+        adapter.cells.register(EntryCellView.self)
         
         adapter.onCellsInserted = { [unowned self] _, paths in
             let row = max(paths[0].row - 1, 0)
