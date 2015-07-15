@@ -42,13 +42,13 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         commentsProxy = ObservableArray(observableArray: viewModel.comments)
         
         adapter.beginUpdate()
-        adapter.addData(viewModel.currentEntry)
-        adapter.addData(commentsProxy)
+        adapter.setData(viewModel.currentEntry, forSection: 0)
+        adapter.setData(commentsProxy, forSection: 1)
         adapter.setTitle("Комментарии:", forSectionHeader: 1)
         adapter.endUpdate()
         
         viewModel.onEntryChanged = { [unowned self] in
-            self.adapter.changeData(self.viewModel.currentEntry, forSection: 0)
+            self.adapter.setData(self.viewModel.currentEntry, forSection: 0)
             self.navigationItem.title = "Entry\(self.viewModel.currentEntry.id)"
         }
         

@@ -10,7 +10,7 @@ import Foundation
 
 public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, MutableCollectionType {
     typealias DictionaryItem = (KeyType, ValueType)
-    var keys = [KeyType]()
+    private(set) var keys = [KeyType]()
     var data = Dictionary<KeyType, ValueType>()
     
     public init(dictionaryLiteral elements: DictionaryItem...) {

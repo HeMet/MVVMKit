@@ -22,6 +22,10 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
         innerDictionary = OrderedDictionary(pairs: data)
     }
     
+    public var keys: [KeyType] {
+        return innerDictionary.keys
+    }
+    
     public var count: Int {
         return innerDictionary.count
     }

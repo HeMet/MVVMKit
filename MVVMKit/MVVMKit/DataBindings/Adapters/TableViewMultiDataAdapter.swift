@@ -10,8 +10,7 @@ import UIKit
 
 public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
-    // todo: use dictionary to support empty sections
-    var items: ObservableArray<TableViewMultiDataAdapterItem> = []
+    var items: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterItem> = [:]
     var headers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
     var footers: ObservableOrderedDictionary<Int, TableViewMultiDataAdapterSection> = [:]
     
@@ -40,43 +39,27 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     
     /// One-to-One
     
-    public func addData<T: AnyObject>(data: T) {
-        insertData(data, forSection: items.count)
-    }
-    
-    public func insertData<T: AnyObject>(data: T, forSection sIndex: Int) {
-        items.insert(createSimpleItem(data: data), atIndex: sIndex)
-    }
-    
-    public func changeData<T: AnyObject>(data: T, forSection sIndex: Int) {
-        items[sIndex].dispose()
-        items[sIndex] = createSimpleItem(data: data)
+    public func setData<T: AnyObject>(data: T, forSection sIndex: Int) {
+        items[sIndex]?.dispose()
+        items[sIndex] = createSimpleItem(data: data, section: sIndex)
     }
     
     /// One-to-Many
     
-    public func addData<T: AnyObject>(data: ObservableArray<T>) {
-        insertData(data, forSection: items.count)
-    }
-    
-    public func insertData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
-        items.insert(createCollectionItem(data: data), atIndex: sIndex)
-    }
-    
-    public func changeData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
-        items[sIndex].dispose()
-        items[sIndex] = createCollectionItem(data: data)
+    public func setData<T: AnyObject>(data: ObservableArray<T>, forSection sIndex: Int) {
+        items[sIndex]?.dispose()
+        items[sIndex] = createCollectionItem(data: data, section: sIndex)
     }
     
     /// One-to-Any
     
     public func hasDataForSection(sIndex: Int) -> Bool {
-        return items.count > sIndex
+        return items[sIndex] != nil
     }
     
     public func removeDataForSection(sIndex: Int) {
-        items[sIndex].dispose()
-        items.removeAtIndex(sIndex)
+        items[sIndex]!.dispose()
+        items[sIndex] = nil
     }
     
     /// Section headers
@@ -110,15 +93,16 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     /// Implementation details
     
     override func numberOfSections(tableView: UITableView) -> Int {
-        return items.count
+        let idx = reduce(items.keys, -1, max)
+        return items.count > 0 ? idx + 1 : 0
     }
     
     override func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
-        return items[section].count
+        return items[section]?.count ?? 0
     }
     
     override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
-        return items[indexPath.section].getDataAtIndex(indexPath.row)
+        return items[indexPath.section]!.getDataAtIndex(indexPath.row)
     }
     
     override func titleForHeader(tableView: UITableView, section: Int) -> String? {
@@ -166,39 +150,38 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
         }
     }
     
-    func indexPathsOf(itemId: String, idxs: [Int]) -> [NSIndexPath] {
-        let section = find(map(items) { $0.id }, itemId)!
+    func indexPathsOf(section: Int, idxs: [Int]) -> [NSIndexPath] {
         return idxs.map { NSIndexPath(forRow: $0, inSection: section) }
     }
     
-    func createSimpleItem<T: AnyObject>(#data: T) -> TableViewMultiDataAdapterItem {
-        return SimpleItem(data: data)
+    func createSimpleItem<T: AnyObject>(#data: T, section: Int) -> TableViewMultiDataAdapterItem {
+        return SimpleItem(data: data, section: section)
     }
     
-    func createCollectionItem<T: AnyObject>(#data: ObservableArray<T>) -> TableViewMultiDataAdapterItem {
-        return CollectionItem(data: data,
+    func createCollectionItem<T: AnyObject>(#data: ObservableArray<T>, section: Int) -> TableViewMultiDataAdapterItem {
+        return CollectionItem(data: data, section: section,
             onDidInsert: unowned(self, TableViewMultiDataAdapter.handleDidInsertItems),
             onDidRemove: unowned(self, TableViewMultiDataAdapter.handleDidRemoveItems),
             onDidChange: unowned(self, TableViewMultiDataAdapter.handleDidChangeItems),
             onBatchUpdate: unowned(self, TableViewMultiDataAdapter.handleItemsBatchUpdate))
     }
     
-    func handleDidInsertItems(id: String, idxs: [Int]) {
-        let paths = indexPathsOf(id, idxs: idxs)
+    func handleDidInsertItems(section: Int, idxs: [Int]) {
+        let paths = indexPathsOf(section, idxs: idxs)
         tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
     }
     
-    func handleDidRemoveItems(id: String, idxs: [Int]) {
-        let paths = indexPathsOf(id, idxs: idxs)
+    func handleDidRemoveItems(section: Int, idxs: [Int]) {
+        let paths = indexPathsOf(section, idxs: idxs)
         tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Right)
     }
     
-    func handleDidChangeItems(id: String, idxs: [Int]) {
-        let paths = indexPathsOf(id, idxs: idxs)
+    func handleDidChangeItems(section: Int, idxs: [Int]) {
+        let paths = indexPathsOf(section, idxs: idxs)
         tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Right)
     }
     
-    func handleItemsBatchUpdate(id: String, phase: UpdatePhase) {
+    func handleItemsBatchUpdate(section: Int, phase: UpdatePhase) {
         batchUpdate(phase)
     }
     
@@ -213,7 +196,7 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
 }
 
 protocol TableViewMultiDataAdapterItem {
-    var id: String { get }
+    var section: Int { get }
     var count: Int { get }
     func getDataAtIndex(index: Int) -> AnyObject
     
@@ -223,7 +206,7 @@ protocol TableViewMultiDataAdapterItem {
 struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     let data: T
     
-    let id: String = NSUUID().UUIDString
+    let section: Int
     let count = 1
     
     func getDataAtIndex(index: Int) -> AnyObject {
@@ -239,25 +222,24 @@ struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     let tag = "CollectionItem<T: AnyObject>"
     
     let data: ObservableArray<T>
-    let id: String
+    let section: Int
     
-    init(data: ObservableArray<T>, onDidInsert: ((String, [Int]) -> ()), onDidRemove: ((String, [Int]) -> ()), onDidChange: ((String, [Int]) -> ()), onBatchUpdate: ((String, UpdatePhase) -> ())) {
-        let uuid = NSUUID().UUIDString
-        
-        id = uuid
+    init(data: ObservableArray<T>, section: Int, onDidInsert: ((Int, [Int]) -> ()), onDidRemove: ((Int, [Int]) -> ()), onDidChange: ((Int, [Int]) -> ()), onBatchUpdate: ((Int, UpdatePhase) -> ())) {
+
+        self.section = section
         self.data = data
         
         self.data.onDidChangeRange.register(tag) {
-            onDidChange(uuid, Array($1.1))
+            onDidChange(section, Array($1.1))
         }
         self.data.onDidInsertRange.register(tag) {
-            onDidInsert(uuid, Array($1.1))
+            onDidInsert(section, Array($1.1))
         }
         self.data.onDidRemoveRange.register(tag) {
-            onDidRemove(uuid, Array($1.1))
+            onDidRemove(section, Array($1.1))
         }
         self.data.onBatchUpdate.register(tag) {
-            onBatchUpdate(uuid, $1)
+            onBatchUpdate(section, $1)
         }
     }
     
@@ -274,8 +256,6 @@ struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
         data.onDidInsertRange.unregister(tag)
         data.onDidRemoveRange.unregister(tag)
         data.onBatchUpdate.unregister(tag)
-        
-        println("destroyed \(id)")
     }
 }
 
