@@ -52,4 +52,8 @@ class EntryViewModel: BaseViewModel {
             }
         }
     }
+    
+    deinit {
+        println("dispose EVM")
+    }
 }

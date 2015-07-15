@@ -18,6 +18,7 @@
 		847DAA151B35A66A008C4B83 /* RangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA141B35A66A008C4B83 /* RangeExtension.swift */; };
 		847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */; };
 		847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */; };
+		848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F46F41B554D37001AF84C /* LifetimeUtils.swift */; };
 		84A57FD91B2DA1B6009A560E /* UITableViewDelegateForwarder.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84A57FDA1B2DA1B6009A560E /* UITableViewDelegateForwarder.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */; };
 		84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
@@ -60,6 +61,7 @@
 		847DAA141B35A66A008C4B83 /* RangeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RangeExtension.swift; path = Utils/RangeExtension.swift; sourceTree = "<group>"; };
 		847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewDictionaryAdapter.swift; path = DataBindings/Adapters/TableViewDictionaryAdapter.swift; sourceTree = "<group>"; };
 		847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewBaseAdapter.swift; path = DataBindings/Adapters/TableViewBaseAdapter.swift; sourceTree = "<group>"; };
+		848F46F41B554D37001AF84C /* LifetimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LifetimeUtils.swift; path = Utils/LifetimeUtils.swift; sourceTree = "<group>"; };
 		84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UITableViewDelegateForwarder.h; path = DataBindings/Adapters/Utils/UITableViewDelegateForwarder.h; sourceTree = "<group>"; };
 		84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UITableViewDelegateForwarder.m; path = DataBindings/Adapters/Utils/UITableViewDelegateForwarder.m; sourceTree = "<group>"; };
 		84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObservableOrderedDictionary.swift; path = DataBindings/ObservableCollections/ObservableOrderedDictionary.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				B6347C901AE78E2E00D70121 /* StringExtension.swift */,
 				B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */,
 				847DAA141B35A66A008C4B83 /* RangeExtension.swift */,
+				848F46F41B554D37001AF84C /* LifetimeUtils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */,
 				847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */,
 				B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */,
+				848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */,
 				8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */,
 				84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */,
 				84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */,

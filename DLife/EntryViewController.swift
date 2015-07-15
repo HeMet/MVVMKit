@@ -33,7 +33,7 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         adapter.registerCell(CommentCellView.self)
         
         adapter.delegate = self
-        adapter.onWillBindCell = handleWillBindCell
+        adapter.onWillBindCell = unowned(self, EntryViewController.handleWillBindCell)
         adapter.onCellBinded = { cell, path in
             cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
@@ -47,12 +47,12 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
         adapter.setTitle("Комментарии:", forSectionHeader: 1)
         adapter.endUpdate()
         
-        viewModel.onEntryChanged = {
+        viewModel.onEntryChanged = { [unowned self] in
             self.adapter.changeData(self.viewModel.currentEntry, forSection: 0)
             self.navigationItem.title = "Entry\(self.viewModel.currentEntry.id)"
         }
         
-        viewModel.comments.onBatchUpdate.register(cbTag, listener: parseCommentsTextAndUpdate)
+        viewModel.comments.onBatchUpdate.register(cbTag, listener: unowned(self, EntryViewController.parseCommentsTextAndUpdate))
         navigationItem.title = "Entry\(viewModel.currentEntry.id)"
     }
     
@@ -97,5 +97,9 @@ class EntryViewController: UITableViewController, SBViewForViewModel, UITableVie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadComments()
+    }
+    
+    deinit {
+        println("dispose EVC")
     }
 }

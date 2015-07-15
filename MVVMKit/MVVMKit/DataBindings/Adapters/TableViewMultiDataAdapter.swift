@@ -18,22 +18,22 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     override public init(tableView: UITableView) {
         super.init(tableView: tableView)
         
-        items.onDidInsertRange.register(tag) {
+        items.onDidInsertRange.register(tag) { [unowned self] in
             let set = self.indexSetOf($1.1)
             self.tableView.insertSections(set, withRowAnimation: .Right)
         }
         
-        items.onDidRemoveRange.register(tag) {
+        items.onDidRemoveRange.register(tag) { [unowned self] in
             let set = self.indexSetOf($1.1)
             self.tableView.deleteSections(set, withRowAnimation: .Left)
         }
         
-        items.onDidChangeRange.register(tag) {
+        items.onDidChangeRange.register(tag) { [unowned self] in
             let set = self.indexSetOf($1.1)
             self.tableView.reloadSections(set, withRowAnimation: .Middle)
         }
         
-        items.onBatchUpdate.register(tag) {
+        items.onBatchUpdate.register(tag) { [unowned self] in
             self.batchUpdate($1)
         }
     }
@@ -172,13 +172,15 @@ public class TableViewMultiDataAdapter: TableViewBaseAdapter {
     }
     
     func createSimpleItem<T: AnyObject>(#data: T) -> TableViewMultiDataAdapterItem {
-        return SimpleItem(data: data, onDidInsert: handleDidInsertItems,
-            onDidRemove: handleDidRemoveItems, onDidChange: handleDidChangeItems, onBatchUpdate: handleItemsBatchUpdate)
+        return SimpleItem(data: data)
     }
     
     func createCollectionItem<T: AnyObject>(#data: ObservableArray<T>) -> TableViewMultiDataAdapterItem {
-        return CollectionItem(data: data, onDidInsert: handleDidInsertItems,
-            onDidRemove: handleDidRemoveItems, onDidChange: handleDidChangeItems, onBatchUpdate: handleItemsBatchUpdate)
+        return CollectionItem(data: data,
+            onDidInsert: unowned(self, TableViewMultiDataAdapter.handleDidInsertItems),
+            onDidRemove: unowned(self, TableViewMultiDataAdapter.handleDidRemoveItems),
+            onDidChange: unowned(self, TableViewMultiDataAdapter.handleDidChangeItems),
+            onBatchUpdate: unowned(self, TableViewMultiDataAdapter.handleItemsBatchUpdate))
     }
     
     func handleDidInsertItems(id: String, idxs: [Int]) {
@@ -215,11 +217,6 @@ protocol TableViewMultiDataAdapterItem {
     var count: Int { get }
     func getDataAtIndex(index: Int) -> AnyObject
     
-    var onDidInsert: ((String, [Int]) -> ()) { get set }
-    var onDidRemove: ((String, [Int]) -> ()) { get set }
-    var onDidChange: ((String, [Int]) -> ()) { get set }
-    var onBatchUpdate: ((String, UpdatePhase) -> ()) { get set }
-    
     func dispose()
 }
 
@@ -233,40 +230,34 @@ struct SimpleItem<T: AnyObject>: TableViewMultiDataAdapterItem {
         return data
     }
     
-    var onDidInsert: ((String, [Int]) -> ())
-    var onDidRemove: ((String, [Int]) -> ())
-    var onDidChange: ((String, [Int]) -> ())
-    var onBatchUpdate: ((String, UpdatePhase) -> ())
-    
     func dispose() {
         
     }
 }
 
 struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
-    let data: ObservableArray<T>
     let tag = "CollectionItem<T: AnyObject>"
     
-    let id: String = NSUUID().UUIDString
+    let data: ObservableArray<T>
+    let id: String
     
     init(data: ObservableArray<T>, onDidInsert: ((String, [Int]) -> ()), onDidRemove: ((String, [Int]) -> ()), onDidChange: ((String, [Int]) -> ()), onBatchUpdate: ((String, UpdatePhase) -> ())) {
+        let uuid = NSUUID().UUIDString
+        
+        id = uuid
         self.data = data
-        self.onDidInsert = onDidInsert
-        self.onDidRemove = onDidRemove
-        self.onDidChange = onDidChange
-        self.onBatchUpdate = onBatchUpdate
         
         self.data.onDidChangeRange.register(tag) {
-            self.onDidChange(self.id, Array($1.1))
+            onDidChange(uuid, Array($1.1))
         }
         self.data.onDidInsertRange.register(tag) {
-            self.onDidInsert(self.id, Array($1.1))
+            onDidInsert(uuid, Array($1.1))
         }
         self.data.onDidRemoveRange.register(tag) {
-            self.onDidRemove(self.id, Array($1.1))
+            onDidRemove(uuid, Array($1.1))
         }
         self.data.onBatchUpdate.register(tag) {
-            self.onBatchUpdate(self.id, $1)
+            onBatchUpdate(uuid, $1)
         }
     }
     
@@ -277,11 +268,6 @@ struct CollectionItem<T: AnyObject>: TableViewMultiDataAdapterItem {
     func getDataAtIndex(index: Int) -> AnyObject {
         return data[index]
     }
-    
-    var onDidInsert: ((String, [Int]) -> ())
-    var onDidRemove: ((String, [Int]) -> ())
-    var onDidChange: ((String, [Int]) -> ())
-    var onBatchUpdate: ((String, UpdatePhase) -> ())
     
     func dispose() {
         data.onDidChangeRange.unregister(tag)

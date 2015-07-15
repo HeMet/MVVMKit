@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class TableViewBaseAdapter {
+public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftDelegate {
     public typealias CellBinding = (AnyObject, NSIndexPath) -> UITableViewCell?
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
@@ -16,25 +16,18 @@ public class TableViewBaseAdapter {
     
     let tag = "observable_array_tag"
     
-    let tableView: UITableView
+    // Workaround: anowned(safe) cause random crashes for NSObject descendants
+    unowned(unsafe) let tableView: UITableView
     var cellBindings = [CellBinding]()
     var headerBindings = [SectionBinding]()
     var footerBindings = [SectionBinding]()
     
     lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
-        var proxy = UITableViewDataSourceProxy(getCount: self.numberOfRowsInSection, getCell: self.cellForRowAtIndexPath)
-        proxy.getSectionCount = self.numberOfSections
-        proxy.getTitleForHeader = self.titleForHeader
-        return proxy
+        UITableViewDataSourceProxy(dataSource: self)
         }()
     
     lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
-        var proxy = UITableViewDelegateProxy(onSelect: self.didSelectRowAtIndexPath)
-        proxy.getViewForHeader = self.viewForHeader
-        proxy.getViewForFooter = self.viewForFooter
-        proxy.getHeightForHeader = self.heightForHeader
-        proxy.getHeightForFooter = self.heightForFooter
-        return proxy
+        UITableViewDelegateProxy(swiftDelegate: self)
         }()
     
     var updateCounter = 0
@@ -44,8 +37,7 @@ public class TableViewBaseAdapter {
             return dProxy.delegate
         }
         set {
-            let t = newValue!
-            dProxy.delegate = t
+            dProxy.delegate = newValue
             self.tableView.delegate = nil
             self.tableView.delegate = dProxy
         }
@@ -74,16 +66,18 @@ public class TableViewBaseAdapter {
         footerBindings.append(binding)
     }
     
-    func createCellBinding<CellType: UITableViewCell where CellType: BindableCellView>(cellType: CellType.Type)(viewModel: AnyObject, indexPath: NSIndexPath) -> UITableViewCell? {
-        if let vm = viewModel as? CellType.ViewModelType {
-            let cell = tableView.dequeueReusableCellWithIdentifier(CellType.CellIdentifier, forIndexPath: indexPath) as! CellType
-            cell.viewModel = vm
-            onWillBindCell?(cell, indexPath)
-            cell.bindToViewModel()
-            onCellBinded?(cell, indexPath)
-            return cell
+    func createCellBinding<CellType: UITableViewCell where CellType: BindableCellView>(cellType: CellType.Type) -> (viewModel: AnyObject, indexPath: NSIndexPath) -> UITableViewCell? {
+        return { [unowned self] viewModel, indexPath in
+            if let vm = viewModel as? CellType.ViewModelType {
+                let cell = self.tableView.dequeueReusableCellWithIdentifier(CellType.CellIdentifier, forIndexPath: indexPath) as! CellType
+                cell.viewModel = vm
+                self.onWillBindCell?(cell, indexPath)
+                cell.bindToViewModel()
+                self.onCellBinded?(cell, indexPath)
+                return cell
+            }
+            return nil
         }
-        return nil
     }
     
     func createSectionBinding<ViewType: UIView where ViewType: ViewForViewModel>(viewTypeType: ViewType.Type)(viewModel: AnyObject) -> UIView? {
@@ -183,6 +177,10 @@ public class TableViewBaseAdapter {
         }
     }
     
+    deinit {
+        println("deinit Adapter")
+    }
+    
     public var onWillBindCell: CellAction?
     public var onCellBinded: CellAction?
     public var onCellsInserted: CellsChangedEvent?
@@ -190,66 +188,74 @@ public class TableViewBaseAdapter {
     public var onCellsReloaded: CellsChangedEvent?
 }
 
+protocol UITableViewSwiftDataSource: class {
+    func numberOfSections(tableView: UITableView) -> Int
+    func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int
+    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
+    func titleForHeader(tableView: UITableView, section: Int) -> String?
+    func titleForFooter(tableView: UITableView, section: Int) -> String?
+}
+
 @objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
     
-    init(getCount: ((UITableView, Int) -> Int), getCell: ((UITableView, NSIndexPath) -> UITableViewCell)) {
-        self.getCell = getCell
-        self.getCount = getCount
+    unowned var dataSource: UITableViewSwiftDataSource
+    
+    init(dataSource: UITableViewSwiftDataSource) {
+        self.dataSource = dataSource
     }
     
     @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return getSectionCount(tableView)
+        return dataSource.numberOfSections(tableView)
     }
     
     @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return getCount(tableView, section)
+        return dataSource.numberOfRowsInSection(tableView, section: section)
     }
     
     @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return getCell(tableView, indexPath)
+        return dataSource.cellForRowAtIndexPath(tableView, indexPath: indexPath)
     }
     
     @objc func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return getTitleForHeader(tableView, section)
+        return dataSource.titleForHeader(tableView, section: section)
     }
     
     @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return getTitleForFooter(tableView, section)
+        return dataSource.titleForFooter(tableView, section: section)
     }
-    
-    var getSectionCount: (UITableView -> Int)!
-    var getCount: ((UITableView, Int) -> Int)!
-    var getCell: ((UITableView, NSIndexPath) -> UITableViewCell)!
-    var getTitleForHeader: ((UITableView, Int) -> String?)!
-    var getTitleForFooter: ((UITableView, Int) -> String?)!
+}
+
+protocol UITableViewSwiftDelegate: class {
+    func viewForHeader(tableView: UITableView, section: Int) -> UIView?
+    func viewForFooter(tableView: UITableView, section: Int) -> UIView?
+    func heightForHeader(tableView: UITableView, section: Int) -> CGFloat
+    func heightForFooter(tableView: UITableView, section: Int) -> CGFloat
+    func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath)
 }
 
 @objc class UITableViewDelegateProxy: UITableViewDelegateForwarder {
-    init(onSelect: (UITableView, NSIndexPath) -> ()) {
-        self.onSelect = onSelect
+    
+    unowned var swiftDelegate: UITableViewSwiftDelegate
+    
+    init(swiftDelegate: UITableViewSwiftDelegate) {
+        self.swiftDelegate = swiftDelegate
         super.init()
     }
     
     // nil means "use default stub view of non empty area"
     @objc override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return getViewForHeader(tableView, section)
+        return swiftDelegate.viewForHeader(tableView, section: section)
     }
     
     @objc override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return getViewForFooter(tableView, section)
+        return swiftDelegate.viewForFooter(tableView, section: section)
     }
     
     @objc override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return getHeightForHeader(tableView, section)
+        return swiftDelegate.heightForHeader(tableView, section: section)
     }
     
     @objc override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return getHeightForFooter(tableView, section)
+        return swiftDelegate.heightForFooter(tableView, section: section)
     }
-    
-    var onSelect:((UITableView, NSIndexPath) -> ())!
-    var getViewForHeader: ((UITableView, Int) -> UIView?)!
-    var getViewForFooter: ((UITableView, Int) -> UIView?)!
-    var getHeightForHeader: ((UITableView, Int) -> CGFloat)!
-    var getHeightForFooter: ((UITableView, Int) -> CGFloat)!
 }

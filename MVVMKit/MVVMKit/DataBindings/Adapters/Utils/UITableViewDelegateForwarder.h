@@ -12,6 +12,6 @@
 
 @interface UITableViewDelegateForwarder : NSObject<UITableViewDelegate>
 
-@property (assign, nonatomic) id<UITableViewDelegate> delegate;
+@property (nonatomic, assign) id<UITableViewDelegate> __nullable delegate;
 
 @end
