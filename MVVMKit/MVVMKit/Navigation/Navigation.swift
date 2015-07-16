@@ -8,17 +8,11 @@
 
 import UIKit
 
+// present(!View.self).within(NavigationView.self).asRoot()
+// present(!View.self, !View2.self).within(SplitView.self).with(Transition.show)
+// present(!View.self).asPopoverOn(View2.self) { presentingView, popover in ... }
+
 public typealias Transition = (from: UIViewController, to: UIViewController) -> ()
-
-infix operator *> {
-    associativity left
-    precedence 95
-}
-
-/// Pipe operator. It connects all steps in stream-like form.
-public func *> <T, R>(value: T, f: T -> R) -> R {
-    return f(value)
-}
 
 // Creation
 
@@ -47,70 +41,97 @@ func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.Vi
     return view
 }
 
-// Composition
-
-/// Wrap operator
-///
-/// For given factory function using given wrapper function it returns new factory function.
-/// It's useful for placing ViewForViewModel inside another content view.
-public func *> <T, V, V2>(factory: T -> V, wrapper: V -> V2) -> T -> V2 {
-    return {
-        let innerView = factory($0)
-        return wrapper(innerView)
-    }
-}
-
-// Wraps given view controller in navigation controller and returns it.
-public func withinNavView(innerView: UIViewController) -> UINavigationController {
-    return NavigationGroupView(rootViewController: innerView)
-}
-
 /// Present do two things:
 ///
 /// -- Denotes ViewForViewModel's we want to use.
 ///
 /// -- Aggregates given factory functions in one single factory function which takes as many arguments as factory functions provided and returns array of views.
-public func present<T, V : UIViewController>(f : T -> V) -> T -> V {
-    return f
+public func present<V : ViewForViewModel, VM: AnyObject where V: UIViewController>(factory: (VM) -> V) -> ViewFactory<V, VM> {
+    return ViewFactory(factory: factory)
 }
 
-public func present<T0, V0 : UIViewController, T1, V1: UIViewController>(f0: T0 -> V0, f1: T1 -> V1)(vm0: T0, vm1: T1) -> [UIViewController] {
-    return [f0(vm0), f1(vm1)]
+public func present<VM0: AnyObject, V0 : UIViewController, VM1: AnyObject, V1: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1) -> ViewsFactory<(vm0: VM0, vm1: VM1)> {
+    return ViewsFactory { args in
+        [f0(args.vm0), f1(args.vm1)]
+    }
 }
 
-public func present<T0, V0 : UIViewController, T1, V1: UIViewController, T2, V2: UIViewController>(f0: T0 -> V0, f1: T1 -> V1, f2: T2 -> V2)(vm0: T0, vm1: T1, vm2: T2) -> [UIViewController] {
-    return [f0(vm0), f1(vm1), f2(vm2)]
+public func present<VM0: AnyObject, V0 : UIViewController, VM1: AnyObject, V1: UIViewController, VM2: AnyObject, V2: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1, f2: VM2 -> V2) -> ViewsFactory<(vm0: VM0, vm1: VM1, vm2: VM2)> {
+    return ViewsFactory { args in
+        [f0(args.vm0), f1(args.vm1), f2(args.vm2)]
+    }
 }
 
-// For given GroupView type returns wrapper function.
-public func within<GV : GroupView>(gvType: GV.Type)(views: [UIViewController]) -> GV.GroupViewType {
-    return gvType.assemble(views)
-}
-
-// Transition
-
-/// Creates navigation item for given factory and transition.
-public func withTransition<ArgsType>(t: Transition)(factory: ArgsType -> UIViewController) -> (sender: AnyObject) -> (ArgsType) -> () {
-    return createNavItem(factory, t)
-}
-
-/// Creates root View.
-public func asRoot<ArgsType>(factory: ArgsType -> UIViewController) -> (ArgsType) -> () {
-    return withTransition(Transitions.root)(factory: factory) *> noSender
-}
-
-func createNavItem<ArgsType> (factory: ArgsType -> UIViewController, transition: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
-    return { s in
+public struct ViewFactory<V : UIViewController, ArgsType> {
+    let factory: (ArgsType) -> V
+    
+    /// Incorporates view into group view and returns factory for this new hierarchy.
+    public func within<GV : GroupView>(gvType: GV.Type) -> ViewFactory<GV.GroupViewType, ArgsType> {
+        return ViewFactory<GV.GroupViewType, ArgsType> { vm in
+            let contentView = self.factory(vm)
+            return gvType.assemble([contentView])
+        }
+    }
+    
+    /// Wraps given view into navigation controller and returns factory for this new hierarchy.
+    public func withinNavView() -> ViewFactory<UINavigationController, ArgsType> {
+        return ViewFactory<UINavigationController, ArgsType> { vm in
+            NavigationGroupView(rootViewController: self.factory(vm))
+        }
+    }
+    
+    /// Set this view as root view.
+    public func asRoot() -> (ArgsType) -> () {
         return { args in
-            let toView = factory(args)
-            let fromView = VMTracker.getFromView(s) ?? UIViewController()
-            transition(from: fromView, to: toView)
+            let rootView = self.factory(args)
+            let appDelegate = UIApplication.sharedApplication().delegate!
+            let window = UIApplication.sharedApplication().delegate?.window!
+            window?.rootViewController = rootView
+            window?.makeKeyAndVisible()
+        }
+    }
+    
+    /// Attaches view to screen with given transition.
+    public func withTransition(t: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+        return { s in
+            return { args in
+                let toView = self.factory(args)
+                let fromView = VMTracker.getFromView(s)!
+                t(from: fromView, to: toView)
+            }
+        }
+    }
+    
+    /// Present view as popover above another view.
+    public func asPopoverOn<V: UIViewController>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyObject) -> (ArgsType) -> () {
+        
+        return { s in
+            return { args in
+                var view = self.factory(args)
+                view.modalPresentationStyle = .Popover
+                let popoverPC = view.popoverPresentationController!
+                let presentingVC = VMTracker.getFromView(s) as! V
+                if let delegate = presentingVC as? UIPopoverPresentationControllerDelegate {
+                    popoverPC.delegate = delegate
+                }
+                
+                popoverSetup(presentingVC, popoverPC)
+                
+                presentingVC.presentViewController(view, animated: true, completion: nil)
+            }
         }
     }
 }
 
-func noSender<ArgsType>(navItem: (sender: AnyObject) -> ArgsType -> ()) -> ArgsType -> () {
-    return navItem(sender: dummyViewModel)
+public struct ViewsFactory<ArgsType> {
+    let factory: (ArgsType) -> [UIViewController]
+    
+    public func within<GV : GroupView>(gvType: GV.Type) -> ViewFactory<GV.GroupViewType, ArgsType> {
+        return ViewFactory<GV.GroupViewType, ArgsType> { args in
+            let contentViews = self.factory(args)
+            return gvType.assemble(contentViews)
+        }
+    }
 }
 
 func goBack(fromView: UIViewController) {
@@ -118,6 +139,8 @@ func goBack(fromView: UIViewController) {
         nc.popViewControllerAnimated(true)
     } else if fromView.presentingViewController?.presentedViewController == fromView {
         fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    } else if let _ = fromView.popoverPresentationController {
+        fromView.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
@@ -126,9 +149,6 @@ public func goBack(viewModel: AnyObject) {
         goBack(v)
     }
 }
-
-class DummyViewModel {}
-let dummyViewModel = DummyViewModel()
 
 // VM & V tracking
 
