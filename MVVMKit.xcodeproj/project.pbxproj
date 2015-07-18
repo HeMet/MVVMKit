@@ -311,7 +311,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0630;
-				ORGANIZATIONNAME = SimbirSoft;
+				ORGANIZATIONNAME = GitHub;
 				TargetAttributes = {
 					B6347C591AE78B8300D70121 = {
 						CreatedOnToolsVersion = 6.3;
