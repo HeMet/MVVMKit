@@ -102,6 +102,16 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
         }
     }
     
+    public func withSegue(segueId: String, argsMapper: (ArgsType) -> [AnyObject]) -> (sender: AnyObject) -> (ArgsType) -> () {
+        return { s in
+            return { args in
+                // don't using factory because Storyboard creates hierarchy
+                let fromView = VMTracker.getFromView(s)!
+                fromView.performSegueWithIdentifier(segueId, sender: argsMapper(args))
+            }
+        }
+    }
+    
     /// Present view as popover above another view.
     public func asPopoverOn<V: UIViewController>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyObject) -> (ArgsType) -> () {
         
