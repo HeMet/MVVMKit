@@ -3,7 +3,7 @@
 //  DeclarativeUI
 //
 //  Created by Eugene Gubin on 15.04.15.
-//  Copyright (c) 2015 SimbirSoft. All rights reserved.
+//  Copyright (c) 2015 GitHub. All rights reserved.
 //
 
 // Origin: https://gist.github.com/albertbori/0faf7de867d96eb83591
