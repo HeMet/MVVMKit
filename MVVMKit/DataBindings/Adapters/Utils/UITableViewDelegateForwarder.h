@@ -13,5 +13,6 @@
 @interface UITableViewDelegateForwarder : NSObject<UITableViewDelegate>
 
 @property (nonatomic, assign) id<UITableViewDelegate> __nullable delegate;
+@property (nonatomic, strong) NSArray* __nonnull selectorsToIgnore;
 
 @end

@@ -10,8 +10,8 @@ import Foundation
 
 public class TableViewDictionaryAdapter<K: Hashable, T: AnyObject>: TableViewSinglePartAdapter<ObservableOrderedMultiDictionary<K, T>> {
     
-    public override init(tableView: UITableView) {
-        super.init(tableView: tableView)
+    public override init(tableView: UITableView, rowHeightMode: TableAdapterRowHeightModes) {
+        super.init(tableView: tableView, rowHeightMode: rowHeightMode)
     }
     
     override func numberOfSections(tableView: UITableView) -> Int {

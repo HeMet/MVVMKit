@@ -12,6 +12,10 @@ public enum TableViewSectionView {
     case Header, Footer
 }
 
+public enum TableAdapterRowHeightModes {
+    case Automatic, TemplateCell, Manual, Default
+}
+
 public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftDelegate {
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
@@ -22,16 +26,24 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     unowned(unsafe) let tableView: UITableView
     public let cells: CellViewBindingManager
     public let views = ViewBindingManager()
+    public let rowHeightMode: TableAdapterRowHeightModes
     
     lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
         UITableViewDataSourceProxy(dataSource: self)
         }()
     
     lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
-        UITableViewDelegateProxy(swiftDelegate: self)
+        let r = UITableViewDelegateProxy(swiftDelegate: self)
+        
+        if self.rowHeightMode == .Automatic || self.rowHeightMode == .Default {
+            r.selectorsToIgnore = ["tableView:heightForRowAtIndexPath:"]
+        }
+        
+        return r
         }()
     
     var updateCounter = 0
+    var rowHeightCache: [NSIndexPath: CGFloat] = [:]
     
     public var delegate: UITableViewDelegate? {
         get {
@@ -44,8 +56,13 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
         }
     }
     
-    public init(tableView: UITableView) {
+    public convenience init(tableView: UITableView) {
+        self.init(tableView: tableView, rowHeightMode: .Default)
+    }
+    
+    public init(tableView: UITableView, rowHeightMode: TableAdapterRowHeightModes) {
         self.tableView = tableView
+        self.rowHeightMode = rowHeightMode
         cells = CellViewBindingManager(tableView: tableView)
         
         self.tableView.dataSource = dsProxy
@@ -117,6 +134,17 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
         
+    }
+    
+    func heightForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> CGFloat {
+        if rowHeightCache[indexPath] == nil {
+            rowHeightCache[indexPath] = cells.heightForViewModel(viewModelForIndexPath(indexPath), atIndexPath: indexPath)
+        }
+        return rowHeightCache[indexPath]!
+    }
+    
+    func invalidateRowHeightCache() {
+        rowHeightCache = [:]
     }
     
     public func beginUpdate() {
@@ -208,6 +236,7 @@ protocol UITableViewSwiftDelegate: class {
     func heightForHeader(tableView: UITableView, section: Int) -> CGFloat
     func heightForFooter(tableView: UITableView, section: Int) -> CGFloat
     func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath)
+    func heightForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> CGFloat
 }
 
 @objc class UITableViewDelegateProxy: UITableViewDelegateForwarder {
@@ -234,5 +263,9 @@ protocol UITableViewSwiftDelegate: class {
     
     @objc override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return swiftDelegate.heightForFooter(tableView, section: section)
+    }
+    
+    @objc override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return swiftDelegate.heightForRowAtIndexPath(tableView, indexPath: indexPath)
     }
 }

@@ -10,7 +10,19 @@
 
 @implementation UITableViewDelegateForwarder
 
+-(instancetype) init {
+    if (self = [super init]) {
+        self.selectorsToIgnore = [NSArray new];
+    }
+    return self;
+}
+
 - (BOOL)respondsToSelector:(SEL)aSelector {
+    NSString* selector = NSStringFromSelector(aSelector);
+    if ([self.selectorsToIgnore containsObject:selector]) {
+        return NO;
+    }
+    
     if ([self.delegate respondsToSelector:aSelector]) {
         return YES;
     }

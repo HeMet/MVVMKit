@@ -14,20 +14,26 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     var headers: ObservableOrderedDictionary<Int, TableViewSectionModel> = [:]
     var footers: ObservableOrderedDictionary<Int, TableViewSectionModel> = [:]
     
-    override public init(tableView: UITableView) {
-        super.init(tableView: tableView)
+    override public init(tableView: UITableView, rowHeightMode: TableAdapterRowHeightModes) {
+        super.init(tableView: tableView, rowHeightMode: rowHeightMode)
         
         items.onDidInsertRange.register(tag) { [unowned self] in
+            self.invalidateRowHeightCache()
+            
             let set = self.indexSetOf($1.1)
             self.tableView.insertSections(set, withRowAnimation: .Right)
         }
         
         items.onDidRemoveRange.register(tag) { [unowned self] in
+            self.invalidateRowHeightCache()
+            
             let set = self.indexSetOf($1.1)
             self.tableView.deleteSections(set, withRowAnimation: .Left)
         }
         
         items.onDidChangeRange.register(tag) { [unowned self] in
+            self.invalidateRowHeightCache()
+            
             let set = self.indexSetOf($1.1)
             self.tableView.reloadSections(set, withRowAnimation: .Middle)
         }
@@ -138,18 +144,24 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     }
     
     func handleDidInsertItems(section: Int, idxs: [Int]) {
+        self.invalidateRowHeightCache()
+        
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
         onCellsInserted?(self, paths)
     }
     
     func handleDidRemoveItems(section: Int, idxs: [Int]) {
+        self.invalidateRowHeightCache()
+        
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Right)
         onCellsRemoved?(self, paths)
     }
     
     func handleDidChangeItems(section: Int, idxs: [Int]) {
+        self.invalidateRowHeightCache()
+        
         let paths = indexPathsOf(section, idxs: idxs)
         tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Right)
         onCellsReloaded?(self, paths)

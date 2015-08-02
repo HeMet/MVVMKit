@@ -11,8 +11,8 @@ import UIKit
 public class TableViewSinglePartAdapter<T: ObservableCollection>: TableViewBaseAdapter {
     var data: T = T(data: [])
     
-    public override init(tableView: UITableView) {
-        super.init(tableView: tableView)
+    public override init(tableView: UITableView, rowHeightMode: TableAdapterRowHeightModes) {
+        super.init(tableView: tableView, rowHeightMode: rowHeightMode)
     }
     
     deinit {
