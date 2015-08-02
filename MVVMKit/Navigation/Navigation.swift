@@ -21,19 +21,19 @@ prefix operator ! {}
 /// Factory operator
 ///
 /// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
-public prefix func ! <V : ViewForViewModel where V: UIViewController> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
+public prefix func ! <V : ViewForViewModel where V: UIViewController, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
     let view = vType()
     return afterViewInstantiated(view, viewModel)
 }
 
-public prefix func ! <V : SBViewForViewModel where V: UIViewController> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
+public prefix func ! <V : SBViewForViewModel where V: UIViewController, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
     let (sbID, viewID) = vType.sbInfo
     let sb = UIStoryboard(name: sbID, bundle: nil)
     let view = sb.instantiateViewControllerWithIdentifier(viewID) as! V
     return afterViewInstantiated(view, viewModel)
 }
 
-func afterViewInstantiated <V : ViewForViewModel where V: UIViewController>(view : V, viewModel: V.ViewModelType) -> V {
+func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.ViewModelType: AnyObject>(view : V, viewModel: V.ViewModelType) -> V {
     view.viewModel = viewModel
     
     VMTracker.append(viewModel, view: view)
@@ -46,25 +46,20 @@ func afterViewInstantiated <V : ViewForViewModel where V: UIViewController>(view
 /// -- Denotes ViewForViewModel's we want to use.
 ///
 /// -- Aggregates given factory functions in one single factory function which takes as many arguments as factory functions provided and returns array of views.
-public func present<V : ViewForViewModel where V: UIViewController>(factory: (V.ViewModelType) -> V) -> ViewFactory<V, V.ViewModelType> {
+public func present<V : ViewForViewModel, VM: AnyObject where V: UIViewController>(factory: (VM) -> V) -> ViewFactory<V, VM> {
     return ViewFactory(factory: factory)
 }
 
-public func present<V0 : ViewForViewModel, V1: ViewForViewModel where V0 : UIViewController, V1: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType)> {
+public func present<VM0: AnyObject, V0 : UIViewController, VM1: AnyObject, V1: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1) -> ViewsFactory<(vm0: VM0, vm1: VM1)> {
     return ViewsFactory { args in
         [f0(args.vm0), f1(args.vm1)]
     }
 }
 
-public func present<V0 : ViewForViewModel, V1: ViewForViewModel, V2: ViewForViewModel where V0 : UIViewController, V1: UIViewController, V2: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1, f2: V2.ViewModelType -> V2) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType, vm2: V2.ViewModelType)> {
+public func present<VM0: AnyObject, V0 : UIViewController, VM1: AnyObject, V1: UIViewController, VM2: AnyObject, V2: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1, f2: VM2 -> V2) -> ViewsFactory<(vm0: VM0, vm1: VM1, vm2: VM2)> {
     return ViewsFactory { args in
         [f0(args.vm0), f1(args.vm1), f2(args.vm2)]
     }
-}
-
-/// Present view hierarchy which created by factory. Use ! operator.
-public func present<ArgsType>(factory: ArgsType -> UIViewController) -> ViewFactory<UIViewController, ArgsType> {
-    return ViewFactory(factory: factory)
 }
 
 public struct ViewFactory<V : UIViewController, ArgsType> {

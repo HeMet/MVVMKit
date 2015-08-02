@@ -9,9 +9,7 @@
 import UIKit
 
 public protocol ViewForViewModel {
-    typealias ViewModelType: ViewModel
-    typealias Factory = (ViewModelType) -> Self
-    
+    typealias ViewModelType
     var viewModel: ViewModelType! { get set }
     func bindToViewModel()
 }
