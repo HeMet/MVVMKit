@@ -43,7 +43,7 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
         }()
     
     var updateCounter = 0
-    var rowHeightCache: [NSIndexPath: CGFloat] = [:]
+    var rowSizeCache: [NSIndexPath: CGSize] = [:]
     
     public var delegate: UITableViewDelegate? {
         get {
@@ -137,14 +137,16 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     }
     
     func heightForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> CGFloat {
-        if rowHeightCache[indexPath] == nil {
-            rowHeightCache[indexPath] = cells.heightForViewModel(viewModelForIndexPath(indexPath), atIndexPath: indexPath)
+        let width = rowSizeCache[indexPath]?.width ?? 0
+        if width != tableView.bounds.width {
+            rowSizeCache[indexPath] = cells.sizeForViewModel(viewModelForIndexPath(indexPath), atIndexPath: indexPath)
         }
-        return rowHeightCache[indexPath]!
+        
+        return rowSizeCache[indexPath]!.height
     }
     
     func invalidateRowHeightCache() {
-        rowHeightCache = [:]
+        rowSizeCache = [:]
     }
     
     public func beginUpdate() {
