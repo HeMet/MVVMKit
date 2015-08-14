@@ -41,14 +41,14 @@ extension String {
     
     func subString(startIndex: Int, length: Int) -> String
     {
-        var start = advance(self.startIndex, startIndex)
-        var end = advance(self.startIndex, startIndex + length)
+        let start = advance(self.startIndex, startIndex)
+        let end = advance(self.startIndex, startIndex + length)
         return self.substringWithRange(Range<String.Index>(start: start, end: end))
     }
     
     func indexOf(target: String) -> Int
     {
-        var range = self.rangeOfString(target)
+        let range = self.rangeOfString(target)
         if let range = range {
             return distance(self.startIndex, range.startIndex)
         } else {
@@ -58,9 +58,9 @@ extension String {
     
     func indexOf(target: String, startIndex: Int) -> Int
     {
-        var startRange = advance(self.startIndex, startIndex)
+        let startRange = advance(self.startIndex, startIndex)
         
-        var range = self.rangeOfString(target, options: NSStringCompareOptions.LiteralSearch, range: Range<String.Index>(start: startRange, end: self.endIndex))
+        let range = self.rangeOfString(target, options: NSStringCompareOptions.LiteralSearch, range: Range<String.Index>(start: startRange, end: self.endIndex))
         
         if let range = range {
             return distance(self.startIndex, range.startIndex)
@@ -72,7 +72,7 @@ extension String {
     func countOf(target: String) -> Int {
         var index = 0
         var count = 0
-        do {
+        repeat {
             index = self.indexOf(target, startIndex: index)
             if (index == -1) {
                 break
@@ -85,7 +85,7 @@ extension String {
     
     func devideByIndex(index: Int) -> (String, String) {
         let left = self[Range<Int>(start: 0, end: index + 1)]
-        let right = self[Range<Int>(start: index + 1, end: count(self) + 1)]
+        let right = self[Range<Int>(start: index + 1, end: self.characters.count + 1)]
         return (left, right)
     }
 }

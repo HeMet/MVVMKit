@@ -187,7 +187,7 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     }
     
     deinit {
-        println("deinit Adapter")
+        print("deinit Adapter")
     }
 
     public var onCellsInserted: CellsChangedEvent?

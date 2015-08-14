@@ -13,7 +13,7 @@ import ReactiveCocoa
 //        let fromMap = { (o: AnyObject?) -> String in return o as! String }
 //        var textProperty2 = DynamicPropertyTyped<String>(object: self.subviewHook, keyPath: "text", mapTo: toMap, mapFrom: fromMap)
 
-@objc public final class DynamicPropertyTyped<T>: RACDynamicPropertySuperclass, MutablePropertyType {
+public final class DynamicPropertyTyped<T>: RACDynamicPropertySuperclass, MutablePropertyType {
     public typealias Value = T
     
     public typealias MapToClosure = (T) -> AnyObject?

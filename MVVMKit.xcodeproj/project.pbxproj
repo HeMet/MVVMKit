@@ -20,7 +20,6 @@
 		847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */; };
 		847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */; };
 		848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F46F41B554D37001AF84C /* LifetimeUtils.swift */; };
-		84915D191B581630008D5D73 /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84915D161B581630008D5D73 /* Box.framework */; };
 		84915D1A1B581630008D5D73 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84915D171B581630008D5D73 /* ReactiveCocoa.framework */; };
 		84915D1B1B581630008D5D73 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84915D181B581630008D5D73 /* Result.framework */; };
 		84A57FD91B2DA1B6009A560E /* UITableViewDelegateForwarder.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,7 +63,6 @@
 		847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewDictionaryAdapter.swift; path = DataBindings/Adapters/TableViewDictionaryAdapter.swift; sourceTree = "<group>"; };
 		847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewBaseAdapter.swift; path = DataBindings/Adapters/TableViewBaseAdapter.swift; sourceTree = "<group>"; };
 		848F46F41B554D37001AF84C /* LifetimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LifetimeUtils.swift; path = Utils/LifetimeUtils.swift; sourceTree = "<group>"; };
-		84915D161B581630008D5D73 /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
 		84915D171B581630008D5D73 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		84915D181B581630008D5D73 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UITableViewDelegateForwarder.h; path = DataBindings/Adapters/Utils/UITableViewDelegateForwarder.h; sourceTree = "<group>"; };
@@ -92,7 +90,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84915D191B581630008D5D73 /* Box.framework in Frameworks */,
 				84915D1A1B581630008D5D73 /* ReactiveCocoa.framework in Frameworks */,
 				84915D1B1B581630008D5D73 /* Result.framework in Frameworks */,
 			);
@@ -174,7 +171,6 @@
 		B6347C501AE78B8300D70121 = {
 			isa = PBXGroup;
 			children = (
-				84915D161B581630008D5D73 /* Box.framework */,
 				84915D171B581630008D5D73 /* ReactiveCocoa.framework */,
 				84915D181B581630008D5D73 /* Result.framework */,
 				B6347C5C1AE78B8300D70121 /* MVVMKit */,
@@ -310,6 +306,8 @@
 		B6347C511AE78B8300D70121 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = GitHub;
 				TargetAttributes = {

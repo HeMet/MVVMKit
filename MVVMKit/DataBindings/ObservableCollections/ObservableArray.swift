@@ -13,7 +13,7 @@ public enum UpdatePhase {
 }
 
 public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectionType, ObservableCollection {
-    typealias ItemType = T
+    public typealias ItemType = T
     public typealias RangeChangedEvent = MulticastEvent<ObservableArray, ([T], Range<Int>)>
     public typealias UpdatePhaseEvent = MulticastEvent<ObservableArray, UpdatePhase>
     

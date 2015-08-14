@@ -22,15 +22,15 @@ prefix operator ! {}
 ///
 /// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
 public prefix func ! <V : ViewForViewModel where V: UIViewController, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    let view = vType()
-    return afterViewInstantiated(view, viewModel)
+    let view = vType.init()
+    return afterViewInstantiated(view, viewModel: viewModel)
 }
 
 public prefix func ! <V : SBViewForViewModel where V: UIViewController, V.ViewModelType : AnyObject> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
     let (sbID, viewID) = vType.sbInfo
     let sb = UIStoryboard(name: sbID, bundle: nil)
     let view = sb.instantiateViewControllerWithIdentifier(viewID) as! V
-    return afterViewInstantiated(view, viewModel)
+    return afterViewInstantiated(view, viewModel: viewModel)
 }
 
 func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.ViewModelType: AnyObject>(view : V, viewModel: V.ViewModelType) -> V {
@@ -117,7 +117,7 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
         
         return { s in
             return { args in
-                var view = self.factory(args)
+                let view = self.factory(args)
                 view.modalPresentationStyle = .Popover
                 let popoverPC = view.popoverPresentationController!
                 let presentingVC = VMTracker.getFromView(s) as! V

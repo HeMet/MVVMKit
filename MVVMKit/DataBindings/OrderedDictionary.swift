@@ -53,7 +53,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             if newValue == nil {
                 removeValueForKey(key)
             } else {
-                if find(keys, key) == nil {
+                if keys.indexOf(key) == nil {
                     keys.append(key)
                 }
                 
@@ -81,7 +81,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         
         let existingValue = data[key]
         if existingValue != nil {
-            let existingIndex = find(keys, key)!
+            let existingIndex = keys.indexOf(key)!
             
             if existingIndex < index {
                 adjustedIndex--
@@ -124,7 +124,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     }
     
     public func indexOfKey(key: KeyType) -> Int? {
-        return find(keys, key)
+        return keys.indexOf(key)
     }
     
     public func generate() -> IndexingGenerator<OrderedDictionary<KeyType, ValueType>> {

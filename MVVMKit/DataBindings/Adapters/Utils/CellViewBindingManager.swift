@@ -65,7 +65,7 @@ public class CellViewBindingManager {
         let typeName = nameOfType(V.ViewModelType.self)
         
         let templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
-        templateCell.contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        templateCell.contentView.translatesAutoresizingMaskIntoConstraints = false
         
         sizeCalculators[typeName] = { [unowned self] viewModel, indexPath in
             templateCell.viewModel = viewModel as! V.ViewModelType
@@ -89,8 +89,8 @@ public class CellViewBindingManager {
     }
     
     func applyWidthContraint(contentView: UIView, width: CGFloat) {
-        let constraints = contentView.constraints() as! [NSLayoutConstraint]
-        var oldWC = filter(constraints) { $0.identifier == self.templateCellWidthContraintId }.first
+        let constraints = contentView.constraints 
+        let oldWC = constraints.filter { $0.identifier == self.templateCellWidthContraintId }.first
         if let wc = oldWC {
             contentView.removeConstraint(wc)
         }
@@ -131,6 +131,6 @@ public class CellViewBindingManager {
     }
     
     deinit {
-        println("deinit bindings manager")
+        print("deinit bindings manager")
     }
 }

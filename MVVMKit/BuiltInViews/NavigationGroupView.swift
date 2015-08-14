@@ -17,17 +17,17 @@ public class NavigationGroupView: UINavigationController {
         return nil
     }
 
-    override public func popToViewController(viewController: UIViewController, animated: Bool) -> [AnyObject]? {
+    override public func popToViewController(viewController: UIViewController, animated: Bool) -> [UIViewController]? {
         if let views = super.popToViewController(viewController, animated: animated) {
-            disposeViewModelsOfViews(views as! [UIViewController])
+            disposeViewModelsOfViews(views )
             return views
         }
         return nil
     }
 
-    override public func popToRootViewControllerAnimated(animated: Bool) -> [AnyObject]? {
+    override public func popToRootViewControllerAnimated(animated: Bool) -> [UIViewController]? {
         if let views = super.popToRootViewControllerAnimated(animated) {
-            disposeViewModelsOfViews(views as! [UIViewController])
+            disposeViewModelsOfViews(views )
             return views
         }
         return nil

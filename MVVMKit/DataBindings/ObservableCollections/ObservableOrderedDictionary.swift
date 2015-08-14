@@ -54,7 +54,7 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
         }
         set {
             if let newValue = newValue {
-                let keyExists = contains(innerDictionary.keys, key)
+                let keyExists = innerDictionary.keys.contains(key)
                 
                 innerDictionary[key] = newValue
                 
@@ -95,7 +95,7 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
     }
     
     public func removeValueForKey(key: KeyType) {
-        if let keyIndex = find(innerDictionary.keys, key) {
+        if let keyIndex = innerDictionary.keys.indexOf(key) {
             removeAtIndex(keyIndex)
         }
     }
@@ -142,7 +142,7 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
 }
 
 public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: BaseObservableOrderedDictionary<KeyType, ValueType>, ObservableCollection {
-    typealias ItemType = (KeyType, ValueType)
+    public typealias ItemType = (KeyType, ValueType)
     public typealias RangeChangedEvent = MulticastEvent<ObservableOrderedDictionary, ([ItemType], Range<Int>)>
     public typealias UpdatePhaseEvent = MulticastEvent<ObservableOrderedDictionary, UpdatePhase>
     
@@ -184,7 +184,7 @@ public final class ObservableOrderedMultiDictionary<KeyType : Hashable, SubValue
     typealias ValueType = ObservableArray<SubValueType>
     typealias InnerDictionary = OrderedDictionary<KeyType, ValueType>
     
-    typealias ItemType = (KeyType, ValueType)
+    public typealias ItemType = (KeyType, ValueType)
     public typealias RangeChangedEvent = MulticastEvent<ObservableOrderedMultiDictionary, ([ItemType], Range<Int>)>
     public typealias UpdatePhaseEvent = MulticastEvent<ObservableOrderedMultiDictionary, UpdatePhase>
     

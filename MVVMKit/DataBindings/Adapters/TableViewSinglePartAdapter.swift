@@ -76,7 +76,7 @@ public class TableViewSinglePartAdapter<T: ObservableCollection>: TableViewBaseA
     }
     
     func pathsOf(itemIndexes: Range<Int>) -> [NSIndexPath] {
-        return map(itemIndexes) {
+        return itemIndexes.map {
             NSIndexPath(forRow: $0, inSection: 0)
         }
     }

@@ -225,7 +225,7 @@ public func forwardWhile<T, E>(conditionProducer: SignalProducer<Bool, NoError>)
     return producer.lift(forwardWhile)(conditionProducer)
 }
 
-public func throttle<T, E>(# interval: NSTimeInterval)(_while: Signal<Bool, NoError>)(signal: Signal<T, E>) -> Signal<T, E> {
+public func throttle<T, E>(interval  interval: NSTimeInterval)(_while: Signal<Bool, NoError>)(signal: Signal<T, E>) -> Signal<T, E> {
     let signalCompletes = signal |> ignoreValues |> ignoreErrors
     // while signal is not completed
     let result = _while |> takeUntil(signalCompletes) |> promoteErrors(E.self)
@@ -237,6 +237,6 @@ public func throttle<T, E>(# interval: NSTimeInterval)(_while: Signal<Bool, NoEr
     return result3
 }
 
-public func throttle<T, E>(# interval: NSTimeInterval)(_while: SignalProducer<Bool, NoError>)(producer: SignalProducer<T, E>) -> SignalProducer<T, E> {
+public func throttle<T, E>(interval  interval: NSTimeInterval)(_while: SignalProducer<Bool, NoError>)(producer: SignalProducer<T, E>) -> SignalProducer<T, E> {
     return producer.lift(throttle(interval: interval))(_while)
 }

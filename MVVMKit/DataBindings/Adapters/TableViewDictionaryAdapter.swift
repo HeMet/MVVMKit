@@ -87,7 +87,7 @@ public class TableViewDictionaryAdapter<K: Hashable, T: AnyObject>: TableViewSin
     }
     
     func indexSetOf(range: Range<Int>) -> NSIndexSet {
-        var result = NSMutableIndexSet()
+        let result = NSMutableIndexSet()
         for idx in range {
             result.addIndex(idx)
         }

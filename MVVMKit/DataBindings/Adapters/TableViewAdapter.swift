@@ -83,17 +83,17 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     /// Section header & footers
     
     public func setTitle(title: String, forSection: TableViewSectionView, atIndex: Int) {
-        var models = getModelsForSectionView(forSection)
+        let models = getModelsForSectionView(forSection)
         models[atIndex] = TableViewSimpleSection(title: title)
     }
     
     public func setData(data: AnyObject, forSection: TableViewSectionView, atIndex: Int) {
-        var models = getModelsForSectionView(forSection)
+        let models = getModelsForSectionView(forSection)
         models[atIndex] = TableViewCustomViewSection(viewModel: data)
     }
     
     public func removeSectionView(sectionView: TableViewSectionView, atIndex: Int) {
-        var models = getModelsForSectionView(sectionView)
+        let models = getModelsForSectionView(sectionView)
         models[atIndex] = nil
     }
     
@@ -104,7 +104,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     }
     
     override func numberOfSections(tableView: UITableView) -> Int {
-        let idx = reduce(items.keys, -1, max)
+        let idx = items.keys.reduce(-1, combine: max)
         return items.count > 0 ? idx + 1 : 0
     }
     
@@ -133,7 +133,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     }
     
     func indexSetOf(range: Range<Int>) -> NSIndexSet {
-        return reduce(range, NSMutableIndexSet()) { set, index in
+        return range.reduce(NSMutableIndexSet()) { set, index in
             set.addIndex(index)
             return set
         }
