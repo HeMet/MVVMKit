@@ -9,7 +9,7 @@
 import Foundation
 
 public struct MulticastEvent<ContextType: AnyObject, ArgsType> {
-    typealias Listener = (ContextType, ArgsType) -> ()
+    public typealias Listener = (ContextType, ArgsType) -> ()
     
     // there is no good way in swift to compare two closures (it's intentional)
     var listeners = [String: Listener]()
@@ -29,8 +29,8 @@ public struct MulticastEvent<ContextType: AnyObject, ArgsType> {
     
     public func fire(args: ArgsType) {
         if let ctx = context {
-            for (tag, listener) in listeners {
-                listener(context, args)
+            for (_, listener) in listeners {
+                listener(ctx, args)
             }
         }
     }

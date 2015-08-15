@@ -47,12 +47,12 @@ public final class DynamicPropertyTyped<T>: RACDynamicPropertySuperclass, Mutabl
     /// KVO-compliant. Most UI controls are not!
     public var producer: SignalProducer<Value, NoError> {
         if let object = object {
-            return object.rac_valuesForKeyPath(keyPath, observer: nil).toSignalProducer() |> map(mapFrom)
+            return object.rac_valuesForKeyPath(keyPath, observer: nil).toSignalProducer().map(mapFrom)
                 // Errors aren't possible, but the compiler doesn't know that.
-                |> catch { error in
-                    assert(false, "Received unexpected error from KVO signal: \(error)")
-                    return .empty
-            }
+				.flatMapError { error in
+					assert(false, "Received unexpected error from KVO signal: \(error)")
+					return .empty
+				}
         } else {
             return .empty
         }

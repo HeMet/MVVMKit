@@ -9,7 +9,7 @@
 import Foundation
 
 public struct OCEvents<C: ObservableCollection> {
-    typealias RangeChanged = MulticastEvent<C, ([C.ItemType], Range<Int>)>
+    public typealias RangeChanged = MulticastEvent<C, ([C.ItemType], Range<Int>)>
 }
 
 public protocol ObservableCollection: class {

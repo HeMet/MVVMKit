@@ -9,7 +9,7 @@
 import Foundation
 
 public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, MutableCollectionType {
-    typealias DictionaryItem = (KeyType, ValueType)
+    public typealias DictionaryItem = (KeyType, ValueType)
     private(set) var keys = [KeyType]()
     var data = Dictionary<KeyType, ValueType>()
     
@@ -109,10 +109,6 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     }
     
     public mutating func extend<S: SequenceType where S.Generator.Element == DictionaryItem>(newElements: S) {
-        let values = [DictionaryItem](newElements)
-        let start = data.count
-        let end = start + values.count
-        
         for (k, v) in newElements {
             if data[k] != nil {
                 fatalError("Key \(k) already exists. Extend is not designed for replacement.")

@@ -80,7 +80,7 @@ public class TableViewDictionaryAdapter<K: Hashable, T: AnyObject>: TableViewSin
     
     func pathsOf(items: [(T, Int, Int)]) -> [NSIndexPath] {
         var result: [NSIndexPath] = []
-        for (item, sec, row) in items {
+        for (_, sec, row) in items {
             result.append(NSIndexPath(forRow: row, inSection: sec))
         }
         return result

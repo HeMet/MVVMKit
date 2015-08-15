@@ -84,7 +84,6 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
     public func asRoot() -> (ArgsType) -> () {
         return { args in
             let rootView = self.factory(args)
-            let appDelegate = UIApplication.sharedApplication().delegate!
             let window = UIApplication.sharedApplication().delegate?.window!
             window?.rootViewController = rootView
             window?.makeKeyAndVisible()

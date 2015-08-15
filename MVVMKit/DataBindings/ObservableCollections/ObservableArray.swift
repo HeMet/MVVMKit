@@ -59,7 +59,7 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         }
         set {
             innerArray[index] = newValue
-            onDidChangeRange.fire([newValue], newRangeOf(index))
+            onDidChangeRange.fire(([newValue], newRangeOf(index)))
         }
     }
     
@@ -96,7 +96,7 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         let end = start + values.count
         
         innerArray.extend(values)
-        onDidInsertRange.fire(values, Range(start: start, end: end))
+        onDidInsertRange.fire((values, Range(start: start, end: end)))
     }
     
     public func removeLast() -> T {
@@ -105,12 +105,12 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
     
     public func insert(newElement: T, atIndex i: Int) {
         innerArray.insert(newElement, atIndex: i)
-        onDidInsertRange.fire([newElement], newRangeOf(i))
+        onDidInsertRange.fire(([newElement], newRangeOf(i)))
     }
     
     public func removeAtIndex(index: Int) -> T {
         let item = innerArray.removeAtIndex(index)
-        onDidRemoveRange.fire([item], newRangeOf(index))
+        onDidRemoveRange.fire(([item], newRangeOf(index)))
         return item
     }
     
@@ -136,7 +136,7 @@ public final class ObservableArray<T>: ArrayLiteralConvertible, MutableCollectio
         let removed = innerArray
         
         innerArray.removeAll(keepCapacity: keepCapacity)
-        onDidRemoveRange.fire(removed, Range(start: start, end: end))
+        onDidRemoveRange.fire((removed, Range(start: start, end: end)))
     }
     
     public func replaceRange<C : CollectionType where C.Generator.Element == T>(subRange: Range<Int>, with newElements: C) {
