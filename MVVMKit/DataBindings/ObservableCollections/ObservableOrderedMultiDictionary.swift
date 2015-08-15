@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class ObservableOrderedMultiDictionary<KeyType : Hashable, SubValueType>: BaseObservableOrderedDictionary<KeyType, ObservableArray<SubValueType>>, ObservableCollection {
+public final class ObservableOrderedMultiDictionary<KeyType : Hashable, SubValueType>: BaseObservableOrderedDictionary<KeyType, ObservableArray<SubValueType>>, ObservableCollection, MutableCollectionType {
     public typealias ValueType = ObservableArray<SubValueType>
     public typealias InnerDictionary = OrderedDictionary<KeyType, ValueType>
     

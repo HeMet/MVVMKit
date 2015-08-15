@@ -50,21 +50,24 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     func disposeItems() {
         // Workaround: Enumeration on items itself cause compiler to crash.
         for key in items.keys {
-            items[key]!.dispose()
+//            items[key]!.dispose()
+            items.valueForKey(key)!.dispose()
         }
     }
     
     /// One-to-One
     
     public func setData<T: AnyObject>(data: T, forSectionAtIndex sIndex: Int) {
-        items[sIndex]?.dispose()
+//        items[sIndex]?.dispose()
+        items.valueForKey(sIndex)?.dispose()
         items[sIndex] = SimpleItem(data: data)
     }
     
     /// One-to-Many
     
     public func setData<T: AnyObject>(data: ObservableArray<T>, forSectionAtIndex sIndex: Int) {
-        items[sIndex]?.dispose()
+//        items[sIndex]?.dispose()
+        items.valueForKey(sIndex)?.dispose()
         data.bindToSection(sIndex, listener: self)
         items[sIndex] = data
     }
@@ -72,11 +75,13 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     /// One-to-Any
     
     public func hasDataForSection(sIndex: Int) -> Bool {
-        return items[sIndex] != nil
+//        return items[sIndex] != nil
+        return items.valueForKey(sIndex) != nil
     }
     
     public func removeDataForSection(sIndex: Int) {
-        items[sIndex]!.dispose()
+//        items[sIndex]!.dispose()
+        items.valueForKey(sIndex)!.dispose()
         items[sIndex] = nil
     }
     
@@ -109,27 +114,33 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     }
     
     override func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
-        return items[section]?.count ?? 0
+//        return items[section]?.count ?? 0
+        return items.valueForKey(section)?.count ?? 0
     }
     
     override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
-        return items[indexPath.section]!.getDataAtIndex(indexPath.row)
+//        return items[indexPath.section]!.getDataAtIndex(indexPath.row)
+        return items.valueForKey(indexPath.section)!.getDataAtIndex(indexPath.row)
     }
     
     override func viewModelForSectionHeaderAtIndex(index: Int) -> AnyObject? {
-        return headers[index]?.viewModel
+        return headers.valueForKey(index)?.viewModel
+//        return headers[index]?.viewModel
     }
 
     override func viewModelForSectionFooterAtIndex(index: Int) -> AnyObject? {
-        return footers[index]?.viewModel
+        return footers.valueForKey(index)?.viewModel
+//        return footers[index]?.viewModel
     }
     
     override func titleForHeader(tableView: UITableView, section: Int) -> String? {
-        return headers[section]?.title
+//        return headers[section]?.title
+        return headers.valueForKey(section)?.title
     }
     
     override func titleForFooter(tableView: UITableView, section: Int) -> String? {
-        return footers[section]?.title
+//        return footers[section]?.title
+        return footers.valueForKey(section)?.title
     }
     
     func indexSetOf(range: Range<Int>) -> NSIndexSet {

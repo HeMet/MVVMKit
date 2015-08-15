@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, MutableCollectionType {
+public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible {
     public typealias ItemType = (KeyType, ValueType)
     
     var innerDictionary = OrderedDictionary<KeyType, ValueType>()
@@ -90,6 +90,14 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
         }
     }
     
+    public func valueForKey(key: KeyType) -> ValueType? {
+        return self[key]
+    }
+    
+    public func itemAtIndex(index: Int) -> ItemType {
+        return self[index]
+    }
+    
     public func removeValueForKey(key: KeyType) {
         if let keyIndex = innerDictionary.keys.indexOf(key) {
             removeAtIndex(keyIndex)
@@ -116,9 +124,9 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
         return innerDictionary.indexOfKey(key)
     }
     
-    public func generate() -> IndexingGenerator<BaseObservableOrderedDictionary<KeyType, ValueType>> {
-        return IndexingGenerator(self)
-    }
+//    public func generate() -> IndexingGenerator<BaseObservableOrderedDictionary<KeyType, ValueType>> {
+//        return IndexingGenerator(self)
+//    }
     
     func fireInsert(items: [ItemType], _ idxs: Range<Int>) {
         fatalError("Abstract method.")

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: BaseObservableOrderedDictionary<KeyType, ValueType>, ObservableCollection {
+public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: BaseObservableOrderedDictionary<KeyType, ValueType>, ObservableCollection, MutableCollectionType {
     public typealias ItemType = (KeyType, ValueType)
     public typealias RangeChangedEvent = MulticastEvent<ObservableOrderedDictionary, ([ItemType], Range<Int>)>
     public typealias UpdatePhaseEvent = MulticastEvent<ObservableOrderedDictionary, UpdatePhase>
@@ -49,4 +49,6 @@ public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: Ba
     override func fireBatchUpdate(phase: UpdatePhase) {
         onBatchUpdate.fire(phase)
     }
+    
+    
 }
