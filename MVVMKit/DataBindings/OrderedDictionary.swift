@@ -8,34 +8,35 @@
 
 import Foundation
 
-public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, MutableCollectionType {
-    public typealias DictionaryItem = (KeyType, ValueType)
-    private(set) var keys = [KeyType]()
-    var data = Dictionary<KeyType, ValueType>()
+public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, RangeReplaceableCollectionType, MutableSliceable {
+    public typealias Base = [KeyType: ValueType]
+    public typealias Generator = IndexingGenerator<OrderedDictionary>
+    public typealias Element = (KeyType, ValueType)
+    public typealias Index = Int
+    public typealias SubSequence = OrderedDictionary
     
-    public init(dictionaryLiteral elements: DictionaryItem...) {
+    private(set) var keys = [KeyType]()
+    var data = Base()
+    
+    // DictionaryLiteralConvertible
+    
+    public init(dictionaryLiteral elements: Element...) {
         self.init(pairs: elements)
     }
     
-    public init(pairs: [DictionaryItem]) {
+    public init(pairs: [Element]) {
         for e in pairs {
             self[e.0] = e.1
         }
     }
     
-    public var count: Int {
-        return keys.count
+    // RangeReplaceableCollectionType
+    
+    public init() {
+        
     }
     
-    /// The first element, or `nil` if the array is empty
-    public var first: DictionaryItem? {
-        return data.isEmpty ? nil : self[0]
-    }
-    
-    /// The last element, or `nil` if the array is empty
-    public var last: DictionaryItem? {
-        return data.isEmpty ? nil : self[count - 1]
-    }
+    // Indexable
     
     public var startIndex: Int {
         return keys.startIndex
@@ -45,24 +46,9 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return keys.endIndex
     }
     
-    subscript(key: KeyType) -> ValueType? {
-        get {
-            return data[key]
-        }
-        set {
-            if newValue == nil {
-                removeValueForKey(key)
-            } else {
-                if keys.indexOf(key) == nil {
-                    keys.append(key)
-                }
-                
-                data[key] = newValue
-            }
-        }
-    }
+    // [Mutable]CollectionType
     
-    public subscript(position: Int) -> DictionaryItem {
+    public subscript(position: Index) -> Element {
         get {
             precondition(position < keys.count, "Index out-of-bounds")
             
@@ -72,11 +58,86 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             return (key, value)
         }
         set {
-            insert(newValue.1, forKey: newValue.0, atIndex: position)
+            if keys.indexOf(newValue.0) == position {
+                updateValue(newValue.1, forKey: newValue.0)
+            } else {
+                insert(newValue.1, forKey: newValue.0, atIndex: position)
+            }
         }
     }
     
-    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Int) -> ValueType? {
+    // MutableSliceable & CollectionType
+    
+    public subscript(range: Range<Index>) -> SubSequence {
+        get {
+            var result = OrderedDictionary()
+            result.keys = Array(keys[range])
+            result.data = Base(minimumCapacity: range.count)
+            for k in result.keys {
+                result.data[k] = self[k]
+            }
+
+            return result
+        }
+        set {
+            replaceRange(range, with: newValue)
+        }
+    }
+    
+    // RangeReplaceableCollectionType
+    
+    public mutating func replaceRange<C: CollectionType where C.Generator.Element == Generator.Element>(subRange: Range<Index>, with newElements: C) {
+        for i in subRange {
+            data[keys[i]] = nil
+        }
+        
+        let keysToInsert = newElements.map { $0.0 }
+        keys.replaceRange(subRange, with: keysToInsert)
+        
+        for (k, v) in newElements {
+            data[k] = v
+        }
+    }
+    
+    // SequenceType
+    
+    // Compares OrderedDictionary to Dictionary ignoring keys order.
+    func elementsEqual(other: Dictionary<KeyType, ValueType>, @noescape isEquivalent: (Element, Element) -> Bool) -> Bool {
+        guard count == other.count else { return false }
+        
+        for e in other {
+            guard let selfE = self[e.0] where isEquivalent(e, (e.0, selfE)) else {
+                return false
+            }
+        }
+        return true
+    }
+    
+    // Dictionary
+    
+    // If key exists then change it's value.
+    // If key is not exist then append it to the dictionary.
+    // If new value is null then remove key-value pair from the dictionary.
+    subscript(key: KeyType) -> ValueType? {
+        get {
+            return data[key]
+        }
+        set {
+            if let newValue = newValue {
+                if let _ = keys.indexOf(key) {
+                    updateValue(newValue, forKey: key)
+                } else {
+                    insert(newValue, forKey: key, atIndex: count)
+                }
+            } else {
+                removeValueForKey(key)
+            }
+        }
+    }
+    
+    // Next three methods do all real work with except for replaceRange
+    
+    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Index) -> ValueType? {
         var adjustedIndex = index
         
         let existingValue = data[key]
@@ -88,42 +149,37 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             }
             keys.removeAtIndex(existingIndex)
         }
-        
+    
         keys.insert(key, atIndex:adjustedIndex)
         data[key] = value
         
         return existingValue
     }
     
+    mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType {
+        let existingValue = data[key]!
+        data[key] = value
+        return existingValue
+    }
+    
     public mutating func removeValueForKey(key: KeyType) {
-        data.removeValueForKey(key)
-    }
-    
-    public mutating func removeAtIndex(index: Int) -> DictionaryItem {
-        precondition(index < keys.count, "Index out-of-bounds")
-        
-        let key = keys.removeAtIndex(index)
-        let value = data.removeValueForKey(key)!
-        
-        return (key, value)
-    }
-    
-    public mutating func extend<S: SequenceType where S.Generator.Element == DictionaryItem>(newElements: S) {
-        for (k, v) in newElements {
-            if data[k] != nil {
-                fatalError("Key \(k) already exists. Extend is not designed for replacement.")
-            }
-            
-            data[k] = v
-            keys.append(k)
-        }
+        let index = keys.indexOf(key)!
+        keys.removeAtIndex(index)
+        data[key] = nil
     }
     
     public func indexOfKey(key: KeyType) -> Int? {
         return keys.indexOf(key)
     }
-    
-    public func generate() -> IndexingGenerator<OrderedDictionary<KeyType, ValueType>> {
-        return IndexingGenerator(self)
+}
+
+extension OrderedDictionary: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        var result = "[\n"
+        for i in self.startIndex..<self.endIndex {
+            let elem = self[i]
+            result += "\(i) - \(elem.0): \(elem.1)\n"
+        }
+        return result + "]\n"
     }
 }
