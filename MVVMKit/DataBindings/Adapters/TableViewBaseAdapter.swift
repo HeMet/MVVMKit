@@ -129,16 +129,16 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
     }
     
     public func beginUpdate() {
-        self.updateCounter++
-        if (self.updateCounter == 1) {
-            self.tableView.beginUpdates()
+        updateCounter++
+        if updateCounter == 1 {
+            tableView.beginUpdates()
         }
     }
     
     public func endUpdate() {
         precondition(updateCounter >= 0, "Batch update calls are unbalanced")
-        self.updateCounter--
-        if (updateCounter == 0) {
+        updateCounter--
+        if updateCounter == 0 {
             tableView.endUpdates()
             performDelayedActions()
         }
