@@ -45,10 +45,8 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     }
     
     func disposeItems() {
-        // Workaround: Enumeration on items itself cause compiler to crash.
-        for key in items.keys {
-//            items[key]!.dispose()
-            items.getValueForKey(key)!.dispose()
+        for (_, v) in items {
+            v.dispose()
         }
     }
     
