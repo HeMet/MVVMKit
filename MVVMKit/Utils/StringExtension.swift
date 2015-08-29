@@ -10,6 +10,8 @@
 
 import Foundation
 
+// TODO: check do we realy need this extension. See String.characters property that is a CollectionType
+
 extension String {
     func contains(s: String) -> Bool
     {
@@ -24,7 +26,7 @@ extension String {
     subscript (i: Int) -> Character
         {
         get {
-            let index = advance(startIndex, i)
+            let index = startIndex.advancedBy(i)
             return self[index]
         }
     }
@@ -32,8 +34,8 @@ extension String {
     subscript (r: Range<Int>) -> String
         {
         get {
-            let startIndex = advance(self.startIndex, r.startIndex)
-            let endIndex = advance(self.startIndex, r.endIndex - 1)
+            let startIndex = self.startIndex.advancedBy(r.startIndex)
+            let endIndex = self.startIndex.advancedBy(r.endIndex - 1)
             
             return self[Range(start: startIndex, end: endIndex)]
         }
@@ -41,8 +43,8 @@ extension String {
     
     func subString(startIndex: Int, length: Int) -> String
     {
-        let start = advance(self.startIndex, startIndex)
-        let end = advance(self.startIndex, startIndex + length)
+        let start = self.startIndex.advancedBy(startIndex)
+        let end = self.startIndex.advancedBy(startIndex + length)
         return self.substringWithRange(Range<String.Index>(start: start, end: end))
     }
     
@@ -50,7 +52,7 @@ extension String {
     {
         let range = self.rangeOfString(target)
         if let range = range {
-            return distance(self.startIndex, range.startIndex)
+            return self.startIndex.distanceTo(range.startIndex)
         } else {
             return -1
         }
@@ -58,12 +60,12 @@ extension String {
     
     func indexOf(target: String, startIndex: Int) -> Int
     {
-        let startRange = advance(self.startIndex, startIndex)
+        let startRange = self.startIndex.advancedBy(startIndex)
         
         let range = self.rangeOfString(target, options: NSStringCompareOptions.LiteralSearch, range: Range<String.Index>(start: startRange, end: self.endIndex))
         
         if let range = range {
-            return distance(self.startIndex, range.startIndex)
+            return self.startIndex.distanceTo(range.startIndex)
         } else {
             return -1
         }

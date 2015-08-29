@@ -20,7 +20,7 @@ public class ViewBindingManager {
     public func registerView<V: ViewForViewModel where V: UIView>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         bindings[typeName] = { [unowned self] viewModel in
-            let view = viewType.init()
+            var view = viewType.init()
             view.viewModel = viewModel as! V.ViewModelType
             self.onWillBind?(view)
             view.bindToViewModel()

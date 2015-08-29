@@ -33,7 +33,7 @@ public prefix func ! <V : SBViewForViewModel where V: UIViewController, V.ViewMo
     return afterViewInstantiated(view, viewModel: viewModel)
 }
 
-func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.ViewModelType: AnyObject>(view : V, viewModel: V.ViewModelType) -> V {
+func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.ViewModelType: AnyObject>(var view : V, viewModel: V.ViewModelType) -> V {
     view.viewModel = viewModel
     
     VMTracker.append(viewModel, view: view)

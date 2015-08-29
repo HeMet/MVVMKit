@@ -110,12 +110,12 @@ public class BaseObservableOrderedDictionary<KeyType : Hashable, ValueType> : Di
         return di
     }
     
-    public func extend<S: SequenceType where S.Generator.Element == ItemType>(newElements: S) {
+    public func appendContentsOf<S: SequenceType where S.Generator.Element == ItemType>(newElements: S) {
         let values = [ItemType](newElements)
         let start = innerDictionary.count
         let end = start + values.count
         
-        innerDictionary.extend(newElements)
+        innerDictionary.appendContentsOf(newElements)
         
         fireInsert(values, Range(start: start, end: end))
     }

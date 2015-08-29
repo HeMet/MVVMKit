@@ -49,7 +49,7 @@ public class CellViewBindingManager {
         let typeName = nameOfType(V.ViewModelType.self)
         
         bindings[typeName] = { [unowned self] viewModel, indexPath in
-            let view = self.tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier, forIndexPath: indexPath) as! V
+            var view = self.tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier, forIndexPath: indexPath) as! V
             
             view.viewModel = viewModel as! V.ViewModelType
             
@@ -64,7 +64,7 @@ public class CellViewBindingManager {
     func registerHeightCalculator<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
-        let templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
+        var templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
         templateCell.contentView.translatesAutoresizingMaskIntoConstraints = false
         
         sizeCalculators[typeName] = { [unowned self] viewModel, indexPath in
