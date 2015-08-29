@@ -16,11 +16,12 @@ public enum TableAdapterRowHeightModes {
     case Automatic, TemplateCell, Manual, Default
 }
 
-public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewSwiftDelegate {
+public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewDelegate {
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
     
     let tag = "observable_array_tag"
+    let slHeightForRowAtIndexPath = Selector("tableView:heightForRowAtIndexPath:")
     
     // Workaround: anowned(safe) cause random crashes for NSObject descendants
     unowned(unsafe) let tableView: UITableView
@@ -28,27 +29,13 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewS
     public let views = ViewBindingManager()
     public let rowHeightMode: TableAdapterRowHeightModes
     
-    lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
-        let r = UITableViewDelegateProxy(swiftDelegate: self)
-        
-        if self.rowHeightMode == .Automatic || self.rowHeightMode == .Default {
-            r.selectorsToIgnore = ["tableView:heightForRowAtIndexPath:"]
-        }
-        
-        return r
-        }()
-    
     var updateCounter = 0
     var rowSizeCache: [NSIndexPath: CGSize] = [:]
     
-    public var delegate: UITableViewDelegate? {
-        get {
-            return dProxy.delegate
-        }
-        set {
-            dProxy.delegate = newValue
-            self.tableView.delegate = nil
-            self.tableView.delegate = dProxy
+    public weak var delegate: UITableViewDelegate? {
+        didSet {
+            tableView.delegate = nil
+            tableView.delegate = self
         }
     }
     
@@ -64,10 +51,8 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewS
         super.init()
         
         self.tableView.dataSource = self
-        self.tableView.delegate = dProxy
+        self.tableView.delegate = self
     }
-    
-    //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
     
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         fatalError("Abstract method")
@@ -102,39 +87,35 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewS
         return nil
     }
     
-    func viewForHeader(tableView: UITableView, section: Int) -> UIView? {
+    public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let viewModel: AnyObject = viewModelForSectionHeaderAtIndex(section) {
             return views.bindViewModel(viewModel)
         }
         return nil
     }
     
-    func viewForFooter(tableView: UITableView, section: Int) -> UIView? {
+    public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let viewModel: AnyObject = viewModelForSectionFooterAtIndex(section) {
             return views.bindViewModel(viewModel)
         }
         return nil
     }
     
-    func heightForHeader(tableView: UITableView, section: Int) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let hasTitle = self.tableView(tableView, titleForHeaderInSection: section) != nil
         let hasVM = viewModelForSectionHeaderAtIndex(section) != nil
         
         return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
     }
     
-    func heightForFooter(tableView: UITableView, section: Int) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let hasTitle = self.tableView(tableView, titleForFooterInSection: section) != nil
         let hasVM = viewModelForSectionFooterAtIndex(section) != nil
         
         return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
     }
     
-    func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) {
-        
-    }
-    
-    func heightForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let width = rowSizeCache[indexPath]?.width ?? 0
         if width != tableView.bounds.width {
             rowSizeCache[indexPath] = cells.sizeForViewModel(viewModelForIndexPath(indexPath), atIndexPath: indexPath)
@@ -191,44 +172,24 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewS
     public var onCellsInserted: CellsChangedEvent?
     public var onCellsRemoved: CellsChangedEvent?
     public var onCellsReloaded: CellsChangedEvent?
-}
-
-protocol UITableViewSwiftDelegate: class {
-    func viewForHeader(tableView: UITableView, section: Int) -> UIView?
-    func viewForFooter(tableView: UITableView, section: Int) -> UIView?
-    func heightForHeader(tableView: UITableView, section: Int) -> CGFloat
-    func heightForFooter(tableView: UITableView, section: Int) -> CGFloat
-    func didSelectRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath)
-    func heightForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> CGFloat
-}
-
-@objc class UITableViewDelegateProxy: UITableViewDelegateForwarder {
     
-    unowned var swiftDelegate: UITableViewSwiftDelegate
-    
-    init(swiftDelegate: UITableViewSwiftDelegate) {
-        self.swiftDelegate = swiftDelegate
-        super.init()
+    public override func respondsToSelector(aSelector: Selector) -> Bool {
+        let usesAutoLayoutHeight = rowHeightMode == .Automatic || rowHeightMode == .Default
+        
+        if usesAutoLayoutHeight && aSelector == slHeightForRowAtIndexPath {
+            return false
+        }
+        
+        if let delegate = delegate where delegate.respondsToSelector(aSelector) {
+            return true
+        }
+        return super.respondsToSelector(aSelector)
     }
     
-    // nil means "use default stub view of non empty area"
-    @objc override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return swiftDelegate.viewForHeader(tableView, section: section)
-    }
-    
-    @objc override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return swiftDelegate.viewForFooter(tableView, section: section)
-    }
-    
-    @objc override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return swiftDelegate.heightForHeader(tableView, section: section)
-    }
-    
-    @objc override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return swiftDelegate.heightForFooter(tableView, section: section)
-    }
-    
-    @objc override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return swiftDelegate.heightForRowAtIndexPath(tableView, indexPath: indexPath)
+    public override func forwardingTargetForSelector(aSelector: Selector) -> AnyObject? {
+        if let delegate = delegate where delegate.respondsToSelector(aSelector) {
+            return delegate
+        }
+        return super.forwardingTargetForSelector(aSelector)
     }
 }

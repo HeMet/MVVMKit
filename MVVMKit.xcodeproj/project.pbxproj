@@ -22,8 +22,6 @@
 		848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F46F41B554D37001AF84C /* LifetimeUtils.swift */; };
 		84915D1A1B581630008D5D73 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84915D171B581630008D5D73 /* ReactiveCocoa.framework */; };
 		84915D1B1B581630008D5D73 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84915D181B581630008D5D73 /* Result.framework */; };
-		84A57FD91B2DA1B6009A560E /* UITableViewDelegateForwarder.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		84A57FDA1B2DA1B6009A560E /* UITableViewDelegateForwarder.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */; };
 		84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
 		84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEE1B354F83009A560E /* ObservableCollection.swift */; };
 		84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
@@ -77,8 +75,6 @@
 		848F46F41B554D37001AF84C /* LifetimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LifetimeUtils.swift; path = Utils/LifetimeUtils.swift; sourceTree = "<group>"; };
 		84915D171B581630008D5D73 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		84915D181B581630008D5D73 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
-		84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UITableViewDelegateForwarder.h; path = DataBindings/Adapters/Utils/UITableViewDelegateForwarder.h; sourceTree = "<group>"; };
-		84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UITableViewDelegateForwarder.m; path = DataBindings/Adapters/Utils/UITableViewDelegateForwarder.m; sourceTree = "<group>"; };
 		84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObservableOrderedDictionary.swift; path = DataBindings/ObservableCollections/ObservableOrderedDictionary.swift; sourceTree = "<group>"; };
 		84A57FEE1B354F83009A560E /* ObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObservableCollection.swift; path = DataBindings/ObservableCollections/ObservableCollection.swift; sourceTree = "<group>"; };
 		84A57FF01B357F31009A560E /* MulticastEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MulticastEvent.swift; path = Utils/MulticastEvent.swift; sourceTree = "<group>"; };
@@ -179,8 +175,6 @@
 		84F1128F1B46F955001CCAED /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				84A57FD71B2DA1B6009A560E /* UITableViewDelegateForwarder.h */,
-				84A57FD81B2DA1B6009A560E /* UITableViewDelegateForwarder.m */,
 				846360DA1B568E5000D463BA /* ViewBindingManager.swift */,
 				846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */,
 			);
@@ -276,7 +270,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84A57FD91B2DA1B6009A560E /* UITableViewDelegateForwarder.h in Headers */,
 				B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,7 +375,6 @@
 				844507CF1B37560900A08A78 /* TableViewSinglePartAdapter.swift in Sources */,
 				B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */,
 				847DAA151B35A66A008C4B83 /* RangeExtension.swift in Sources */,
-				84A57FDA1B2DA1B6009A560E /* UITableViewDelegateForwarder.m in Sources */,
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				842418511AFF488E00BAB4C6 /* GroupView.swift in Sources */,
 				84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */,
