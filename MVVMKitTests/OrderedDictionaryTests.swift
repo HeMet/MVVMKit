@@ -63,6 +63,24 @@ class OrderedDictionaryTests: XCTestCase {
                 $0.value[0] = ("a", 7)
             })
         }
+        
+        assert("Should move first key to the end") {
+            defaultOD.equalsTo(["b": 2, "c": 3, "a": 2], then: {
+                $0.value[2] = ("a", 2)
+            })
+        }
+        
+        assert("Should move last key to the beginning") {
+            defaultOD.equalsTo(["c": 3, "a": 1, "b": 2], then: {
+                $0.value[0] = ("c", 3)
+            })
+        }
+        
+        assert("Should move last key to the beginning") {
+            defaultOD.equalsTo(["b": 2, "a": 1, "c": 3 ], then: {
+                $0.value[0] = ("b", 2)
+            })
+        }
     }
     
     func testReplaceRange() {

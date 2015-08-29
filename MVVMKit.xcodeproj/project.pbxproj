@@ -27,10 +27,18 @@
 		84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
 		84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEE1B354F83009A560E /* ObservableCollection.swift */; };
 		84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
+		84C847D41B8512F000E4EA92 /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
+		84C847D51B85142300E4EA92 /* BaseObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B21B7E7B3A00D910D4 /* BaseObservableOrderedDictionary.swift */; };
+		84C847D61B85146E00E4EA92 /* RangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA141B35A66A008C4B83 /* RangeExtension.swift */; };
 		84D0E5B11B7E7AE100D910D4 /* ObservableOrderedMultiDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B01B7E7AE100D910D4 /* ObservableOrderedMultiDictionary.swift */; };
 		84D0E5B31B7E7B3A00D910D4 /* BaseObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B21B7E7B3A00D910D4 /* BaseObservableOrderedDictionary.swift */; };
 		84D0E5B51B807B1100D910D4 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B41B807B1100D910D4 /* OrderedDictionaryTests.swift */; };
 		84D0E5B61B807B7C00D910D4 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
+		84D0E5B81B80F00000D910D4 /* CollectionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */; };
+		84D0E5BC1B8111C800D910D4 /* CollectionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */; };
+		84D0E5BD1B8111E800D910D4 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEE1B354F83009A560E /* ObservableCollection.swift */; };
+		84D0E5BE1B81125700D910D4 /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
+		84D0E5BF1B8112CF00D910D4 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DEC1B2C5CFE00D44299 /* ObservableArray.swift */; };
 		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
 		B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6347C5F1AE78B8300D70121 /* MVVMKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
@@ -77,6 +85,7 @@
 		84D0E5B01B7E7AE100D910D4 /* ObservableOrderedMultiDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObservableOrderedMultiDictionary.swift; path = DataBindings/ObservableCollections/ObservableOrderedMultiDictionary.swift; sourceTree = "<group>"; };
 		84D0E5B21B7E7B3A00D910D4 /* BaseObservableOrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseObservableOrderedDictionary.swift; path = DataBindings/ObservableCollections/BaseObservableOrderedDictionary.swift; sourceTree = "<group>"; };
 		84D0E5B41B807B1100D910D4 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
+		84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionWrapper.swift; path = DataBindings/CollectionWrapper.swift; sourceTree = "<group>"; };
 		B60D982F1AF2392C00262E3A /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewModel.swift; path = Core/ViewModel.swift; sourceTree = "<group>"; };
 		B6347C5A1AE78B8300D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6347C5E1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -162,6 +171,7 @@
 				845E5DEB1B2C5CD400D44299 /* ObservableCollections */,
 				845E5DF01B2C6A1900D44299 /* Adapters */,
 				B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */,
+				84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */,
 			);
 			name = DataBindings;
 			sourceTree = "<group>";
@@ -383,6 +393,7 @@
 				B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */,
 				848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */,
 				84D0E5B11B7E7AE100D910D4 /* ObservableOrderedMultiDictionary.swift in Sources */,
+				84D0E5B81B80F00000D910D4 /* CollectionWrapper.swift in Sources */,
 				8424184C1AFE72B500BAB4C6 /* Navigation.swift in Sources */,
 				84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */,
 				84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */,
@@ -403,8 +414,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				84D0E5B61B807B7C00D910D4 /* OrderedDictionary.swift in Sources */,
+				84C847D61B85146E00E4EA92 /* RangeExtension.swift in Sources */,
+				84C847D51B85142300E4EA92 /* BaseObservableOrderedDictionary.swift in Sources */,
+				84D0E5BE1B81125700D910D4 /* MulticastEvent.swift in Sources */,
 				B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */,
 				84D0E5B51B807B1100D910D4 /* OrderedDictionaryTests.swift in Sources */,
+				84C847D41B8512F000E4EA92 /* ObservableOrderedDictionary.swift in Sources */,
+				84D0E5BF1B8112CF00D910D4 /* ObservableArray.swift in Sources */,
+				84D0E5BD1B8111E800D910D4 /* ObservableCollection.swift in Sources */,
+				84D0E5BC1B8111C800D910D4 /* CollectionWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

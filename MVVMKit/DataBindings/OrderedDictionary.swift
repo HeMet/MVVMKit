@@ -138,39 +138,47 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     // Next three methods do all real work with except for replaceRange
     
     public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Index) -> ValueType? {
-        var adjustedIndex = index
-        
         let existingValue = data[key]
+        let existingIndex = keys.indexOf(key)
+        
         if existingValue != nil {
-            let existingIndex = keys.indexOf(key)!
-            
-            if existingIndex < index {
-                adjustedIndex--
-            }
-            keys.removeAtIndex(existingIndex)
+            keys.removeAtIndex(existingIndex!)
         }
     
-        keys.insert(key, atIndex:adjustedIndex)
+        keys.insert(key, atIndex:index)
         data[key] = value
+        
+        onMove?(existingIndex, index)
         
         return existingValue
     }
     
-    mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType {
-        let existingValue = data[key]!
+    mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
+        let existingValue = data[key]
         data[key] = value
+        onUpdate?(keys.indexOf(key)!)
         return existingValue
     }
     
     public mutating func removeValueForKey(key: KeyType) {
         let index = keys.indexOf(key)!
         keys.removeAtIndex(index)
+        let value = data[key]!
         data[key] = nil
+        onRemove?(index, (key, value))
     }
     
     public func indexOfKey(key: KeyType) -> Int? {
         return keys.indexOf(key)
     }
+    
+    public func getValueForKey(key: KeyType) -> ValueType? {
+        return self[key]
+    }
+    
+    var onUpdate: ((Index) -> ())?
+    var onRemove: ((Index, Element) -> ())?
+    var onMove: ((Index?, Index) -> ())?
 }
 
 extension OrderedDictionary: CustomDebugStringConvertible {
