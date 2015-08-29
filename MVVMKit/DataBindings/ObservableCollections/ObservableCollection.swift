@@ -8,27 +8,9 @@
 
 import Foundation
 
-//public struct OCEvents<C: ObservableCollection> {
-//    public typealias RangeChanged = MulticastEvent<C, ([C.ItemType], Range<Int>)>
-//}
-//
-//public protocol ObservableCollection: class {
-//    typealias ItemType
-//    
-//    var onDidInsertRange: OCEvents<Self>.RangeChanged! { get set }
-//    var onDidRemoveRange: OCEvents<Self>.RangeChanged! { get set }
-//    var onDidChangeRange: OCEvents<Self>.RangeChanged! { get set }
-//    
-//    var onBatchUpdate: MulticastEvent<Self, UpdatePhase>! { get set }
-//    
-//    init(data: [ItemType])
-//}
-//
-//public func batchUpdate<T: ObservableCollection>(c: T, updateLogic: () -> ()) {
-//    c.onBatchUpdate.fire(.Begin)
-//    updateLogic()
-//    c.onBatchUpdate.fire(.End)
-//}
+public enum UpdatePhase {
+    case Begin, End
+}
 
 public protocol ObservableCollection: class, CollectionType {
     typealias EventType = MulticastEvent<Self, Items<Generator.Element>>
