@@ -16,7 +16,7 @@ public enum TableAdapterRowHeightModes {
     case Automatic, TemplateCell, Manual, Default
 }
 
-public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftDelegate {
+public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewSwiftDelegate {
     public typealias CellsChangedEvent = (TableViewBaseAdapter, [NSIndexPath]) -> ()
     public typealias CellAction = (UITableViewCell, NSIndexPath) -> ()
     
@@ -27,10 +27,6 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     public let cells: CellViewBindingManager
     public let views = ViewBindingManager()
     public let rowHeightMode: TableAdapterRowHeightModes
-    
-    lazy var dsProxy: UITableViewDataSourceProxy = { [unowned self] in
-        UITableViewDataSourceProxy(dataSource: self)
-        }()
     
     lazy var dProxy: UITableViewDelegateProxy = { [unowned self] in
         let r = UITableViewDelegateProxy(swiftDelegate: self)
@@ -65,21 +61,23 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
         self.rowHeightMode = rowHeightMode
         cells = CellViewBindingManager(tableView: tableView)
         
-        self.tableView.dataSource = dsProxy
+        super.init()
+        
+        self.tableView.dataSource = self
         self.tableView.delegate = dProxy
     }
     
     //public init(tableView: UITableView, sourceSignal: Signal<[T], NoError>)
     
-    func numberOfSections(tableView: UITableView) -> Int {
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         fatalError("Abstract method")
     }
     
-    func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         fatalError("Abstract method")
     }
     
-    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let viewModel: AnyObject = viewModelForIndexPath(indexPath)
         return cells.bindViewModel(viewModel, indexPath: indexPath)
     }
@@ -96,11 +94,11 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
         return nil
     }
     
-    func titleForHeader(tableView: UITableView, section: Int) -> String? {
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
     
-    func titleForFooter(tableView: UITableView, section: Int) -> String? {
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return nil
     }
     
@@ -119,14 +117,14 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     }
     
     func heightForHeader(tableView: UITableView, section: Int) -> CGFloat {
-        let hasTitle = titleForHeader(tableView, section: section) != nil
+        let hasTitle = self.tableView(tableView, titleForHeaderInSection: section) != nil
         let hasVM = viewModelForSectionHeaderAtIndex(section) != nil
         
         return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
     }
     
     func heightForFooter(tableView: UITableView, section: Int) -> CGFloat {
-        let hasTitle = titleForFooter(tableView, section: section) != nil
+        let hasTitle = self.tableView(tableView, titleForFooterInSection: section) != nil
         let hasVM = viewModelForSectionFooterAtIndex(section) != nil
         
         return hasTitle || hasVM ? UITableViewAutomaticDimension : 0
@@ -157,10 +155,10 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     }
     
     public func endUpdate() {
-        precondition(self.updateCounter >= 0, "Batch update calls are unbalanced")
+        precondition(updateCounter >= 0, "Batch update calls are unbalanced")
         self.updateCounter--
-        if (self.updateCounter == 0) {
-            self.tableView.endUpdates()
+        if (updateCounter == 0) {
+            tableView.endUpdates()
             performDelayedActions()
         }
     }
@@ -169,8 +167,8 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     
     public func performAfterUpdate(action: UITableView -> ()) {
         
-        if self.updateCounter == 0 {
-            action(self.tableView)
+        if updateCounter == 0 {
+            action(tableView)
         } else {
             delayedActions.append(action)
         }
@@ -182,7 +180,7 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
         delayedActions.removeAll(keepCapacity: false)
         
         for action in actions {
-            action(self.tableView)
+            action(tableView)
         }
     }
     
@@ -193,43 +191,6 @@ public class TableViewBaseAdapter: UITableViewSwiftDataSource, UITableViewSwiftD
     public var onCellsInserted: CellsChangedEvent?
     public var onCellsRemoved: CellsChangedEvent?
     public var onCellsReloaded: CellsChangedEvent?
-}
-
-protocol UITableViewSwiftDataSource: class {
-    func numberOfSections(tableView: UITableView) -> Int
-    func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int
-    func cellForRowAtIndexPath(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell
-    func titleForHeader(tableView: UITableView, section: Int) -> String?
-    func titleForFooter(tableView: UITableView, section: Int) -> String?
-}
-
-@objc class UITableViewDataSourceProxy: NSObject, UITableViewDataSource {
-    
-    unowned var dataSource: UITableViewSwiftDataSource
-    
-    init(dataSource: UITableViewSwiftDataSource) {
-        self.dataSource = dataSource
-    }
-    
-    @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return dataSource.numberOfSections(tableView)
-    }
-    
-    @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.numberOfRowsInSection(tableView, section: section)
-    }
-    
-    @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return dataSource.cellForRowAtIndexPath(tableView, indexPath: indexPath)
-    }
-    
-    @objc func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return dataSource.titleForHeader(tableView, section: section)
-    }
-    
-    @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return dataSource.titleForFooter(tableView, section: section)
-    }
 }
 
 protocol UITableViewSwiftDelegate: class {

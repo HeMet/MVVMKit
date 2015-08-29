@@ -103,12 +103,12 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
         return sv == .Header ? headers : footers
     }
     
-    override func numberOfSections(tableView: UITableView) -> Int {
+    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         let idx = items.keys.reduce(-1, combine: max)
         return items.count > 0 ? idx + 1 : 0
     }
     
-    override func numberOfRowsInSection(tableView: UITableView, section: Int) -> Int {
+    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return items[section]?.count ?? 0
         return items.getValueForKey(section)?.count ?? 0
     }
@@ -128,12 +128,12 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
 //        return footers[index]?.viewModel
     }
     
-    override func titleForHeader(tableView: UITableView, section: Int) -> String? {
+    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        return headers[section]?.title
         return headers.getValueForKey(section)?.title
     }
     
-    override func titleForFooter(tableView: UITableView, section: Int) -> String? {
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 //        return footers[section]?.title
         return footers.getValueForKey(section)?.title
     }
