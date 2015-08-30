@@ -88,9 +88,9 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
         models[atIndex] = TableViewSimpleSection(title: title)
     }
     
-    public func setData(data: AnyObject, forSection: TableViewSectionView, atIndex: Int) {
+    public func setData<VM: ViewModel>(data: VM, forSection: TableViewSectionView, atIndex: Int) {
         let models = getModelsForSectionView(forSection)
-        models[atIndex] = TableViewCustomViewSection(viewModel: data)
+        models[atIndex] = TableViewCustomViewSection(viewModel: !data)
     }
     
     public func removeSectionView(sectionView: TableViewSectionView, atIndex: Int) {
@@ -119,12 +119,12 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
         return items.getValueForKey(indexPath.section)!.getDataAtIndex(indexPath.row)
     }
     
-    override func viewModelForSectionHeaderAtIndex(index: Int) -> AnyObject? {
+    override func viewModelForSectionHeaderAtIndex(index: Int) -> AnyViewModel? {
         return headers.getValueForKey(index)?.viewModel
 //        return headers[index]?.viewModel
     }
 
-    override func viewModelForSectionFooterAtIndex(index: Int) -> AnyObject? {
+    override func viewModelForSectionFooterAtIndex(index: Int) -> AnyViewModel? {
         return footers.getValueForKey(index)?.viewModel
 //        return footers[index]?.viewModel
     }
@@ -244,17 +244,17 @@ struct CollectionDataModel<T: ObservableCollection where T.Generator.Element: Vi
 
 protocol TableViewSectionModel {
     var title: String? { get }
-    var viewModel: AnyObject? { get }
+    var viewModel: AnyViewModel? { get }
 }
 
 struct TableViewSimpleSection : TableViewSectionModel {
     var title: String?
-    let viewModel: AnyObject? = nil
+    let viewModel: AnyViewModel? = nil
 }
 
 struct TableViewCustomViewSection : TableViewSectionModel {
     let title: String? = nil
-    var viewModel: AnyObject?
+    var viewModel: AnyViewModel?
 }
 
 extension Indexable where Index == Int {

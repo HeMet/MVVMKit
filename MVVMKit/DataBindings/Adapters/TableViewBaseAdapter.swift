@@ -71,11 +71,11 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
         fatalError("Abstract method")
     }
     
-    func viewModelForSectionHeaderAtIndex(index: Int) -> AnyObject? {
+    func viewModelForSectionHeaderAtIndex(index: Int) -> AnyViewModel? {
         return nil
     }
     
-    func viewModelForSectionFooterAtIndex(index: Int) -> AnyObject? {
+    func viewModelForSectionFooterAtIndex(index: Int) -> AnyViewModel? {
         return nil
     }
     
@@ -88,14 +88,14 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let viewModel: AnyObject = viewModelForSectionHeaderAtIndex(section) {
+        if let viewModel = viewModelForSectionHeaderAtIndex(section) {
             return views.bindViewModel(viewModel)
         }
         return nil
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if let viewModel: AnyObject = viewModelForSectionFooterAtIndex(section) {
+        if let viewModel = viewModelForSectionFooterAtIndex(section) {
             return views.bindViewModel(viewModel)
         }
         return nil

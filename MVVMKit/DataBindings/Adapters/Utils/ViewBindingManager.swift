@@ -9,7 +9,7 @@
 import Foundation
 
 public class ViewBindingManager {
-    typealias Binding = (AnyObject) -> UIView
+    typealias Binding = (AnyViewModel) -> UIView
     public typealias BindingCallback = (UIView) -> ()
     
     var bindings: [String:Binding] = [:]
@@ -21,7 +21,7 @@ public class ViewBindingManager {
         let typeName = nameOfType(V.ViewModelType.self)
         bindings[typeName] = { [unowned self] viewModel in
             var view = viewType.init()
-            view.viewModel = viewModel as! V.ViewModelType
+            view.viewModel = viewModel.value as! V.ViewModelType
             self.onWillBind?(view)
             view.bindToViewModel()
             self.onDidBind?(view)
@@ -34,27 +34,27 @@ public class ViewBindingManager {
         bindings[typeName] = nil
     }
     
-    func bindViewModel(viewModel: AnyObject) -> UIView {
+    func bindViewModel(viewModel: AnyViewModel) -> UIView {
         if let view = tryBindViewModel(viewModel) {
             return view
         }
         fatalError("Unknown view model type")
     }
     
-    func canBindViewModel(viewModel: AnyObject) -> Bool {
-        let typeName = nameOfType(viewModel)
+    func canBindViewModel(viewModel: AnyViewModel) -> Bool {
+        let typeName = nameOfType(viewModel.value)
         return bindings[typeName] != nil
     }
     
-    func tryBindViewModel(viewModel: AnyObject) -> UIView? {
-        let typeName = nameOfType(viewModel)
+    func tryBindViewModel(viewModel: AnyViewModel) -> UIView? {
+        let typeName = nameOfType(viewModel.value)
         if let binding = bindings[typeName] {
             return binding(viewModel)
         }
         return nil
     }
     
-    func nameOfType(obj: AnyObject) -> String {
+    func nameOfType(obj: Any) -> String {
         return "\(obj.dynamicType)"
     }
     

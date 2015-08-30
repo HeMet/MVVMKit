@@ -30,10 +30,6 @@ public final class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyV
         }
     }
     
-    override func setAnyViewModel(viewModel: Any) {
-        base.viewModel = viewModel as! ViewModelType
-    }
-    
     override var anyViewModel: AnyViewModel {
         get {
             return AnyViewModel(viewModel: viewModel)
@@ -72,10 +68,6 @@ public class AnyViewForAnyViewModel {
         set {
             fatalError()
         }
-    }
-    
-    func setAnyViewModel(viewModel: Any) {
-        fatalError()
     }
     
     public func bindToViewModel() {
