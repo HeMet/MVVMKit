@@ -17,7 +17,7 @@ public class CellViewBindingManager {
     
     unowned(unsafe) var tableView: UITableView
     var bindings: [String:Binding] = [:]
-    var sizeCalculators: [String:RowSizeCalculator] = [:]
+    var templateCells: [String: AnyViewForAnyViewModel] = [:]
     
     public var onWillBind: BindingCallback?
     public var onDidBind: BindingCallback?
@@ -26,23 +26,23 @@ public class CellViewBindingManager {
         self.tableView = tableView
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: BindableCellView, V.ViewModelType: AnyObject>(viewType: V.Type) {
         if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
             tableView.registerClass(V.self, forCellReuseIdentifier: V.CellIdentifier)
         }
         
         registerBinding(viewType)
-        registerHeightCalculator(viewType)
+        registerTemplateCell(viewType)
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView, V: NibSource>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: BindableCellView, V: NibSource, V.ViewModelType: AnyObject>(viewType: V.Type) {
         if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
             let nib = UINib(nibName: V.NibIdentifier, bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: V.CellIdentifier)
         }
         
         registerBinding(viewType)
-        registerHeightCalculator(viewType)
+        registerTemplateCell(viewType)
     }
     
     func registerBinding<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
@@ -61,31 +61,35 @@ public class CellViewBindingManager {
         }
     }
     
-    func registerHeightCalculator<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
+    func registerTemplateCell<V: BindableCellView where V: UITableViewCell, V.ViewModelType: AnyObject>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
-        var templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
+        let templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
         templateCell.contentView.translatesAutoresizingMaskIntoConstraints = false
         
-        sizeCalculators[typeName] = { [unowned self] viewModel, indexPath in
-            templateCell.viewModel = viewModel as! V.ViewModelType
-            
-            self.applyWidthContraint(templateCell.contentView, width: self.tableView.bounds.width)
-            
-            self.onWillBind?(templateCell, indexPath)
-            templateCell.bindToViewModel()
-            self.onDidBind?(templateCell, indexPath)
-            
-            templateCell.bounds = CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: templateCell.bounds.height)
-            
-            templateCell.setNeedsLayout()
-            templateCell.layoutIfNeeded()
-            
-            var size = templateCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-            size.height++
-            
-            return size
-        }
+        templateCells[typeName] = AnyViewForViewModel(base: templateCell)
+    }
+    
+    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: AnyObject, indexPath: NSIndexPath) -> CGSize {
+        let templateCell = cell.view as! UITableViewCell
+        
+        cell.anyViewModel = viewModel
+        
+        applyWidthContraint(templateCell.contentView, width: tableView.bounds.width)
+        
+        self.onWillBind?(templateCell, indexPath)
+        cell.bindToViewModel()
+        self.onDidBind?(templateCell, indexPath)
+
+        templateCell.bounds = CGRect(x: 0, y: 0, width: self.tableView.bounds.width, height: templateCell.bounds.height)
+        
+        templateCell.setNeedsLayout()
+        templateCell.layoutIfNeeded()
+        
+        var size = templateCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        size.height++
+        
+        return size
     }
     
     func applyWidthContraint(contentView: UIView, width: CGFloat) {
@@ -116,8 +120,8 @@ public class CellViewBindingManager {
     
     func sizeForViewModel(viewModel: AnyObject, atIndexPath: NSIndexPath) -> CGSize {
         let typeName = nameOfType(viewModel)
-        if let calculator = sizeCalculators[typeName] {
-            return calculator(viewModel, atIndexPath)
+        if let templateCell = templateCells[typeName] {
+            return calculateHeightForTemplateCell(templateCell, viewModel: viewModel, indexPath: atIndexPath)
         }
         fatalError("Unknown view model type")
     }
