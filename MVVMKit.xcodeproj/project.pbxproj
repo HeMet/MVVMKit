@@ -39,6 +39,7 @@
 		84D0E5BF1B8112CF00D910D4 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DEC1B2C5CFE00D44299 /* ObservableArray.swift */; };
 		84E698F41B92E48400658A39 /* AnyViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */; settings = {ASSET_TAGS = (); }; };
 		84E698F61B930A0F00658A39 /* UniqueID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F51B930A0F00658A39 /* UniqueID.swift */; settings = {ASSET_TAGS = (); }; };
+		84E698FA1B93293400658A39 /* AnyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F91B93293400658A39 /* AnyViewModel.swift */; settings = {ASSET_TAGS = (); }; };
 		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
 		B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6347C5F1AE78B8300D70121 /* MVVMKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
@@ -86,6 +87,7 @@
 		84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionWrapper.swift; path = DataBindings/CollectionWrapper.swift; sourceTree = "<group>"; };
 		84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewForViewModel.swift; sourceTree = "<group>"; };
 		84E698F51B930A0F00658A39 /* UniqueID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniqueID.swift; sourceTree = "<group>"; };
+		84E698F91B93293400658A39 /* AnyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyViewModel.swift; sourceTree = "<group>"; };
 		B60D982F1AF2392C00262E3A /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		B6347C5A1AE78B8300D70121 /* MVVMKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MVVMKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6347C5E1AE78B8300D70121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				B60D982F1AF2392C00262E3A /* ViewModel.swift */,
 				842418501AFF488E00BAB4C6 /* GroupView.swift */,
 				84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */,
+				84E698F91B93293400658A39 /* AnyViewModel.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */,
 				84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */,
 				8424184F1AFE741E00BAB4C6 /* BuiltInTransitions.swift in Sources */,
+				84E698FA1B93293400658A39 /* AnyViewModel.swift in Sources */,
 				844507CD1B37539E00A08A78 /* TableViewAdapter.swift in Sources */,
 				846360DD1B56A5FE00D463BA /* CellViewBindingManager.swift in Sources */,
 				84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */,

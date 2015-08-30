@@ -14,8 +14,8 @@ public protocol UniqueID: Equatable {
     var uniqueID: IdType { get }
 }
 
-public func ==<VM0: UniqueID, VM1: UniqueID>(l: VM0, r: VM1) -> Bool {
-    guard let r = r as? VM0 else { return false }
+public func ==<U0: UniqueID, U1: UniqueID>(l: U0, r: U1) -> Bool {
+    guard let r = r as? U0 else { return false }
     
     return l.uniqueID == r.uniqueID
 }

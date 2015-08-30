@@ -36,7 +36,7 @@ public prefix func ! <V : SBViewForViewModel where V: UIViewController, V.ViewMo
 func afterViewInstantiated <V : ViewForViewModel where V: UIViewController, V.ViewModelType: AnyObject>(var view : V, viewModel: V.ViewModelType) -> V {
     view.viewModel = viewModel
     
-    VMTracker.append(viewModel, view: view)
+    VMTracker.append(view)
     
     return view
 }
@@ -91,35 +91,35 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
     }
     
     /// Attaches view to screen with given transition.
-    public func withTransition(t: Transition) -> (sender: AnyObject) -> (ArgsType) -> () {
+    public func withTransition(t: Transition) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         return { s in
             return { args in
                 let toView = self.factory(args)
-                let fromView = VMTracker.getFromView(s)!
+                let fromView = VMTracker.getViewForViewModel(s)!
                 t(from: fromView, to: toView)
             }
         }
     }
     
-    public func withSegue(segueId: String, argsMapper: (ArgsType) -> [AnyObject]) -> (sender: AnyObject) -> (ArgsType) -> () {
+    public func withSegue(segueId: String, argsMapper: (ArgsType) -> [AnyObject]) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         return { s in
             return { args in
                 // don't using factory because Storyboard creates hierarchy
-                let fromView = VMTracker.getFromView(s)!
+                let fromView = VMTracker.getViewForViewModel(s)!
                 fromView.performSegueWithIdentifier(segueId, sender: argsMapper(args))
             }
         }
     }
     
     /// Present view as popover above another view.
-    public func asPopoverOn<V: UIViewController>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyObject) -> (ArgsType) -> () {
+    public func asPopoverOn<V: UIViewController>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         
         return { s in
             return { args in
                 let view = self.factory(args)
                 view.modalPresentationStyle = .Popover
                 let popoverPC = view.popoverPresentationController!
-                let presentingVC = VMTracker.getFromView(s) as! V
+                let presentingVC = VMTracker.getViewForViewModel(s) as! V
                 if let delegate = presentingVC as? UIPopoverPresentationControllerDelegate {
                     popoverPC.delegate = delegate
                 }
@@ -153,8 +153,8 @@ func goBack(fromView: UIViewController) {
     }
 }
 
-public func goBack(viewModel: AnyObject) {
-    if let v = VMTracker.getFromView(viewModel) {
+public func goBack(viewModel: AnyViewModel) {
+    if let v = VMTracker.getViewForViewModel(viewModel) {
         goBack(v)
     }
 }
@@ -172,25 +172,43 @@ class VMEntry {
 }
 
 class VMTracker {
-    static var entries: [VMEntry] = []
+    static var entries: [AnyViewForAnyViewModel] = []
     
-    static func append(vm: AnyObject, view: UIViewController) {
-        entries.append(VMEntry(vm: vm, view: view))
+    static func append<V: ViewForViewModel where V: AnyObject>(view: V) {
+        entries.append(AnyViewForViewModel(weakBase: view))
     }
     
-    static func getFromView(sender: AnyObject) -> UIViewController? {
+    static func getViewForViewModel(vm: AnyViewModel) -> UIViewController? {
         cleanDeadEntries()
-        return entries.filter({ $0.vm === sender }).first?.view
+        
+        var result: UIViewController? = nil
+        for entry in entries {
+            entry.strongify { _ in
+                if entry.anyViewModel == vm {
+                    result = (entry.view as! UIViewController)
+                }
+            }
+        }
+        return result
     }
     
-    static func getViewModel(view: UIViewController) -> AnyObject? {
+    static func getViewModelForView(view: UIViewController) -> AnyViewModel? {
         cleanDeadEntries()
-        return entries.filter({ $0.view == view }).first?.vm
+        
+        var result: AnyViewModel? = nil
+        for entry in entries {
+            entry.strongify { _ in
+                if entry.view === view {
+                    result = entry.anyViewModel
+                }
+            }
+        }
+        return result
     }
     
     static func cleanDeadEntries() {
         entries = entries.filter {
-            $0.vm != nil && $0.view != nil
+            $0.strongify({ _ in })
         }
     }
 }

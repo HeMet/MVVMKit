@@ -73,7 +73,7 @@ public class CellViewBindingManager {
     func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: Any, indexPath: NSIndexPath) -> CGSize {
         let templateCell = cell.view as! UITableViewCell
         
-        cell.anyViewModel = viewModel
+        cell.setAnyViewModel(viewModel)
         
         applyWidthContraint(templateCell.contentView, width: tableView.bounds.width)
         

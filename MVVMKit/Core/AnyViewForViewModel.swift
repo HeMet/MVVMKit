@@ -10,14 +10,18 @@ import UIKit
 
 // Type-erased version of ViewForViewModel
 
-class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, ViewForViewModel {
-    let base: _AnyViewForViewModelBoxBase<ViewModelType>
+public class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, ViewForViewModel {
+    private let base: _AnyViewForViewModelBoxBase<ViewModelType>
     
-    init<V: ViewForViewModel where V: AnyObject, V.ViewModelType == ViewModelType>(base: V) {
+    public init<V: ViewForViewModel where V: AnyObject, V.ViewModelType == ViewModelType>(base: V) {
         self.base = _AnyViewForViewModelBox(base: base)
     }
     
-    var viewModel: ViewModelType! {
+    init<V: ViewForViewModel where V: AnyObject, V.ViewModelType == ViewModelType>(weakBase: V) {
+        self.base = _WeakAnyViewForViewModelBox(base: weakBase)
+    }
+    
+    public var viewModel: ViewModelType! {
         get {
             return base.viewModel
         }
@@ -26,34 +30,42 @@ class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, Vie
         }
     }
     
-    override var anyViewModel: Any {
-        get {
-            return viewModel
-        }
-        set {
-            viewModel = newValue as! ViewModelType
-        }
+    override func setAnyViewModel(viewModel: Any) {
+        base.viewModel = viewModel as! ViewModelType
     }
     
+    override var anyViewModel: AnyViewModel {
+        get {
+            return AnyViewModel(viewModel: viewModel)
+        }
+        set {
+            base.viewModel = newValue.value as! ViewModelType
+        }
+    }
+
     // Could be either UIView or UIViewController
     override var view: AnyObject {
         return base.view
     }
     
-    override func bindToViewModel() {
+    public override func bindToViewModel() {
         base.bindToViewModel()
+    }
+    
+    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+        return base.strongify(callback)
     }
 }
 
 // Completely type-erased version of ViewForViewModel
 
-class AnyViewForAnyViewModel {
+public class AnyViewForAnyViewModel {
     
     var view: AnyObject {
         fatalError()
     }
     
-    var anyViewModel: Any {
+    var anyViewModel: AnyViewModel {
         get {
             fatalError()
         }
@@ -62,12 +74,20 @@ class AnyViewForAnyViewModel {
         }
     }
     
-    func bindToViewModel() {
+    func setAnyViewModel(viewModel: Any) {
+        fatalError()
+    }
+    
+    public func bindToViewModel() {
+        fatalError()
+    }
+    
+    func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
         fatalError()
     }
 }
 
-class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForViewModel {
+private class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForViewModel {
 
     var view: AnyObject {
         fatalError()
@@ -85,9 +105,13 @@ class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForViewModel {
     func bindToViewModel() {
         fatalError()
     }
+    
+    func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+        fatalError()
+    }
 }
 
-class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
+private class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
     var base: V
     
     init(base: V) {
@@ -109,5 +133,43 @@ class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewF
     
     override func bindToViewModel() {
         base.bindToViewModel()
+    }
+    
+    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+        callback(base)
+        return true
+    }
+}
+
+private class _WeakAnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
+    weak var base: V?
+    
+    init(base: V) {
+        self.base = base
+    }
+    
+    override var view: AnyObject {
+        return base!
+    }
+    
+    override var viewModel: V.ViewModelType! {
+        get {
+            return base!.viewModel
+        }
+        set {
+            base!.viewModel = newValue
+        }
+    }
+    
+    override func bindToViewModel() {
+        base!.bindToViewModel()
+    }
+    
+    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+        if let strongBase = base {
+            callback(strongBase)
+            return true
+        }
+        return false
     }
 }
