@@ -35,7 +35,7 @@ public class NavigationGroupView: UINavigationController {
     
     func disposeViewModelsOfViews(views: [UIViewController]) {
         for view in views {
-            if let vm = VMTracker.getViewModel(view) as? ViewModel {
+            if let vm = VMTracker.getViewModel(view) as? DisposableViewModel {
                 vm.dispose()
             }
         }
