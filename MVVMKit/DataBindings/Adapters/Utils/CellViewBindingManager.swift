@@ -9,8 +9,8 @@
 import UIKit
 
 public class CellViewBindingManager {
-    typealias Binding = (AnyObject, NSIndexPath) -> UITableViewCell
-    typealias RowSizeCalculator = (AnyObject, NSIndexPath) -> CGSize
+    typealias Binding = (Any, NSIndexPath) -> UITableViewCell
+    typealias RowSizeCalculator = (Any, NSIndexPath) -> CGSize
     public typealias BindingCallback = (UITableViewCell, NSIndexPath) -> ()
     
     let templateCellWidthContraintId = "CVBM_templace_cell_width_constraint"
@@ -26,7 +26,7 @@ public class CellViewBindingManager {
         self.tableView = tableView
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView, V.ViewModelType: AnyObject>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: BindableCellView>(viewType: V.Type) {
         if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
             tableView.registerClass(V.self, forCellReuseIdentifier: V.CellIdentifier)
         }
@@ -35,7 +35,7 @@ public class CellViewBindingManager {
         registerTemplateCell(viewType)
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView, V: NibSource, V.ViewModelType: AnyObject>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: BindableCellView, V: NibSource>(viewType: V.Type) {
         if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
             let nib = UINib(nibName: V.NibIdentifier, bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: V.CellIdentifier)
@@ -61,7 +61,7 @@ public class CellViewBindingManager {
         }
     }
     
-    func registerTemplateCell<V: BindableCellView where V: UITableViewCell, V.ViewModelType: AnyObject>(viewType: V.Type) {
+    func registerTemplateCell<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
         let templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
@@ -70,7 +70,7 @@ public class CellViewBindingManager {
         templateCells[typeName] = AnyViewForViewModel(base: templateCell)
     }
     
-    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: AnyObject, indexPath: NSIndexPath) -> CGSize {
+    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: Any, indexPath: NSIndexPath) -> CGSize {
         let templateCell = cell.view as! UITableViewCell
         
         cell.anyViewModel = viewModel
@@ -110,23 +110,23 @@ public class CellViewBindingManager {
         bindings[typeName] = nil
     }
     
-    func bindViewModel(viewModel: AnyObject, indexPath: NSIndexPath) -> UITableViewCell {
-        let typeName = nameOfType(viewModel)
+    func bindViewModel(viewModel: Any, indexPath: NSIndexPath) -> UITableViewCell {
+        let typeName = nameOfInstance(viewModel)
         if let binding = bindings[typeName] {
             return binding(viewModel, indexPath)
         }
         fatalError("Unknown view model type")
     }
     
-    func sizeForViewModel(viewModel: AnyObject, atIndexPath: NSIndexPath) -> CGSize {
-        let typeName = nameOfType(viewModel)
+    func sizeForViewModel(viewModel: Any, atIndexPath: NSIndexPath) -> CGSize {
+        let typeName = nameOfInstance(viewModel)
         if let templateCell = templateCells[typeName] {
             return calculateHeightForTemplateCell(templateCell, viewModel: viewModel, indexPath: atIndexPath)
         }
         fatalError("Unknown view model type")
     }
     
-    func nameOfType(obj: AnyObject) -> String {
+    func nameOfInstance(obj: Any) -> String {
         return "\(obj.dynamicType)"
     }
     
