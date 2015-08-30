@@ -52,19 +52,20 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
     /// One-to-One
     
-    public func setData<T: AnyObject>(data: T, forSectionAtIndex sIndex: Int) {
+    public func setData<T: ViewModel>(data: T, forSectionAtIndex sIndex: Int) {
 //        items[sIndex]?.dispose()
         items.getValueForKey(sIndex)?.dispose()
-        items[sIndex] = SimpleItem(data: data)
+        items[sIndex] = AnyViewModel(viewModel: data)
     }
     
     /// One-to-Many
     
-    public func setData<T: AnyObject>(data: ObservableArray<T>, forSectionAtIndex sIndex: Int) {
+    public func setData<T: ViewModel>(data: ObservableArray<T>, forSectionAtIndex sIndex: Int) {
 //        items[sIndex]?.dispose()
         items.getValueForKey(sIndex)?.dispose()
-        data.bindToSection(sIndex, listener: self)
-        items[sIndex] = data
+        let cdm = CollectionDataModel(collection: data)
+        cdm.bindToSection(sIndex, listener: self)
+        items[sIndex] = cdm
     }
     
     /// One-to-Any
@@ -113,7 +114,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
         return items.getValueForKey(section)?.count ?? 0
     }
     
-    override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
+    override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyViewModel {
 //        return items[indexPath.section]!.getDataAtIndex(indexPath.row)
         return items.getValueForKey(indexPath.section)!.getDataAtIndex(indexPath.row)
     }
@@ -175,7 +176,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
 
 protocol TableViewSectionDataModel {
     var count: Int { get }
-    func getDataAtIndex(index: Int) -> AnyObject
+    func getDataAtIndex(index: Int) -> AnyViewModel
     func dispose()
 }
 
@@ -186,14 +187,13 @@ protocol ObservableArrayListener: class {
     func handleItemsBatchUpdate(section: Int, phase: UpdatePhase)
 }
 
-// AnyObject is a protocol hence we cann't extend it to support TableViewMultiDataAdapterItem
-struct SimpleItem<T: AnyObject>: TableViewSectionDataModel {
-    let data: T
+extension AnyViewModel: TableViewSectionDataModel {
+    var count: Int {
+        return 1
+    }
     
-    let count = 1
-    
-    func getDataAtIndex(index: Int) -> AnyObject {
-        return data
+    func getDataAtIndex(index: Int) -> AnyViewModel {
+        return self
     }
     
     func dispose() {
@@ -201,36 +201,44 @@ struct SimpleItem<T: AnyObject>: TableViewSectionDataModel {
     }
 }
 
-extension ObservableArray: TableViewSectionDataModel {
-    var tag: String {
-        return "CollectionItem<T: AnyObject>"
+struct CollectionDataModel<T: ObservableCollection where T.Generator.Element: ViewModel, T.Index == Int>: TableViewSectionDataModel {
+    
+    let tag = "CollectionItem<T: AnyObject>"
+    
+    let collection: T
+    
+    init(collection: T) {
+        self.collection = collection
     }
     
-    func getDataAtIndex(index: Int) -> AnyObject {
-        // there is no way in Swift 1.2 to specify extenstion for array of objects only
-        return self[index] as! AnyObject
+    var count: Int {
+        return collection.count
+    }
+    
+    func getDataAtIndex(index: Int) -> AnyViewModel {
+        return AnyViewModel(viewModel: collection[index])
     }
     
     func bindToSection(section: Int, listener: ObservableArrayListener) {
-        onDidChangeItems.register(tag) { [unowned listener] in
+        collection.onDidChangeItems.register(tag) { [unowned listener] in
             listener.handleDidChangeItems($1.getPathsForSection(section))
         }
-        onDidInsertItems.register(tag) { [unowned listener] in
+        collection.onDidInsertItems.register(tag) { [unowned listener] in
             listener.handleDidInsertItems($1.getPathsForSection(section))
         }
-        onDidRemoveItems.register(tag) { [unowned listener] in
+        collection.onDidRemoveItems.register(tag) { [unowned listener] in
             listener.handleDidRemoveItems($1.getPathsForSection(section))
         }
-        onBatchUpdate.register(tag) { [unowned listener] in
+        collection.onBatchUpdate.register(tag) { [unowned listener] in
             listener.handleItemsBatchUpdate(section, phase: $1)
         }
     }
     
     func dispose() {
-        onDidChangeItems.unregister(tag)
-        onDidInsertItems.unregister(tag)
-        onDidRemoveItems.unregister(tag)
-        onBatchUpdate.unregister(tag)
+        collection.onDidChangeItems.unregister(tag)
+        collection.onDidInsertItems.unregister(tag)
+        collection.onDidRemoveItems.unregister(tag)
+        collection.onBatchUpdate.unregister(tag)
     }
 }
 

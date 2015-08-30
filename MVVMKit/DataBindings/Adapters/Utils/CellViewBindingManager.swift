@@ -9,8 +9,7 @@
 import UIKit
 
 public class CellViewBindingManager {
-    typealias Binding = (Any, NSIndexPath) -> UITableViewCell
-    typealias RowSizeCalculator = (Any, NSIndexPath) -> CGSize
+    typealias Binding = (AnyViewModel, NSIndexPath) -> UITableViewCell
     public typealias BindingCallback = (UITableViewCell, NSIndexPath) -> ()
     
     let templateCellWidthContraintId = "CVBM_templace_cell_width_constraint"
@@ -51,7 +50,7 @@ public class CellViewBindingManager {
         bindings[typeName] = { [unowned self] viewModel, indexPath in
             var view = self.tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier, forIndexPath: indexPath) as! V
             
-            view.viewModel = viewModel as! V.ViewModelType
+            view.viewModel = viewModel.value as! V.ViewModelType
             
             self.onWillBind?(view, indexPath)
             view.bindToViewModel()
@@ -70,10 +69,10 @@ public class CellViewBindingManager {
         templateCells[typeName] = AnyViewForViewModel(base: templateCell)
     }
     
-    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: Any, indexPath: NSIndexPath) -> CGSize {
+    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: AnyViewModel, indexPath: NSIndexPath) -> CGSize {
         let templateCell = cell.view as! UITableViewCell
         
-        cell.setAnyViewModel(viewModel)
+        cell.anyViewModel = viewModel
         
         applyWidthContraint(templateCell.contentView, width: tableView.bounds.width)
         
@@ -110,16 +109,16 @@ public class CellViewBindingManager {
         bindings[typeName] = nil
     }
     
-    func bindViewModel(viewModel: Any, indexPath: NSIndexPath) -> UITableViewCell {
-        let typeName = nameOfInstance(viewModel)
+    func bindViewModel(viewModel: AnyViewModel, indexPath: NSIndexPath) -> UITableViewCell {
+        let typeName = nameOfInstance(viewModel.value)
         if let binding = bindings[typeName] {
             return binding(viewModel, indexPath)
         }
         fatalError("Unknown view model type")
     }
     
-    func sizeForViewModel(viewModel: Any, atIndexPath: NSIndexPath) -> CGSize {
-        let typeName = nameOfInstance(viewModel)
+    func sizeForViewModel(viewModel: AnyViewModel, atIndexPath: NSIndexPath) -> CGSize {
+        let typeName = nameOfInstance(viewModel.value)
         if let templateCell = templateCells[typeName] {
             return calculateHeightForTemplateCell(templateCell, viewModel: viewModel, indexPath: atIndexPath)
         }

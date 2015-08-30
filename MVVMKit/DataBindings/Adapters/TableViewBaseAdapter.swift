@@ -63,11 +63,11 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let viewModel: AnyObject = viewModelForIndexPath(indexPath)
+        let viewModel = viewModelForIndexPath(indexPath)
         return cells.bindViewModel(viewModel, indexPath: indexPath)
     }
     
-    func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyObject {
+    func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyViewModel {
         fatalError("Abstract method")
     }
     
