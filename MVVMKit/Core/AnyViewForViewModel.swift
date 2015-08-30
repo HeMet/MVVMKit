@@ -10,7 +10,7 @@ import UIKit
 
 // Type-erased version of ViewForViewModel
 
-public class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, ViewForViewModel {
+public final class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, ViewForViewModel {
     private let base: _AnyViewForViewModelBoxBase<ViewModelType>
     
     public init<V: ViewForViewModel where V: AnyObject, V.ViewModelType == ViewModelType>(base: V) {
@@ -111,7 +111,7 @@ private class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForView
     }
 }
 
-private class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
+private final class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
     var base: V
     
     init(base: V) {
@@ -141,7 +141,7 @@ private class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _
     }
 }
 
-private class _WeakAnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
+private final class _WeakAnyViewForViewModelBox<V: ViewForViewModel where V: AnyObject>: _AnyViewForViewModelBoxBase<V.ViewModelType> {
     weak var base: V?
     
     init(base: V) {

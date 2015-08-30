@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class AnyViewModel: ViewModel {
+public final class AnyViewModel: ViewModel {
     private let base: _AnyViewModelBoxBase
     
     public init<VM: ViewModel>(viewModel: VM) {
@@ -30,7 +30,7 @@ public prefix func!<VM: ViewModel>(vm: VM) -> AnyViewModel {
     return AnyViewModel(viewModel: vm)
 }
 
-private class _ViewModelBox<VM: ViewModel>: _AnyViewModelBoxBase {
+private final class _ViewModelBox<VM: ViewModel>: _AnyViewModelBoxBase {
     let base: VM
     
     init(viewModel: VM) {
