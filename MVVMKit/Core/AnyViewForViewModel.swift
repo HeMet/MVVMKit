@@ -10,7 +10,7 @@ import UIKit
 
 // Type-erased version of ViewForViewModel
 
-class AnyViewForViewModel<ViewModelType: AnyObject>: AnyViewForAnyViewModel, ViewForViewModel {
+class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyViewModel, ViewForViewModel {
     let base: _AnyViewForViewModelBoxBase<ViewModelType>
     
     init<V: ViewForViewModel where V: AnyObject, V.ViewModelType == ViewModelType>(base: V) {
@@ -26,7 +26,7 @@ class AnyViewForViewModel<ViewModelType: AnyObject>: AnyViewForAnyViewModel, Vie
         }
     }
     
-    override var anyViewModel: AnyObject {
+    override var anyViewModel: Any {
         get {
             return viewModel
         }
@@ -53,7 +53,7 @@ class AnyViewForAnyViewModel {
         fatalError()
     }
     
-    var anyViewModel: AnyObject {
+    var anyViewModel: Any {
         get {
             fatalError()
         }
@@ -67,7 +67,8 @@ class AnyViewForAnyViewModel {
     }
 }
 
-class _AnyViewForViewModelBoxBase<ViewModelType>: ViewForViewModel {
+class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForViewModel {
+
     var view: AnyObject {
         fatalError()
     }
