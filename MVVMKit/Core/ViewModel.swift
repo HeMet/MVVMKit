@@ -20,6 +20,13 @@ public protocol DisposableViewModel {
     func handleDidDisposeViewModel(viewModel: Any)
 }
 
+public protocol ViewModelWithID: ViewModel, UniqueID {
+    
+}
+
+
+// Default implementation
+
 public extension DisposableViewModel {
     func dispose() {
         onDisposed?(self)
@@ -34,8 +41,4 @@ public extension DisposableViewModel {
         vm.onDisposed = handleDidDisposeViewModel
         return vm
     }
-}
-
-public protocol ViewModelWithID: ViewModel, UniqueID {
-    
 }
