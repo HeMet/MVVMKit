@@ -24,7 +24,7 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
     let slHeightForRowAtIndexPath = Selector("tableView:heightForRowAtIndexPath:")
     
     // Workaround: anowned(safe) cause random crashes for NSObject descendants
-    unowned(unsafe) let tableView: UITableView
+    unowned let tableView: UITableView
     public let cells: CellViewBindingManager
     public let views = ViewBindingManager()
     public let rowHeightMode: TableAdapterRowHeightModes

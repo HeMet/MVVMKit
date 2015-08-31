@@ -14,7 +14,7 @@ public class CellViewBindingManager {
     
     let templateCellWidthContraintId = "CVBM_templace_cell_width_constraint"
     
-    unowned(unsafe) var tableView: UITableView
+    unowned var tableView: UITableView
     var bindings: [String:Binding] = [:]
     var templateCells: [String: AnyViewForAnyViewModel] = [:]
     
