@@ -43,7 +43,6 @@
 		B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */; };
 		B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */; };
 		B6347C921AE78E2E00D70121 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
-		B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C901AE78E2E00D70121 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,6 @@
 		B6347C761AE78C8700D70121 /* BuiltInGroupViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BuiltInGroupViews.swift; path = BuiltInViews/BuiltInGroupViews.swift; sourceTree = "<group>"; };
 		B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewForViewModel.swift; sourceTree = "<group>"; };
 		B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedDictionary.swift; path = DataBindings/OrderedDictionary.swift; sourceTree = "<group>"; };
-		B6347C901AE78E2E00D70121 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,7 +249,6 @@
 			isa = PBXGroup;
 			children = (
 				84A57FF01B357F31009A560E /* MulticastEvent.swift */,
-				B6347C901AE78E2E00D70121 /* StringExtension.swift */,
 				848F46F41B554D37001AF84C /* LifetimeUtils.swift */,
 				84E698F51B930A0F00658A39 /* UniqueID.swift */,
 			);
@@ -388,7 +385,6 @@
 				84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */,
 				847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */,
 				846360DB1B568E5000D463BA /* ViewBindingManager.swift in Sources */,
-				B6347C931AE78E2E00D70121 /* StringExtension.swift in Sources */,
 				84E698F61B930A0F00658A39 /* UniqueID.swift in Sources */,
 				B6347C851AE78C8700D70121 /* ViewForViewModel.swift in Sources */,
 			);
