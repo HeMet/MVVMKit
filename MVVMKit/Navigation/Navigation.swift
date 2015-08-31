@@ -36,7 +36,7 @@ public prefix func ! <V : SBViewForViewModel where V: UIViewController> (vType :
 func afterViewInstantiated <V : ViewForViewModel where V: UIViewController>(var view : V, viewModel: V.ViewModelType) -> V {
     view.viewModel = viewModel
     
-    VMTracker.append(view)
+    VMTracker.sharedInstance.append(view)
     
     return view
 }
@@ -46,23 +46,23 @@ func afterViewInstantiated <V : ViewForViewModel where V: UIViewController>(var 
 /// -- Denotes ViewForViewModel's we want to use.
 ///
 /// -- Aggregates given factory functions in one single factory function which takes as many arguments as factory functions provided and returns array of views.
-public func present<V : ViewForViewModel, VM where V: UIViewController>(factory: (VM) -> V) -> ViewFactory<V, VM> {
+public func present<V : ViewForViewModel where V: UIViewController>(factory: (V.ViewModelType) -> V) -> ViewFactory<V, V.ViewModelType> {
     return ViewFactory(factory: factory)
 }
 
-public func present<VM0, V0 : UIViewController, VM1, V1: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1) -> ViewsFactory<(vm0: VM0, vm1: VM1)> {
+public func present<V0 : ViewForViewModel, V1: ViewForViewModel where V0: UIViewController, V1: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType)> {
     return ViewsFactory { args in
         [f0(args.vm0), f1(args.vm1)]
     }
 }
 
-public func present<VM0, V0 : UIViewController, VM1, V1: UIViewController, VM2, V2: UIViewController>(f0: VM0 -> V0, f1: VM1 -> V1, f2: VM2 -> V2) -> ViewsFactory<(vm0: VM0, vm1: VM1, vm2: VM2)> {
+public func present<V0 : ViewForViewModel, V1: ViewForViewModel, V2: ViewForViewModel where V0: UIViewController, V1: UIViewController, V2: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1, f2: V2.ViewModelType -> V2) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType, vm2: V2.ViewModelType)> {
     return ViewsFactory { args in
         [f0(args.vm0), f1(args.vm1), f2(args.vm2)]
     }
 }
 
-public struct ViewFactory<V : UIViewController, ArgsType> {
+public struct ViewFactory<V: UIViewController, ArgsType> {
     let factory: (ArgsType) -> V
     
     /// Incorporates view into group view and returns factory for this new hierarchy.
@@ -95,7 +95,7 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
         return { s in
             return { args in
                 let toView = self.factory(args)
-                let fromView = VMTracker.getViewForViewModel(s)!
+                let fromView = VMTracker.sharedInstance.getViewForViewModel(s)!
                 t(from: fromView, to: toView)
             }
         }
@@ -105,7 +105,7 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
         return { s in
             return { args in
                 // don't using factory because Storyboard creates hierarchy
-                let fromView = VMTracker.getViewForViewModel(s)!
+                let fromView = VMTracker.sharedInstance.getViewForViewModel(s)!
                 fromView.performSegueWithIdentifier(segueId, sender: argsMapper(args))
             }
         }
@@ -119,7 +119,7 @@ public struct ViewFactory<V : UIViewController, ArgsType> {
                 let view = self.factory(args)
                 view.modalPresentationStyle = .Popover
                 let popoverPC = view.popoverPresentationController!
-                let presentingVC = VMTracker.getViewForViewModel(s) as! V
+                let presentingVC = VMTracker.sharedInstance.getViewForViewModel(s) as! V
                 if let delegate = presentingVC as? UIPopoverPresentationControllerDelegate {
                     popoverPC.delegate = delegate
                 }
@@ -154,21 +154,23 @@ func goBack(fromView: UIViewController) {
 }
 
 public func goBack(viewModel: AnyViewModel) {
-    if let v = VMTracker.getViewForViewModel(viewModel) {
+    if let v = VMTracker.sharedInstance.getViewForViewModel(viewModel) {
         goBack(v)
     }
 }
 
 // VM & V tracking
 
-class VMTracker {
-    static var entries: [AnyViewForAnyViewModel] = []
+final class VMTracker {
+    static let sharedInstance = VMTracker()
     
-    static func append<V: ViewForViewModel where V: AnyObject>(view: V) {
+    var entries: [AnyViewForAnyViewModel] = []
+    
+    func append<V: ViewForViewModel where V: AnyObject>(view: V) {
         entries.append(AnyViewForViewModel(weakBase: view))
     }
     
-    static func getViewForViewModel(vm: AnyViewModel) -> UIViewController? {
+    func getViewForViewModel(vm: AnyViewModel) -> UIViewController? {
         cleanDeadEntries()
         
         var result: UIViewController? = nil
@@ -182,7 +184,7 @@ class VMTracker {
         return result
     }
     
-    static func getViewModelForView(view: UIViewController) -> AnyViewModel? {
+    func getViewModelForView(view: UIViewController) -> AnyViewModel? {
         cleanDeadEntries()
         
         var result: AnyViewModel? = nil
@@ -196,7 +198,7 @@ class VMTracker {
         return result
     }
     
-    static func cleanDeadEntries() {
+    func cleanDeadEntries() {
         entries = entries.filter {
             $0.strongify({ _ in })
         }
