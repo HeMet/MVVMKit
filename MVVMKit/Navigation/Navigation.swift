@@ -175,7 +175,7 @@ class VMTracker {
         for entry in entries {
             entry.strongify { _ in
                 if entry.anyViewModel == vm {
-                    result = (entry.view as! UIViewController)
+                    result = (entry.value as! UIViewController)
                 }
             }
         }
@@ -188,7 +188,7 @@ class VMTracker {
         var result: AnyViewModel? = nil
         for entry in entries {
             entry.strongify { _ in
-                if entry.view === view {
+                if entry.value === view {
                     result = entry.anyViewModel
                 }
             }

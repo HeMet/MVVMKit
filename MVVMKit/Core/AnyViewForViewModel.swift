@@ -40,8 +40,8 @@ public final class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyV
     }
 
     // Could be either UIView or UIViewController
-    override var view: AnyObject {
-        return base.view
+    override var value: AnyObject {
+        return base.value
     }
     
     public override func bindToViewModel() {
@@ -57,7 +57,7 @@ public final class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyV
 
 public class AnyViewForAnyViewModel {
     
-    var view: AnyObject {
+    var value: AnyObject {
         fatalError()
     }
     
@@ -81,7 +81,7 @@ public class AnyViewForAnyViewModel {
 
 private class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForViewModel {
 
-    var view: AnyObject {
+    var value: AnyObject {
         fatalError()
     }
     
@@ -110,7 +110,7 @@ private final class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObje
         self.base = base
     }
     
-    override var view: AnyObject {
+    override var value: AnyObject {
         return base
     }
     
@@ -140,7 +140,7 @@ private final class _WeakAnyViewForViewModelBox<V: ViewForViewModel where V: Any
         self.base = base
     }
     
-    override var view: AnyObject {
+    override var value: AnyObject {
         return base!
     }
     

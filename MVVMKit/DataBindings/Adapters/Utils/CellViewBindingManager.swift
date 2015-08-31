@@ -70,7 +70,7 @@ public class CellViewBindingManager {
     }
     
     func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: AnyViewModel, indexPath: NSIndexPath) -> CGSize {
-        let templateCell = cell.view as! UITableViewCell
+        let templateCell = cell.value as! UITableViewCell
         
         cell.anyViewModel = viewModel
         
