@@ -16,7 +16,6 @@
 		84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84619B931B2A0425000954CB /* NavigationGroupView.swift */; };
 		846360DB1B568E5000D463BA /* ViewBindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846360DA1B568E5000D463BA /* ViewBindingManager.swift */; };
 		846360DD1B56A5FE00D463BA /* CellViewBindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */; };
-		847DAA151B35A66A008C4B83 /* RangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA141B35A66A008C4B83 /* RangeExtension.swift */; };
 		847DAA191B369B6B008C4B83 /* TableViewDictionaryAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */; };
 		847DAA1B1B369BF5008C4B83 /* TableViewBaseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */; };
 		848F46F51B554D37001AF84C /* LifetimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848F46F41B554D37001AF84C /* LifetimeUtils.swift */; };
@@ -27,7 +26,6 @@
 		84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
 		84C39D541B9351DF00C441A0 /* TestTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C39D531B9351DF00C441A0 /* TestTypes.swift */; settings = {ASSET_TAGS = (); }; };
 		84C847D41B8512F000E4EA92 /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
-		84C847D61B85146E00E4EA92 /* RangeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847DAA141B35A66A008C4B83 /* RangeExtension.swift */; };
 		84D0E5B51B807B1100D910D4 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B41B807B1100D910D4 /* OrderedDictionaryTests.swift */; };
 		84D0E5B61B807B7C00D910D4 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
 		84D0E5B81B80F00000D910D4 /* CollectionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B71B80F00000D910D4 /* CollectionWrapper.swift */; };
@@ -70,7 +68,6 @@
 		84619B931B2A0425000954CB /* NavigationGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationGroupView.swift; path = BuiltInViews/NavigationGroupView.swift; sourceTree = "<group>"; };
 		846360DA1B568E5000D463BA /* ViewBindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewBindingManager.swift; path = DataBindings/Adapters/Utils/ViewBindingManager.swift; sourceTree = "<group>"; };
 		846360DC1B56A5FE00D463BA /* CellViewBindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellViewBindingManager.swift; path = DataBindings/Adapters/Utils/CellViewBindingManager.swift; sourceTree = "<group>"; };
-		847DAA141B35A66A008C4B83 /* RangeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeExtension.swift; sourceTree = "<group>"; };
 		847DAA181B369B6B008C4B83 /* TableViewDictionaryAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewDictionaryAdapter.swift; path = DataBindings/Adapters/TableViewDictionaryAdapter.swift; sourceTree = "<group>"; };
 		847DAA1A1B369BF5008C4B83 /* TableViewBaseAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableViewBaseAdapter.swift; path = DataBindings/Adapters/TableViewBaseAdapter.swift; sourceTree = "<group>"; };
 		848F46F41B554D37001AF84C /* LifetimeUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifetimeUtils.swift; sourceTree = "<group>"; };
@@ -261,7 +258,6 @@
 				B6347C8E1AE78E2E00D70121 /* DynamicPropertyTyped.swift */,
 				B6347C901AE78E2E00D70121 /* StringExtension.swift */,
 				B6CF71AB1AEE1A2C001A248A /* RACExtensions.swift */,
-				847DAA141B35A66A008C4B83 /* RangeExtension.swift */,
 				848F46F41B554D37001AF84C /* LifetimeUtils.swift */,
 				84E698F51B930A0F00658A39 /* UniqueID.swift */,
 			);
@@ -379,7 +375,6 @@
 			files = (
 				844507CF1B37560900A08A78 /* TableViewSinglePartAdapter.swift in Sources */,
 				B6347C7E1AE78C8700D70121 /* BuiltInGroupViews.swift in Sources */,
-				847DAA151B35A66A008C4B83 /* RangeExtension.swift in Sources */,
 				B6347C911AE78E2E00D70121 /* DynamicPropertyTyped.swift in Sources */,
 				842418511AFF488E00BAB4C6 /* GroupView.swift in Sources */,
 				84619B941B2A0425000954CB /* NavigationGroupView.swift in Sources */,
@@ -413,7 +408,6 @@
 			files = (
 				84C39D541B9351DF00C441A0 /* TestTypes.swift in Sources */,
 				84D0E5B61B807B7C00D910D4 /* OrderedDictionary.swift in Sources */,
-				84C847D61B85146E00E4EA92 /* RangeExtension.swift in Sources */,
 				84D0E5BE1B81125700D910D4 /* MulticastEvent.swift in Sources */,
 				B6347C6D1AE78B8300D70121 /* MVVMKitTests.swift in Sources */,
 				84D0E5B51B807B1100D910D4 /* OrderedDictionaryTests.swift in Sources */,
