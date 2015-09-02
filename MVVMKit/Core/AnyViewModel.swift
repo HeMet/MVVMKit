@@ -30,6 +30,16 @@ public prefix func!<VM: ViewModel>(vm: VM) -> AnyViewModel {
     return AnyViewModel(viewModel: vm)
 }
 
+//infix operator <= { associativity left }
+
+public func <=<VM: ViewModel>(inout vm: VM!, any: AnyViewModel) {
+    vm = any.value as! VM
+}
+
+public func <=<VM: ViewModel>(inout any: AnyViewModel, vm: VM) {
+    any = AnyViewModel(viewModel: vm)
+}
+
 private final class _ViewModelBox<VM: ViewModel>: _AnyViewModelBoxBase {
     let base: VM
     

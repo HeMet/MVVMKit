@@ -20,10 +20,7 @@ public protocol DisposableViewModel {
     func handleDidDisposeViewModel(viewModel: Any)
 }
 
-public protocol ViewModelWithID: ViewModel, UniqueID {
-    
-}
-
+public protocol ViewModelWithID: ViewModel, UniqueID { }
 
 // Default implementation
 

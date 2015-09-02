@@ -14,14 +14,6 @@ public protocol ViewForViewModel {
     func bindToViewModel()
 }
 
-public protocol SBViewForViewModel: ViewForViewModel {
-    static var sbInfo: (sbID: String, viewID: String) { get }
-}
+public protocol SBViewForViewModel: ViewForViewModel, StoryboardSource { }
 
-public protocol BindableCellView: ViewForViewModel {
-    static var CellIdentifier: String { get }
-}
-
-public protocol NibSource {
-    static var NibIdentifier: String { get }
-}
+public protocol BindableCellView: ViewForViewModel, TableViewSource { }

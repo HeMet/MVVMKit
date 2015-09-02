@@ -23,3 +23,9 @@ public class SplitView : GroupView {
         return splitV
     }
 }
+
+public class NavigationView: GroupView {
+    public static func assemble(views: [UIViewController]) -> NavigationGroupView {
+        return NavigationGroupView(rootViewController: views.first!)
+    }
+}

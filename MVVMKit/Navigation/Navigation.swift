@@ -8,76 +8,69 @@
 
 import UIKit
 
-// present(!View.self).within(NavigationView.self).asRoot()
-// present(!View.self, !View2.self).within(SplitView.self).with(Transition.show)
-// present(!View.self).asPopoverOn(View2.self) { presentingView, popover in ... }
-
 public typealias Transition = (from: UIViewController, to: UIViewController) -> ()
 
 // Creation
 
-prefix operator ! {}
-
-/// Factory operator
-///
-/// For given ViewForViewModel type it returns factory function which takes View Model and returns View binded to it.
-public prefix func ! <V : ViewForViewModel where V: UIViewController> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    let view = vType.init()
-    return afterViewInstantiated(view, viewModel: viewModel)
-}
-
-public prefix func ! <V : SBViewForViewModel where V: UIViewController> (vType : V.Type)(viewModel: V.ViewModelType) -> V {
-    let (sbID, viewID) = vType.sbInfo
-    let sb = UIStoryboard(name: sbID, bundle: nil)
-    let view = sb.instantiateViewControllerWithIdentifier(viewID) as! V
-    return afterViewInstantiated(view, viewModel: viewModel)
-}
-
-func afterViewInstantiated <V : ViewForViewModel where V: UIViewController>(var view : V, viewModel: V.ViewModelType) -> V {
-    view.viewModel = viewModel
+extension ViewForViewModel where Self: UIViewController {
+    public static func presented() -> ViewFactory<Self, ViewModelType> {
+        return ViewFactory(factory: { Self.bindedTo($0) })
+    }
     
-    VMTracker.sharedInstance.append(view)
+    public static func bindedTo(viewModel: ViewModelType) -> Self {
+        var vc: Self
+        
+        // It is not so clean as to has dedicated extension for each source type,
+        // but this way we ain't forced to implement each method that uses `create` three times
+        if let sbsType = self as? StoryboardSource.Type {
+            let info = sbsType.sbInfo
+            vc = createFromSB(info.sbID, info.viewID)
+            
+        } else if let nsType = self as? NibSource.Type {
+            vc = Self.init(nibName: nsType.NibIdentifier, bundle: nil)
+            
+        } else {
+            vc = Self.init()
+        }
+        
+        vc.viewModel = viewModel
+        
+        VMTracker.sharedInstance.append(vc)
+        
+        return vc
+    }
     
-    return view
-}
-
-/// Present do two things:
-///
-/// -- Denotes ViewForViewModel's we want to use.
-///
-/// -- Aggregates given factory functions in one single factory function which takes as many arguments as factory functions provided and returns array of views.
-public func present<V : ViewForViewModel where V: UIViewController>(factory: (V.ViewModelType) -> V) -> ViewFactory<V, V.ViewModelType> {
-    return ViewFactory(factory: factory)
-}
-
-public func present<V0 : ViewForViewModel, V1: ViewForViewModel where V0: UIViewController, V1: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType)> {
-    return ViewsFactory { args in
-        [f0(args.vm0), f1(args.vm1)]
+    static func createFromSB(sbID: String, _ viewID: String) -> Self {
+        let sb = UIStoryboard(name: sbID, bundle: nil)
+        return sb.instantiateViewControllerWithIdentifier(viewID) as! Self
     }
 }
 
-public func present<V0 : ViewForViewModel, V1: ViewForViewModel, V2: ViewForViewModel where V0: UIViewController, V1: UIViewController, V2: UIViewController>(f0: V0.ViewModelType -> V0, f1: V1.ViewModelType -> V1, f2: V2.ViewModelType -> V2) -> ViewsFactory<(vm0: V0.ViewModelType, vm1: V1.ViewModelType, vm2: V2.ViewModelType)> {
-    return ViewsFactory { args in
-        [f0(args.vm0), f1(args.vm1), f2(args.vm2)]
+
+extension GroupView {
+    public static func with<Args>(callback: Args -> [UIViewController]) -> ViewFactory<GroupViewType, Args> {
+        let factory = { (args: Args) -> GroupViewType in
+            let children = callback(args)
+            return Self.assemble(children)
+        }
+        return ViewFactory(factory: factory)
+    }
+    
+    public static func with<Args>(callback: Args -> UIViewController) -> ViewFactory<GroupViewType, Args> {
+        let factory = { (args: Args) -> GroupViewType in
+            let child = callback(args)
+            return Self.assemble([child])
+        }
+        return ViewFactory(factory: factory)
     }
 }
+
 
 public struct ViewFactory<V: UIViewController, ArgsType> {
     let factory: (ArgsType) -> V
     
-    /// Incorporates view into group view and returns factory for this new hierarchy.
-    public func within<GV : GroupView>(gvType: GV.Type) -> ViewFactory<GV.GroupViewType, ArgsType> {
-        return ViewFactory<GV.GroupViewType, ArgsType> { vm in
-            let contentView = self.factory(vm)
-            return gvType.assemble([contentView])
-        }
-    }
-    
-    /// Wraps given view into navigation controller and returns factory for this new hierarchy.
-    public func withinNavView() -> ViewFactory<UINavigationController, ArgsType> {
-        return ViewFactory<UINavigationController, ArgsType> { vm in
-            NavigationGroupView(rootViewController: self.factory(vm))
-        }
+    public func presented() -> ViewFactory<V, ArgsType> {
+        return self
     }
     
     /// Set this view as root view.
@@ -128,17 +121,6 @@ public struct ViewFactory<V: UIViewController, ArgsType> {
                 
                 presentingVC.presentViewController(view, animated: true, completion: nil)
             }
-        }
-    }
-}
-
-public struct ViewsFactory<ArgsType> {
-    let factory: (ArgsType) -> [UIViewController]
-    
-    public func within<GV : GroupView>(gvType: GV.Type) -> ViewFactory<GV.GroupViewType, ArgsType> {
-        return ViewFactory<GV.GroupViewType, ArgsType> { args in
-            let contentViews = self.factory(args)
-            return gvType.assemble(contentViews)
         }
     }
 }
