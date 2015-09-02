@@ -23,8 +23,7 @@ extension ViewForViewModel where Self: UIViewController {
         // It is not so clean as to has dedicated extension for each source type,
         // but this way we ain't forced to implement each method that uses `create` three times
         if let sbsType = self as? StoryboardSource.Type {
-            let info = sbsType.sbInfo
-            vc = createFromSB(info.sbID, info.viewID)
+            vc = createFromSB(sbsType.sbName, sbsType.sbIdentifier)
             
         } else if let nsType = self as? NibSource.Type {
             vc = Self.init(nibName: nsType.NibIdentifier, bundle: nil)

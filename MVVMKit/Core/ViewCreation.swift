@@ -9,7 +9,8 @@
 import Foundation
 
 public protocol StoryboardSource {
-    static var sbInfo: (sbID: String, viewID: String) { get }
+    static var sbName: String { get }
+    static var sbIdentifier: String { get }
 }
 
 public protocol NibSource {
@@ -22,10 +23,24 @@ public protocol TableViewSource {
 
 
 extension StoryboardSource where Self: UIViewController {
+    public static var sbName: String {
+        return "Main"
+    }
+    
+    public static var sbIdentifier: String {
+        return "\(self)"
+    }
+    
     public static func new() -> Self {
-        let (sbID, viewID) = Self.sbInfo
-        let sb = UIStoryboard(name: sbID, bundle: nil)
-        return sb.instantiateViewControllerWithIdentifier(viewID) as! Self
+        let sb = UIStoryboard(name: Self.sbName, bundle: nil)
+        return sb.instantiateViewControllerWithIdentifier(self.sbIdentifier) as! Self
+    }
+}
+
+
+extension NibSource {
+    public static var NibIdentifier: String {
+        return "\(self)"
     }
 }
 
@@ -36,6 +51,10 @@ extension NibSource where Self: UIViewController {
 }
 
 extension TableViewSource where Self: UITableViewCell {
+    public static var CellIdentifier: String {
+        return "\(self)"
+    }
+    
     public static func dequeueFrom(tableView: UITableView) -> Self? {
         return tableView.dequeueReusableCellWithIdentifier(Self.CellIdentifier) as? Self
     }
