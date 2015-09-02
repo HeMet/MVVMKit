@@ -125,19 +125,21 @@ public struct ViewFactory<V: UIViewController, ArgsType> {
     }
 }
 
-func goBack(fromView: UIViewController) {
-    if let nc = fromView.navigationController where nc.topViewController == fromView {
-        nc.popViewControllerAnimated(true)
-    } else if fromView.presentingViewController?.presentedViewController == fromView {
-        fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-    } else if let _ = fromView.popoverPresentationController {
-        fromView.dismissViewControllerAnimated(true, completion: nil)
+extension ViewModel {
+    public func goBack() {
+        if let v = VMTracker.sharedInstance.getViewForViewModel(!self) {
+            goBack(v)
+        }
     }
-}
-
-public func goBack(viewModel: AnyViewModel) {
-    if let v = VMTracker.sharedInstance.getViewForViewModel(viewModel) {
-        goBack(v)
+    
+    func goBack(fromView: UIViewController) {
+        if let nc = fromView.navigationController where nc.topViewController == fromView {
+            nc.popViewControllerAnimated(true)
+        } else if fromView.presentingViewController?.presentedViewController == fromView {
+            fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        } else if let _ = fromView.popoverPresentationController {
+            fromView.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }
 
