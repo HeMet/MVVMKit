@@ -136,14 +136,22 @@
 			name = Adapters;
 			sourceTree = "<group>";
 		};
+		84E0BE971B97794B0044FEEA /* Type-erased */ = {
+			isa = PBXGroup;
+			children = (
+				84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */,
+				84E698F91B93293400658A39 /* AnyViewModel.swift */,
+			);
+			path = "Type-erased";
+			sourceTree = "<group>";
+		};
 		84F1128C1B46F648001CCAED /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				84E0BE971B97794B0044FEEA /* Type-erased */,
 				B6347C7D1AE78C8700D70121 /* ViewForViewModel.swift */,
 				B60D982F1AF2392C00262E3A /* ViewModel.swift */,
 				842418501AFF488E00BAB4C6 /* GroupView.swift */,
-				84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */,
-				84E698F91B93293400658A39 /* AnyViewModel.swift */,
 				84E0BE951B964B2B0044FEEA /* ViewCreation.swift */,
 			);
 			path = Core;
