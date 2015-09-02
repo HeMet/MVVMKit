@@ -11,25 +11,25 @@ import Foundation
 // Any view model should support this protocol
 public protocol ViewModel: Equatable { }
 
-public typealias ViewModelEventHandler = (Any) -> ()
+public typealias ViewModelEventHandler = (AnyViewModel) -> ()
 
 // Define view model that has some disposal logic and ability to inform parent view model about disposal
 public protocol DisposableViewModel {
     var onDisposed: ViewModelEventHandler? { get set }
     func dispose()
-    func handleDidDisposeViewModel(viewModel: Any)
+    func handleDidDisposeViewModel(viewModel: AnyViewModel)
 }
 
 public protocol ViewModelWithID: ViewModel, UniqueID { }
 
 // Default implementation
 
-public extension DisposableViewModel {
+public extension DisposableViewModel where Self: ViewModel {
     func dispose() {
-        onDisposed?(self)
+        onDisposed?(!self)
     }
     
-    func handleDidDisposeViewModel(viewModel: Any) {
+    func handleDidDisposeViewModel(viewModel: AnyViewModel) {
         // do nothing by default
     }
     
