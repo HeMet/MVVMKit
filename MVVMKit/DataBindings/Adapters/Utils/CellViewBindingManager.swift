@@ -26,7 +26,7 @@ public class CellViewBindingManager {
     }
     
     public func register<V: UITableViewCell where V: BindableCellView>(viewType: V.Type) {
-        if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
+        if V.dequeueFrom(tableView) == nil {
             tableView.registerClass(V.self, forCellReuseIdentifier: V.CellIdentifier)
         }
         
@@ -35,7 +35,7 @@ public class CellViewBindingManager {
     }
     
     public func register<V: UITableViewCell where V: BindableCellView, V: NibSource>(viewType: V.Type) {
-        if tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) == nil {
+        if V.dequeueFrom(tableView) == nil {
             let nib = UINib(nibName: V.NibIdentifier, bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: V.CellIdentifier)
         }
@@ -48,7 +48,7 @@ public class CellViewBindingManager {
         let typeName = nameOfType(V.ViewModelType.self)
         
         bindings[typeName] = { [unowned self] viewModel, indexPath in
-            var view = self.tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier, forIndexPath: indexPath) as! V
+            var view = V.dequeueFrom(self.tableView, forIndexPath: indexPath)
             
             view.viewModel = viewModel.value as! V.ViewModelType
             
@@ -63,7 +63,7 @@ public class CellViewBindingManager {
     func registerTemplateCell<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
-        let templateCell = tableView.dequeueReusableCellWithIdentifier(V.CellIdentifier) as! V
+        let templateCell = V.dequeueFrom(tableView)!
         templateCell.contentView.translatesAutoresizingMaskIntoConstraints = false
         
         templateCells[typeName] = AnyViewForViewModel(base: templateCell)

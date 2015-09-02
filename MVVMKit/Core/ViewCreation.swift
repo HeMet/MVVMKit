@@ -34,3 +34,13 @@ extension NibSource where Self: UIViewController {
         return Self.init(nibName: Self.NibIdentifier, bundle: nil)
     }
 }
+
+extension TableViewSource where Self: UITableViewCell {
+    public static func dequeueFrom(tableView: UITableView) -> Self? {
+        return tableView.dequeueReusableCellWithIdentifier(Self.CellIdentifier) as? Self
+    }
+    
+    public static func dequeueFrom(tableView: UITableView, forIndexPath indexPath: NSIndexPath) -> Self {
+        return tableView.dequeueReusableCellWithIdentifier(Self.CellIdentifier, forIndexPath: indexPath) as! Self
+    }
+}
