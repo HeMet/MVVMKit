@@ -25,7 +25,7 @@ public class CellViewBindingManager {
         self.tableView = tableView
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: CellViewForViewModel>(viewType: V.Type) {
         if V.dequeueFrom(tableView) == nil {
             tableView.registerClass(V.self, forCellReuseIdentifier: V.CellIdentifier)
         }
@@ -34,7 +34,7 @@ public class CellViewBindingManager {
         registerTemplateCell(viewType)
     }
     
-    public func register<V: UITableViewCell where V: BindableCellView, V: NibSource>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: CellViewForViewModel, V: NibSource>(viewType: V.Type) {
         if V.dequeueFrom(tableView) == nil {
             let nib = UINib(nibName: V.NibIdentifier, bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: V.CellIdentifier)
@@ -44,7 +44,7 @@ public class CellViewBindingManager {
         registerTemplateCell(viewType)
     }
     
-    func registerBinding<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
+    func registerBinding<V: CellViewForViewModel where V: UITableViewCell>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
         bindings[typeName] = { [unowned self] viewModel, indexPath in
@@ -60,7 +60,7 @@ public class CellViewBindingManager {
         }
     }
     
-    func registerTemplateCell<V: BindableCellView where V: UITableViewCell>(viewType: V.Type) {
+    func registerTemplateCell<V: CellViewForViewModel where V: UITableViewCell>(viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
         let templateCell = V.dequeueFrom(tableView)!

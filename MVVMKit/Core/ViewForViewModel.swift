@@ -16,4 +16,4 @@ public protocol ViewForViewModel {
 
 public protocol SBViewForViewModel: ViewForViewModel, StoryboardSource { }
 
-public protocol BindableCellView: ViewForViewModel, TableViewSource { }
+public protocol CellViewForViewModel: ViewForViewModel, TableViewSource { }
