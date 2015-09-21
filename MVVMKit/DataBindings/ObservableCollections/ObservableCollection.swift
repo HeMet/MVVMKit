@@ -87,7 +87,6 @@ extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index ==
             fireInsertItems(bounds.startIndex..<(bounds.endIndex + deltaCount))
         }
     }
-
 }
 
 extension ObservableCollection where Self: MutableCollectionWrapper, Self.Base.Index == Int, Self.Index == Int {
@@ -104,6 +103,11 @@ extension ObservableCollection where Self: RangeReplaceableCollectionWrapper, Se
         oc_replaceRange(subRange) {
             innerCollection.replaceRange(subRange, with: newElements)
         }
+    }
+    
+    // Original implementation just call append number of times, so we need to override it.
+    public func appendContentsOf<C: CollectionType where C.Generator.Element == Generator.Element>(newElements: C) {
+        replaceRange(endIndex..<endIndex, with: newElements)
     }
     
     // Original implementation recreates instance, so we need to override it.
