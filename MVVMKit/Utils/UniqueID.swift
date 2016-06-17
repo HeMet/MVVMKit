@@ -10,7 +10,7 @@ import Foundation
 
 // Descibes entity that can be compared by unique ID
 public protocol UniqueID: Equatable {
-    typealias IdType: Equatable
+    associatedtype IdType: Equatable
     var uniqueID: IdType { get }
 }
 
@@ -23,6 +23,6 @@ public func ==<U0: UniqueID, U1: UniqueID>(l: U0, r: U1) -> Bool {
 public extension String {
     // Returns unique string identifier each time it is called.
     public static func unique() -> String {
-        return NSUUID().UUIDString
+        return UUID().uuidString
     }
 }

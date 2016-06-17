@@ -9,6 +9,6 @@
 import UIKit
 
 public protocol GroupView {
-    typealias GroupViewType : UIViewController
-    static func assemble(views: [UIViewController]) -> GroupViewType
+    associatedtype GroupViewType : UIViewController
+    static func assemble(_ views: [UIViewController]) -> GroupViewType
 }

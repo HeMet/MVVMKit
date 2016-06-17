@@ -8,13 +8,13 @@
 
 import Foundation
 
-public func unowned<T: AnyObject, T2>(obj: T, _ method: (T) -> (T2) -> ()) -> (T2) -> () {
+public func unowned<T: AnyObject, T2>(_ obj: T, _ method: (T) -> (T2) -> ()) -> (T2) -> () {
     return { [unowned obj] in
         method(obj)($0)
     }
 }
 
-public func unowned<T: NSObject, T2>(obj: T, _ method: (T) -> (T2) -> ()) -> (T2) -> () {
+public func unowned<T: NSObject, T2>(_ obj: T, _ method: (T) -> (T2) -> ()) -> (T2) -> () {
     return { [unowned(unsafe) obj] in
         method(obj)($0)
     }

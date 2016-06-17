@@ -33,7 +33,7 @@ extension StoryboardSource where Self: UIViewController {
     
     public static func new() -> Self {
         let sb = UIStoryboard(name: Self.sbName, bundle: nil)
-        return sb.instantiateViewControllerWithIdentifier(self.sbIdentifier) as! Self
+        return sb.instantiateViewController(withIdentifier: self.sbIdentifier) as! Self
     }
 }
 
@@ -55,11 +55,11 @@ extension TableViewSource where Self: UITableViewCell {
         return "\(self)"
     }
     
-    public static func dequeueFrom(tableView: UITableView) -> Self? {
-        return tableView.dequeueReusableCellWithIdentifier(Self.CellIdentifier) as? Self
+    public static func dequeueFrom(_ tableView: UITableView) -> Self? {
+        return tableView.dequeueReusableCell(withIdentifier: Self.CellIdentifier) as? Self
     }
     
-    public static func dequeueFrom(tableView: UITableView, forIndexPath indexPath: NSIndexPath) -> Self {
-        return tableView.dequeueReusableCellWithIdentifier(Self.CellIdentifier, forIndexPath: indexPath) as! Self
+    public static func dequeueFrom(_ tableView: UITableView, forIndexPath indexPath: IndexPath) -> Self {
+        return tableView.dequeueReusableCell(withIdentifier: Self.CellIdentifier, for: indexPath) as! Self
     }
 }

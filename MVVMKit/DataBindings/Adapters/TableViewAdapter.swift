@@ -20,19 +20,19 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
         items.onDidInsertItems.register(tag) { [unowned self] in
             self.invalidateRowHeightCache()
             
-            self.tableView.insertSections($1.getIndexSet(), withRowAnimation: .Right)
+            self.tableView.insertSections($1.getIndexSet(), with: .right)
         }
         
         items.onDidRemoveItems.register(tag) { [unowned self] in
             self.invalidateRowHeightCache()
             
-            self.tableView.deleteSections($1.getIndexSet(), withRowAnimation: .Left)
+            self.tableView.deleteSections($1.getIndexSet(), with: .left)
         }
         
         items.onDidChangeItems.register(tag) { [unowned self] in
             self.invalidateRowHeightCache()
             
-            self.tableView.reloadSections($1.getIndexSet(), withRowAnimation: .Middle)
+            self.tableView.reloadSections($1.getIndexSet(), with: .middle)
         }
         
         items.onBatchUpdate.register(tag) { [unowned self] in
@@ -52,7 +52,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
     /// One-to-One
     
-    public func setData<T: ViewModel>(data: T, forSectionAtIndex sIndex: Int) {
+    public func setData<T: ViewModel>(_ data: T, forSectionAtIndex sIndex: Int) {
 //        items[sIndex]?.dispose()
         items.getValueForKey(sIndex)?.dispose()
         items[sIndex] = AnyViewModel(viewModel: data)
@@ -60,7 +60,7 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
     /// One-to-Many
     
-    public func setData<T: ViewModel>(data: ObservableArray<T>, forSectionAtIndex sIndex: Int) {
+    public func setData<T: ViewModel>(_ data: ObservableArray<T>, forSectionAtIndex sIndex: Int) {
 //        items[sIndex]?.dispose()
         items.getValueForKey(sIndex)?.dispose()
         let cdm = CollectionDataModel(collection: data)
@@ -70,12 +70,12 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
     /// One-to-Any
     
-    public func hasDataForSection(sIndex: Int) -> Bool {
+    public func hasDataForSection(_ sIndex: Int) -> Bool {
 //        return items[sIndex] != nil
         return items.getValueForKey(sIndex) != nil
     }
     
-    public func removeDataForSection(sIndex: Int) {
+    public func removeDataForSection(_ sIndex: Int) {
 //        items[sIndex]!.dispose()
         items.getValueForKey(sIndex)!.dispose()
         items[sIndex] = nil
@@ -83,92 +83,92 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
     
     /// Section header & footers
     
-    public func setTitle(title: String, forSection: TableViewSectionView, atIndex: Int) {
+    public func setTitle(_ title: String, forSection: TableViewSectionView, atIndex: Int) {
         let models = getModelsForSectionView(forSection)
         models[atIndex] = TableViewSimpleSection(title: title)
     }
     
-    public func setData<VM: ViewModel>(data: VM, forSection: TableViewSectionView, atIndex: Int) {
+    public func setData<VM: ViewModel>(_ data: VM, forSection: TableViewSectionView, atIndex: Int) {
         let models = getModelsForSectionView(forSection)
         models[atIndex] = TableViewCustomViewSection(viewModel: !data)
     }
     
-    public func removeSectionView(sectionView: TableViewSectionView, atIndex: Int) {
+    public func removeSectionView(_ sectionView: TableViewSectionView, atIndex: Int) {
         let models = getModelsForSectionView(sectionView)
         models[atIndex] = nil
     }
     
     /// Implementation details
     
-    func getModelsForSectionView(sv: TableViewSectionView) -> ObservableOrderedDictionary<Int, TableViewSectionModel> {
-        return sv == .Header ? headers : footers
+    func getModelsForSectionView(_ sv: TableViewSectionView) -> ObservableOrderedDictionary<Int, TableViewSectionModel> {
+        return sv == .header ? headers : footers
     }
     
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public override func numberOfSections(in tableView: UITableView) -> Int {
         let idx = items.keys.reduce(-1, combine: max)
         return items.count > 0 ? idx + 1 : 0
     }
     
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return items[section]?.count ?? 0
         return items.getValueForKey(section)?.count ?? 0
     }
     
-    override func viewModelForIndexPath(indexPath: NSIndexPath) -> AnyViewModel {
+    override func viewModelForIndexPath(_ indexPath: IndexPath) -> AnyViewModel {
 //        return items[indexPath.section]!.getDataAtIndex(indexPath.row)
-        return items.getValueForKey(indexPath.section)!.getDataAtIndex(indexPath.row)
+        return items.getValueForKey((indexPath as NSIndexPath).section)!.getDataAtIndex((indexPath as NSIndexPath).row)
     }
     
-    override func viewModelForSectionHeaderAtIndex(index: Int) -> AnyViewModel? {
+    override func viewModelForSectionHeaderAtIndex(_ index: Int) -> AnyViewModel? {
         return headers.getValueForKey(index)?.viewModel
 //        return headers[index]?.viewModel
     }
 
-    override func viewModelForSectionFooterAtIndex(index: Int) -> AnyViewModel? {
+    override func viewModelForSectionFooterAtIndex(_ index: Int) -> AnyViewModel? {
         return footers.getValueForKey(index)?.viewModel
 //        return footers[index]?.viewModel
     }
     
-    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        return headers[section]?.title
         return headers.getValueForKey(section)?.title
     }
     
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    public override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 //        return footers[section]?.title
         return footers.getValueForKey(section)?.title
     }
     
-    func handleDidInsertItems(paths: [NSIndexPath]) {
+    func handleDidInsertItems(_ paths: [IndexPath]) {
         self.invalidateRowHeightCache()
         
-        tableView.insertRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        tableView.insertRows(at: paths, with: .right)
         onCellsInserted?(self, paths)
     }
     
-    func handleDidRemoveItems(paths: [NSIndexPath]) {
+    func handleDidRemoveItems(_ paths: [IndexPath]) {
         self.invalidateRowHeightCache()
         
-        tableView.deleteRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        tableView.deleteRows(at: paths, with: .right)
         onCellsRemoved?(self, paths)
     }
     
-    func handleDidChangeItems(paths: [NSIndexPath]) {
+    func handleDidChangeItems(_ paths: [IndexPath]) {
         self.invalidateRowHeightCache()
         
-        tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .Right)
+        tableView.reloadRows(at: paths, with: .right)
         onCellsReloaded?(self, paths)
     }
     
-    func handleItemsBatchUpdate(section: Int, phase: UpdatePhase) {
+    func handleItemsBatchUpdate(_ section: Int, phase: UpdatePhase) {
         batchUpdate(phase)
     }
     
-    func batchUpdate(phase: UpdatePhase) {
+    func batchUpdate(_ phase: UpdatePhase) {
         switch phase {
-        case .Begin:
+        case .begin:
             beginUpdate()
-        case .End:
+        case .end:
             endUpdate()
         }
     }
@@ -176,15 +176,15 @@ public class TableViewAdapter: TableViewBaseAdapter, ObservableArrayListener {
 
 protocol TableViewSectionDataModel {
     var count: Int { get }
-    func getDataAtIndex(index: Int) -> AnyViewModel
+    func getDataAtIndex(_ index: Int) -> AnyViewModel
     func dispose()
 }
 
 protocol ObservableArrayListener: class {
-    func handleDidInsertItems(paths: [NSIndexPath])
-    func handleDidRemoveItems(paths: [NSIndexPath])
-    func handleDidChangeItems(paths: [NSIndexPath])
-    func handleItemsBatchUpdate(section: Int, phase: UpdatePhase)
+    func handleDidInsertItems(_ paths: [IndexPath])
+    func handleDidRemoveItems(_ paths: [IndexPath])
+    func handleDidChangeItems(_ paths: [IndexPath])
+    func handleItemsBatchUpdate(_ section: Int, phase: UpdatePhase)
 }
 
 extension AnyViewModel: TableViewSectionDataModel {
@@ -192,7 +192,7 @@ extension AnyViewModel: TableViewSectionDataModel {
         return 1
     }
     
-    func getDataAtIndex(index: Int) -> AnyViewModel {
+    func getDataAtIndex(_ index: Int) -> AnyViewModel {
         return self
     }
     
@@ -201,7 +201,7 @@ extension AnyViewModel: TableViewSectionDataModel {
     }
 }
 
-struct CollectionDataModel<T: ObservableCollection where T.Generator.Element: ViewModel, T.Index == Int>: TableViewSectionDataModel {
+struct CollectionDataModel<T: ObservableCollection where T.Iterator.Element: ViewModel, T.Index == Int>: TableViewSectionDataModel {
     
     let tag = "CollectionItem<T: AnyObject>"
     
@@ -215,11 +215,11 @@ struct CollectionDataModel<T: ObservableCollection where T.Generator.Element: Vi
         return collection.count
     }
     
-    func getDataAtIndex(index: Int) -> AnyViewModel {
+    func getDataAtIndex(_ index: Int) -> AnyViewModel {
         return AnyViewModel(viewModel: collection[index])
     }
     
-    func bindToSection(section: Int, listener: ObservableArrayListener) {
+    func bindToSection(_ section: Int, listener: ObservableArrayListener) {
         collection.onDidChangeItems.register(tag) { [unowned listener] in
             listener.handleDidChangeItems($1.getPathsForSection(section))
         }
@@ -258,14 +258,15 @@ struct TableViewCustomViewSection : TableViewSectionModel {
 }
 
 extension Indexable where Index == Int {
-    func getIndexSet() -> NSMutableIndexSet {
-        return (startIndex..<endIndex).reduce(NSMutableIndexSet()) { set, index in
-            set.addIndex(index)
-            return set
+    func getIndexSet() -> IndexSet {
+        return (startIndex..<endIndex).reduce(IndexSet()) { set, index in
+            var copy = set
+            copy.insert(index)
+            return copy
         }
     }
     
-    func getPathsForSection(section: Int) -> [NSIndexPath] {
-        return (startIndex..<endIndex).map { NSIndexPath(forRow: $0, inSection: section) }
+    func getPathsForSection(_ section: Int) -> [IndexPath] {
+        return (startIndex..<endIndex).map { IndexPath(row: $0, section: section) }
     }
 }

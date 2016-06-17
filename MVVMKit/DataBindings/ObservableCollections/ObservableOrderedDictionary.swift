@@ -11,7 +11,7 @@ import Foundation
 public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: OrderedDictionaryWrapper, ObservableCollection {
     public typealias _Self = ObservableOrderedDictionary<KeyType, ValueType>
     public typealias Base = OrderedDictionary<KeyType, ValueType>
-    public typealias EventType = MulticastEvent<_Self, Items<_Self.Generator.Element>>
+    public typealias EventType = MulticastEvent<_Self, Items<Base.Iterator.Element>>
     public typealias BatchUpdateEventType = MulticastEvent<_Self, UpdatePhase>
     
     public var innerCollection: Base = [:]
@@ -48,9 +48,9 @@ public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: Or
         }
     }
     
-    public func replaceRange<C : CollectionType where C.Generator.Element == Base.Generator.Element>(subRange: Range<Base.Index>, with newElements: C) {
+    public func replaceSubrange<C : Collection where C.Iterator.Element == Base.Iterator.Element>(_ subRange: Range<Base.Index>, with newElements: C) {
         oc_replaceRange(subRange) {
-            innerCollection.replaceRange(subRange, with: newElements)
+            innerCollection.replaceSubrange(subRange, with: newElements)
         }
     }
     
@@ -67,28 +67,31 @@ public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: Or
         return innerCollection.keys
     }
     
+    public func index(after i: Base.Index) -> Base.Index {
+        return innerCollection.index(after: i)
+    }
     
-    func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
+    func updateValue(_ value: ValueType, forKey key: KeyType) -> ValueType? {
         return innerCollection.updateValue(value, forKey: key)
     }
     
-    public func removeValueForKey(key: KeyType) {
+    public func removeValueForKey(_ key: KeyType) {
         innerCollection.removeValueForKey(key)
     }
     
-    public func indexOfKey(key: KeyType) -> Int? {
+    public func indexOfKey(_ key: KeyType) -> Int? {
         return innerCollection.indexOfKey(key)
     }
     
-    public func getValueForKey(key: KeyType) -> ValueType? {
+    public func getValueForKey(_ key: KeyType) -> ValueType? {
         return innerCollection[key]
     }
     
-    func handleInnerCollectionUpdate(index: Index) {
+    func handleInnerCollectionUpdate(_ index: Base.Index) {
         fireChangeItem(index)
     }
     
-    func handleInnerCollectionMove(from: Index?, to: Index) {
+    func handleInnerCollectionMove(_ from: Base.Index?, to: Base.Index) {
         let element = innerCollection[to]
         if let from = from {
             fireRemoveItem(element, atIndex: from)
@@ -96,7 +99,7 @@ public final class ObservableOrderedDictionary<KeyType: Hashable, ValueType>: Or
         fireInsertItem(to)
     }
     
-    func handleInnerCollectionRemove(index: Index, element: Base.Element) {
+    func handleInnerCollectionRemove(_ index: Base.Index, element: Base.Element) {
         fireRemoveItem(element, atIndex: index)
     }
 }

@@ -8,27 +8,27 @@
 
 import Foundation
 
-public protocol CollectionWrapper: class, CollectionType {
-    typealias Base: CollectionType
+public protocol CollectionWrapper: class, Collection {
+    associatedtype Base: Collection
     
     var innerCollection: Base { get }
 }
 
-public protocol MutableCollectionWrapper: CollectionWrapper, MutableCollectionType {
-    typealias Base: MutableCollectionType
+public protocol MutableCollectionWrapper: CollectionWrapper, MutableCollection {
+    associatedtype Base: MutableCollection
     
     var innerCollection: Base { get set }
 }
 
-public protocol RangeReplaceableCollectionWrapper: CollectionWrapper, RangeReplaceableCollectionType {
-    typealias Base: RangeReplaceableCollectionType
+public protocol RangeReplaceableCollectionWrapper: CollectionWrapper, RangeReplaceableCollection {
+    associatedtype Base: RangeReplaceableCollection
     
     var innerCollection: Base { get set }
 }
 
-public protocol MutableSliceableWrapper: MutableCollectionWrapper, MutableSliceable {
-    typealias Base: MutableSliceable
-}
+//public protocol MutableSliceableWrapper: MutableCollectionWrapper, MutableCollection {
+//    associatedtype Base: MutableCollection
+//}
 
 extension CollectionWrapper {
     public var startIndex: Base.Index {
@@ -39,7 +39,7 @@ extension CollectionWrapper {
         return innerCollection.endIndex
     }
     
-    subscript(position: Base.Index) -> Base.Generator.Element {
+    subscript(position: Base.Index) -> Base.Iterator.Element {
         get {
             return innerCollection[position]
         }
@@ -47,7 +47,7 @@ extension CollectionWrapper {
 }
 
 extension MutableCollectionWrapper {
-    subscript(position: Base.Index) -> Base.Generator.Element {
+    subscript(position: Base.Index) -> Base.Iterator.Element {
         get {
             return innerCollection[position]
         }
@@ -58,12 +58,12 @@ extension MutableCollectionWrapper {
 }
 
 extension RangeReplaceableCollectionWrapper {
-    func replaceRange<C : CollectionType where C.Generator.Element == Base.Generator.Element>(subRange: Range<Base.Index>, with newElements: C) {
-        innerCollection.replaceRange(subRange, with: newElements)
+    public func replaceSubrange<C : Collection where C.Iterator.Element == Base.Iterator.Element>(_ subRange: Range<Base.Index>, with newElements: C) {
+        innerCollection.replaceSubrange(subRange, with: newElements)
     }
 }
 
-extension MutableSliceableWrapper {
+extension MutableCollectionWrapper {
     public subscript(range: Range<Base.Index>) -> Base.SubSequence {
         get {
             return innerCollection[range]
@@ -74,12 +74,12 @@ extension MutableSliceableWrapper {
     }
 }
 
-public protocol ArrayWrapper: RangeReplaceableCollectionWrapper, MutableSliceableWrapper, ArrayLiteralConvertible {
-    typealias Base: MutableSliceable, RangeReplaceableCollectionType, ArrayLiteralConvertible
+public protocol ArrayWrapper: RangeReplaceableCollectionWrapper, MutableCollectionWrapper, ArrayLiteralConvertible {
+    associatedtype Base: MutableCollection, RangeReplaceableCollection, ArrayLiteralConvertible
 }
 
-public protocol OrderedDictionaryWrapper: RangeReplaceableCollectionWrapper, MutableSliceableWrapper, DictionaryLiteralConvertible {
-    typealias Base: MutableSliceable, RangeReplaceableCollectionType, DictionaryLiteralConvertible
+public protocol OrderedDictionaryWrapper: RangeReplaceableCollectionWrapper, MutableCollectionWrapper, DictionaryLiteralConvertible {
+    associatedtype Base: MutableCollection, RangeReplaceableCollection, DictionaryLiteralConvertible
 }
 
 extension ArrayWrapper where Base == [Element] {
@@ -103,6 +103,10 @@ class BaseArrayWrapper<T>: ArrayWrapper {
     required init(arrayLiteral elements: T...) {
         innerCollection = Array(elements)
     }
+    
+    func index(after i: Base.Index) -> Base.Index {
+        return innerCollection.index(after: i)
+    }
 }
 
 class BaseOrderedDictionaryWrapper<KeyType: Hashable, ValueType>: OrderedDictionaryWrapper {
@@ -116,5 +120,9 @@ class BaseOrderedDictionaryWrapper<KeyType: Hashable, ValueType>: OrderedDiction
     
     required init(dictionaryLiteral elements: (KeyType, ValueType)...) {
         innerCollection = OrderedDictionary(pairs: elements)
+    }
+    
+    func index(after i: Base.Index) -> Base.Index {
+        return innerCollection.index(after: i)
     }
 }

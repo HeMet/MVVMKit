@@ -19,15 +19,15 @@ public struct MulticastEvent<ContextType: AnyObject, ArgsType> {
         self.context = context
     }
     
-    public mutating func register(tag: String, listener: Listener) {
+    public mutating func register(_ tag: String, listener: Listener) {
         listeners[tag] = listener
     }
     
-    public mutating func unregister(tag: String) {
-        listeners.removeValueForKey(tag)
+    public mutating func unregister(_ tag: String) {
+        listeners.removeValue(forKey: tag)
     }
     
-    public func fire(args: ArgsType) {
+    public func fire(_ args: ArgsType) {
         if let ctx = context {
             for (_, listener) in listeners {
                 listener(ctx, args)
@@ -39,10 +39,12 @@ public struct MulticastEvent<ContextType: AnyObject, ArgsType> {
 infix operator += { associativity left precedence 90 }
 infix operator -= { associativity left precedence 90 }
 
-public  func += <CtxType, ArgsType>(var mce: MulticastEvent<CtxType, ArgsType>, ri: (String, (CtxType, ArgsType) -> ())) {
+public  func += <CtxType, ArgsType>(mce: MulticastEvent<CtxType, ArgsType>, ri: (String, (CtxType, ArgsType) -> ())) {
+    var mce = mce
     mce.register(ri.0, listener: ri.1)
 }
 
-public  func -= <CtxType, ArgsType>(var mce: MulticastEvent<CtxType, ArgsType>, tag: String) {
+public  func -= <CtxType, ArgsType>(mce: MulticastEvent<CtxType, ArgsType>, tag: String) {
+    var mce = mce
     mce.unregister(tag)
 }

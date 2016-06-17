@@ -9,31 +9,31 @@
 import Foundation
 
 public enum UpdatePhase {
-    case Begin, End
+    case begin, end
 }
 
-public protocol ObservableCollection: class, CollectionType {
-    typealias EventType = MulticastEvent<Self, Items<Generator.Element>>
-    typealias BatchUpdateEventType = MulticastEvent<Self, UpdatePhase>
+public protocol ObservableCollection: class, Collection {
+    associatedtype EventType = MulticastEvent<Self, Items<Generator.Element>>
+    associatedtype BatchUpdateEventType = MulticastEvent<Self, UpdatePhase>
     
     // Using of typealias causes compiler crash in extension
     
     // Slice points to original collection, so it doesn't work for removing
     // Workaround: make copy of collection and pass that copy to slice. What about memory consumption?
-    var onDidInsertItems: MulticastEvent<Self, Items<Generator.Element>>! { get set }
-    var onDidRemoveItems: MulticastEvent<Self, Items<Generator.Element>>! { get set }
-    var onDidChangeItems: MulticastEvent<Self, Items<Generator.Element>>! { get set }
+    var onDidInsertItems: MulticastEvent<Self, Items<Iterator.Element>>! { get set }
+    var onDidRemoveItems: MulticastEvent<Self, Items<Iterator.Element>>! { get set }
+    var onDidChangeItems: MulticastEvent<Self, Items<Iterator.Element>>! { get set }
 
     var onBatchUpdate: MulticastEvent<Self, UpdatePhase>! { get set }
     
-    func batchUpdate(@noescape updateClosure: () -> ())
+    func batchUpdate(@noescape _ updateClosure: () -> ())
 }
 
 extension ObservableCollection where Self.Index == Int {
-    public func batchUpdate(@noescape updateClosure: () -> ()) {
-        onBatchUpdate.fire(.Begin)
+    public func batchUpdate(@noescape _ updateClosure: () -> ()) {
+        onBatchUpdate.fire(.begin)
         updateClosure()
-        onBatchUpdate.fire(.End)
+        onBatchUpdate.fire(.end)
     }
     
     func initEvents() {
@@ -43,39 +43,40 @@ extension ObservableCollection where Self.Index == Int {
         onBatchUpdate = MulticastEvent(context: self)
     }
     
-    func fireChangeItem(index: Int) {
+    func fireChangeItem(_ index: Int) {
         fireChangeItems(index...index)
     }
     
-    func fireInsertItem(index: Int) {
+    func fireInsertItem(_ index: Int) {
         fireInsertItems(index...index)
     }
     
-    func fireRemoveItem(item: Generator.Element, atIndex index: Int) {
+    func fireRemoveItem(_ item: Iterator.Element, atIndex index: Int) {
         fireRemoveItems([item], bounds: index...index)
     }
     
-    func fireChangeItems(bounds: Range<Int>) {
+    func fireChangeItems(_ bounds: Range<Int>) {
         if bounds.isEmpty { return }
         onDidChangeItems.fire(Items(base: self, bounds: bounds))
     }
     
-    func fireInsertItems(bounds: Range<Int>) {
+    func fireInsertItems(_ bounds: Range<Int>) {
         if bounds.isEmpty { return }
         onDidInsertItems.fire(Items(base: self, bounds: bounds))
     }
     
-    func fireRemoveItems<C: CollectionType where C.Generator.Element == Self.Generator.Element, C.Index == Int>(items: C, bounds: Range<Int>) {
+    func fireRemoveItems<C: Collection where C.Iterator.Element == Self.Iterator.Element, C.Index == Int>(_ items: C, bounds: Range<Int>) {
         if bounds.isEmpty { return }
         onDidRemoveItems.fire(Items(base: items, bounds: bounds))
     }
 }
 
-extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index == Int, Self.Index == Int, Self.Generator.Element == Self.Base.Generator.Element {
+extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index == Int, Self.Index == Int, Self.Iterator.Element == Self.Base.Iterator.Element {
     
-    func oc_replaceRange(bounds: Range<Base.Index>, @noescape mutator: () -> ()) {
+    func oc_replaceRange(_ bounds: Range<Base.Index>, mutator: @noescape () -> ()) {
         let toRemove = Items(base: innerCollection, bounds: bounds)
         let oldCount = count
+        let oldEndIndex = endIndex
         
         mutator()
         
@@ -84,45 +85,51 @@ extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index ==
                 onDidRemoveItems.fire(toRemove)
             }
             let deltaCount = count - oldCount
-            fireInsertItems(bounds.startIndex..<(bounds.endIndex + deltaCount))
+            
+            let t = endIndex - oldEndIndex
+            
+            let countableBounds = CountableRange(bounds)
+            countableBounds.endIndex.advanced(by: Int(deltaCount))
+            let newEndIndex = countableBounds.index(countableBounds.endIndex, offsetBy: deltaCount)
+            fireInsertItems(countableBounds.startIndex..<newEndIndex)
         }
     }
 }
 
 extension ObservableCollection where Self: MutableCollectionWrapper, Self.Base.Index == Int, Self.Index == Int {
 
-    func oc_setValue(value: Base.Generator.Element, atPosition position: Base.Index) {
+    func oc_setValue(_ value: Base.Iterator.Element, atPosition position: Base.Index) {
         innerCollection[position] = value
         fireChangeItem(position)
     }
 }
 
-extension ObservableCollection where Self: RangeReplaceableCollectionWrapper, Self.Index == Self.Base.Index, Self.Index == Int, Self.Generator.Element == Self.Base.Generator.Element {
+extension ObservableCollection where Self: RangeReplaceableCollectionWrapper, Self.Index == Self.Base.Index, Self.Index == Int, Self.Iterator.Element == Self.Base.Iterator.Element {
 
-    public func replaceRange<C: CollectionType where C.Generator.Element == Generator.Element>(subRange: Range<Index>, with newElements: C) {
+    public func replaceRange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subRange: Range<Index>, with newElements: C) {
         oc_replaceRange(subRange) {
-            innerCollection.replaceRange(subRange, with: newElements)
+            innerCollection.replaceSubrange(subRange, with: newElements)
         }
     }
     
     // Original implementation just call append number of times, so we need to override it.
-    public func appendContentsOf<C: CollectionType where C.Generator.Element == Generator.Element>(newElements: C) {
+    public func appendContentsOf<C: Collection where C.Iterator.Element == Iterator.Element>(_ newElements: C) {
         replaceRange(endIndex..<endIndex, with: newElements)
     }
     
     // Original implementation recreates instance, so we need to override it.
-    public func removeAll(keepCapacity keepCapacity: Bool) {
+    public func removeAll(keepCapacity: Bool) {
         let toRemove = Items(base: innerCollection, bounds: innerCollection.startIndex..<innerCollection.endIndex)
-        innerCollection.removeAll(keepCapacity: keepCapacity)
+        innerCollection.removeAll(keepingCapacity: keepCapacity)
         onDidRemoveItems.fire(toRemove)
     }
 }
 
 // It is like a Slice but don't keep base collection alive.
-public struct Items<Element> : CollectionType, CustomDebugStringConvertible {
+public struct Items<Element> : Collection, CustomDebugStringConvertible {
     
     let data: [Element]
-    let bounds: Range<Int>
+    let bounds: CountableRange<Int>
     let offset: Int
     
     public var startIndex: Int {
@@ -141,16 +148,16 @@ public struct Items<Element> : CollectionType, CustomDebugStringConvertible {
         fatalError("Not implemented")
     }
     
-    public init<C: CollectionType where C.Index == Int, C.Generator.Element == Element>(base: C, bounds: Range<Int>) {
+    public init<C: Collection where C.Index == Int, C.Iterator.Element == Element>(base: C, bounds: Range<Int>) {
         if base.isEmpty && bounds.count > 0 {
             fatalError("Non empty bounds for empty collection.")
         }
         
-        self.bounds = bounds
-        offset = bounds.startIndex - base.startIndex
+        self.bounds = CountableRange(bounds)
+        offset = bounds.lowerBound - base.startIndex
         
-        var temp = base.isEmpty ? [] : [Element](count: bounds.count, repeatedValue: base.first!)
-        for idx in bounds {
+        var temp = base.isEmpty ? [] : [Element](repeating: base.first!, count: bounds.count)
+        for idx in self.bounds {
             temp[idx - offset] = base[idx]
         }
         data = temp
@@ -158,5 +165,9 @@ public struct Items<Element> : CollectionType, CustomDebugStringConvertible {
     
     public var debugDescription: String {
         return "\(bounds) elements \(data)"
+    }
+    
+    public func index(after i: Int) -> Int {
+        return bounds.index(after: i)
     }
 }

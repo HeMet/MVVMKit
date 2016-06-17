@@ -12,7 +12,7 @@ import UIKit
 public struct Transitions {
     
     public static let show: Transition = { (from: UIViewController, to: UIViewController) in
-        from.showViewController(to, sender: from);
+        from.show(to, sender: from);
     }
     
     public static let showDetail: Transition = { (from: UIViewController, to: UIViewController) in
@@ -20,6 +20,6 @@ public struct Transitions {
     }
     
     public static let showModal: Transition = { (from: UIViewController, to: UIViewController) in
-        from.presentViewController(to, animated: true, completion: nil)
+        from.present(to, animated: true, completion: nil)
     }
 }

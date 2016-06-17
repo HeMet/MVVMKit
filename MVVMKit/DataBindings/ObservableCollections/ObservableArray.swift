@@ -52,4 +52,8 @@ public final class ObservableArray<T>: ArrayWrapper, ObservableCollection {
             }
         }
     }
+    
+    public func index(after i: Int) -> Int {
+        return innerCollection.index(after: i)
+    }
 }

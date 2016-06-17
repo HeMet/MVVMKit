@@ -9,7 +9,7 @@
 import UIKit
 
 public class TabBarView : GroupView {
-    public static func assemble(views: [UIViewController]) -> UITabBarController {
+    public static func assemble(_ views: [UIViewController]) -> UITabBarController {
         let tb = UITabBarController()
         tb.viewControllers = views
         return tb
@@ -17,7 +17,7 @@ public class TabBarView : GroupView {
 }
 
 public class SplitView : GroupView {
-    public static func assemble(views: [UIViewController]) -> UISplitViewController {
+    public static func assemble(_ views: [UIViewController]) -> UISplitViewController {
         let splitV = UISplitViewController()
         splitV.viewControllers = views
         return splitV
@@ -25,7 +25,7 @@ public class SplitView : GroupView {
 }
 
 public class NavigationView: GroupView {
-    public static func assemble(views: [UIViewController]) -> NavigationGroupView {
+    public static func assemble(_ views: [UIViewController]) -> NavigationGroupView {
         return NavigationGroupView(rootViewController: views.first!)
     }
 }

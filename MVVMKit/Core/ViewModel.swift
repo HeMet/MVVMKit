@@ -17,7 +17,7 @@ public typealias ViewModelEventHandler = (AnyViewModel) -> ()
 public protocol DisposableViewModel {
     var onDisposed: ViewModelEventHandler? { get set }
     func dispose()
-    func handleDidDisposeViewModel(viewModel: AnyViewModel)
+    func handleDidDisposeViewModel(_ viewModel: AnyViewModel)
 }
 
 public protocol ViewModelWithID: ViewModel, UniqueID { }
@@ -29,11 +29,11 @@ public extension DisposableViewModel where Self: ViewModel {
         onDisposed?(!self)
     }
     
-    func handleDidDisposeViewModel(viewModel: AnyViewModel) {
+    func handleDidDisposeViewModel(_ viewModel: AnyViewModel) {
         // do nothing by default
     }
     
-    func child<VM: DisposableViewModel>(@noescape factory: () -> VM) -> VM {
+    func child<VM: DisposableViewModel>(@noescape _ factory: () -> VM) -> VM {
         var vm = factory()
         vm.onDisposed = handleDidDisposeViewModel
         return vm

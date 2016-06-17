@@ -17,7 +17,7 @@ extension ViewForViewModel where Self: UIViewController {
         return ViewFactory(factory: { Self.bindedTo($0) })
     }
     
-    public static func bindedTo(viewModel: ViewModelType) -> Self {
+    public static func bindedTo(_ viewModel: ViewModelType) -> Self {
         var vc: Self
         
         // It is not so clean as to has dedicated extension for each source type,
@@ -29,7 +29,7 @@ extension ViewForViewModel where Self: UIViewController {
             vc = Self.init(nibName: nsType.NibIdentifier, bundle: nil)
             
         } else {
-            vc = Self.init()
+            vc = Self()
         }
         
         vc.viewModel = viewModel
@@ -39,15 +39,15 @@ extension ViewForViewModel where Self: UIViewController {
         return vc
     }
     
-    static func createFromSB(sbID: String, _ viewID: String) -> Self {
+    static func createFromSB(_ sbID: String, _ viewID: String) -> Self {
         let sb = UIStoryboard(name: sbID, bundle: nil)
-        return sb.instantiateViewControllerWithIdentifier(viewID) as! Self
+        return sb.instantiateViewController(withIdentifier: viewID) as! Self
     }
 }
 
 
 extension GroupView {
-    public static func with<Args>(callback: Args -> [UIViewController]) -> ViewFactory<GroupViewType, Args> {
+    public static func with<Args>(_ callback: (Args) -> [UIViewController]) -> ViewFactory<GroupViewType, Args> {
         let factory = { (args: Args) -> GroupViewType in
             let children = callback(args)
             return Self.assemble(children)
@@ -55,7 +55,7 @@ extension GroupView {
         return ViewFactory(factory: factory)
     }
     
-    public static func with<Args>(callback: Args -> UIViewController) -> ViewFactory<GroupViewType, Args> {
+    public static func with<Args>(_ callback: (Args) -> UIViewController) -> ViewFactory<GroupViewType, Args> {
         let factory = { (args: Args) -> GroupViewType in
             let child = callback(args)
             return Self.assemble([child])
@@ -76,14 +76,14 @@ public struct ViewFactory<V: UIViewController, ArgsType> {
     public func asRoot() -> (ArgsType) -> () {
         return { args in
             let rootView = self.factory(args)
-            let window = UIApplication.sharedApplication().delegate?.window!
+            let window = UIApplication.shared().delegate?.window!
             window?.rootViewController = rootView
             window?.makeKeyAndVisible()
         }
     }
     
     /// Attaches view to screen with given transition.
-    public func withTransition(t: Transition) -> (sender: AnyViewModel) -> (ArgsType) -> () {
+    public func withTransition(_ t: Transition) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         return { s in
             return { args in
                 let toView = self.factory(args)
@@ -93,23 +93,23 @@ public struct ViewFactory<V: UIViewController, ArgsType> {
         }
     }
     
-    public func withSegue(segueId: String, argsMapper: (ArgsType) -> [AnyObject]) -> (sender: AnyViewModel) -> (ArgsType) -> () {
+    public func withSegue(_ segueId: String, argsMapper: (ArgsType) -> [AnyObject]) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         return { s in
             return { args in
                 // don't using factory because Storyboard creates hierarchy
                 let fromView = VMTracker.sharedInstance.getViewForViewModel(s)!
-                fromView.performSegueWithIdentifier(segueId, sender: argsMapper(args))
+                fromView.performSegue(withIdentifier: segueId, sender: argsMapper(args))
             }
         }
     }
     
     /// Present view as popover above another view.
-    public func asPopoverOn<V: UIViewController>(v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyViewModel) -> (ArgsType) -> () {
+    public func asPopoverOn<V: UIViewController>(_ v: V.Type, popoverSetup: (V, UIPopoverPresentationController) -> ()) -> (sender: AnyViewModel) -> (ArgsType) -> () {
         
         return { s in
             return { args in
                 let view = self.factory(args)
-                view.modalPresentationStyle = .Popover
+                view.modalPresentationStyle = .popover
                 let popoverPC = view.popoverPresentationController!
                 let presentingVC = VMTracker.sharedInstance.getViewForViewModel(s) as! V
                 if let delegate = presentingVC as? UIPopoverPresentationControllerDelegate {
@@ -118,7 +118,7 @@ public struct ViewFactory<V: UIViewController, ArgsType> {
                 
                 popoverSetup(presentingVC, popoverPC)
                 
-                presentingVC.presentViewController(view, animated: true, completion: nil)
+                presentingVC.present(view, animated: true, completion: nil)
             }
         }
     }
@@ -131,13 +131,13 @@ extension ViewModel {
         }
     }
     
-    func goBack(fromView: UIViewController) {
+    func goBack(_ fromView: UIViewController) {
         if let nc = fromView.navigationController where nc.topViewController == fromView {
-            nc.popViewControllerAnimated(true)
+            nc.popViewController(animated: true)
         } else if fromView.presentingViewController?.presentedViewController == fromView {
-            fromView.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            fromView.presentingViewController?.dismiss(animated: true, completion: nil)
         } else if let _ = fromView.popoverPresentationController {
-            fromView.dismissViewControllerAnimated(true, completion: nil)
+            fromView.dismiss(animated: true, completion: nil)
         }
     }
 }
@@ -149,11 +149,11 @@ final class VMTracker {
     
     var entries: [AnyViewForAnyViewModel] = []
     
-    func append<V: ViewForViewModel where V: AnyObject>(view: V) {
+    func append<V: ViewForViewModel where V: AnyObject>(_ view: V) {
         entries.append(AnyViewForViewModel(weakBase: view))
     }
     
-    func getViewForViewModel(vm: AnyViewModel) -> UIViewController? {
+    func getViewForViewModel(_ vm: AnyViewModel) -> UIViewController? {
         cleanDeadEntries()
         
         var result: UIViewController? = nil
@@ -167,7 +167,7 @@ final class VMTracker {
         return result
     }
     
-    func getViewModelForView(view: UIViewController) -> AnyViewModel? {
+    func getViewModelForView(_ view: UIViewController) -> AnyViewModel? {
         cleanDeadEntries()
         
         var result: AnyViewModel? = nil

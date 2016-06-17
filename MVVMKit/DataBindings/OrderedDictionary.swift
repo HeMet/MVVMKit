@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, RangeReplaceableCollectionType, MutableSliceable {
+public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiteralConvertible, RangeReplaceableCollection, MutableCollection {
     public typealias Base = [KeyType: ValueType]
-    public typealias Generator = IndexingGenerator<OrderedDictionary>
+    public typealias Iterator = IndexingIterator<OrderedDictionary>
     public typealias Element = (KeyType, ValueType)
     public typealias Index = Int
     public typealias SubSequence = OrderedDictionary
@@ -46,6 +46,10 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return keys.endIndex
     }
     
+    public func index(after i: Int) -> Int {
+        return i + 1;
+    }
+    
     // [Mutable]CollectionType
     
     public subscript(position: Index) -> Element {
@@ -58,7 +62,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             return (key, value)
         }
         set {
-            if keys.indexOf(newValue.0) == position {
+            if keys.index(of: newValue.0) == position {
                 updateValue(newValue.1, forKey: newValue.0)
             } else {
                 insert(newValue.1, forKey: newValue.0, atIndex: position)
@@ -80,19 +84,19 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
             return result
         }
         set {
-            replaceRange(range, with: newValue)
+            replaceSubrange(range, with: newValue)
         }
     }
     
     // RangeReplaceableCollectionType
     
-    public mutating func replaceRange<C: CollectionType where C.Generator.Element == Generator.Element>(subRange: Range<Index>, with newElements: C) {
-        for i in subRange {
+    public mutating func replaceSubrange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subRange: Range<Index>, with newElements: C) {
+        for i in CountableRange(subRange) {
             data[keys[i]] = nil
         }
         
         let keysToInsert = newElements.map { $0.0 }
-        keys.replaceRange(subRange, with: keysToInsert)
+        keys.replaceSubrange(subRange, with: keysToInsert)
         
         for (k, v) in newElements {
             data[k] = v
@@ -102,7 +106,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     // SequenceType
     
     // Compares OrderedDictionary to Dictionary ignoring keys order.
-    func elementsEqual(other: Dictionary<KeyType, ValueType>, @noescape isEquivalent: (Element, Element) -> Bool) -> Bool {
+    func elementsEqual(_ other: Dictionary<KeyType, ValueType>, @noescape isEquivalent: (Element, Element) -> Bool) -> Bool {
         guard count == other.count else { return false }
         
         for e in other {
@@ -124,7 +128,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         }
         set {
             if let newValue = newValue {
-                if let _ = keys.indexOf(key) {
+                if let _ = keys.index(of: key) {
                     updateValue(newValue, forKey: key)
                 } else {
                     insert(newValue, forKey: key, atIndex: count)
@@ -137,15 +141,15 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     
     // Next three methods do all real work with except for replaceRange
     
-    public mutating func insert(value: ValueType, forKey key: KeyType, atIndex index: Index) -> ValueType? {
+    public mutating func insert(_ value: ValueType, forKey key: KeyType, atIndex index: Index) -> ValueType? {
         let existingValue = data[key]
-        let existingIndex = keys.indexOf(key)
+        let existingIndex = keys.index(of: key)
         
         if existingValue != nil {
-            keys.removeAtIndex(existingIndex!)
+            keys.remove(at: existingIndex!)
         }
     
-        keys.insert(key, atIndex:index)
+        keys.insert(key, at:index)
         data[key] = value
         
         onMove?(existingIndex, index)
@@ -153,26 +157,26 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return existingValue
     }
     
-    mutating func updateValue(value: ValueType, forKey key: KeyType) -> ValueType? {
+    mutating func updateValue(_ value: ValueType, forKey key: KeyType) -> ValueType? {
         let existingValue = data[key]
         data[key] = value
-        onUpdate?(keys.indexOf(key)!)
+        onUpdate?(keys.index(of: key)!)
         return existingValue
     }
     
-    public mutating func removeValueForKey(key: KeyType) {
-        let index = keys.indexOf(key)!
-        keys.removeAtIndex(index)
+    public mutating func removeValueForKey(_ key: KeyType) {
+        let index = keys.index(of: key)!
+        keys.remove(at: index)
         let value = data[key]!
         data[key] = nil
         onRemove?(index, (key, value))
     }
     
-    public func indexOfKey(key: KeyType) -> Int? {
-        return keys.indexOf(key)
+    public func indexOfKey(_ key: KeyType) -> Int? {
+        return keys.index(of: key)
     }
     
-    public func getValueForKey(key: KeyType) -> ValueType? {
+    public func getValueForKey(_ key: KeyType) -> ValueType? {
         return self[key]
     }
     

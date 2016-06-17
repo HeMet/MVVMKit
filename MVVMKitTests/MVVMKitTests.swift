@@ -26,7 +26,7 @@ class MVVMKitTests: XCTestCase {
         let f0 = FirstViewModel()
         let f1 = FirstViewModel()
         
-        measureBlock {
+        measure {
             for _ in 0...1000000 {
                 f0 == f1
             }
@@ -40,7 +40,7 @@ class MVVMKitTests: XCTestCase {
         let any0 = AnyViewModel(viewModel: f0)
         let any1 = AnyViewModel(viewModel: f1)
         
-        measureBlock {
+        measure {
             for _ in 0...1000000 {
                 any0 == any1
             }
@@ -50,7 +50,7 @@ class MVVMKitTests: XCTestCase {
     func testRawBindViewModelPerfomance() {
         let v = FirstView()
         
-        measureBlock {
+        measure {
             for _ in 0...1000000 {
 //                v.bindToViewModel()
                 self.bindToViewModel(v)
@@ -58,7 +58,7 @@ class MVVMKitTests: XCTestCase {
         }
     }
     
-    func bindToViewModel<V: ViewForViewModel>(view: V) {
+    func bindToViewModel<V: ViewForViewModel>(_ view: V) {
         view.bindToViewModel()
     }
     
@@ -66,7 +66,7 @@ class MVVMKitTests: XCTestCase {
         let v = FirstView()
         let anyV = AnyViewForViewModel(base: v)
         
-        measureBlock {
+        measure {
             for _ in 0...1000000 {
                 anyV.bindToViewModel()
             }

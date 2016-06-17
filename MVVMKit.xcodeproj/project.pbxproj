@@ -22,7 +22,7 @@
 		84A57FED1B34A921009A560E /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
 		84A57FEF1B354F83009A560E /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEE1B354F83009A560E /* ObservableCollection.swift */; };
 		84A57FF11B357F31009A560E /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
-		84C39D541B9351DF00C441A0 /* TestTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C39D531B9351DF00C441A0 /* TestTypes.swift */; settings = {ASSET_TAGS = (); }; };
+		84C39D541B9351DF00C441A0 /* TestTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C39D531B9351DF00C441A0 /* TestTypes.swift */; };
 		84C847D41B8512F000E4EA92 /* ObservableOrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEC1B34A921009A560E /* ObservableOrderedDictionary.swift */; };
 		84D0E5B51B807B1100D910D4 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0E5B41B807B1100D910D4 /* OrderedDictionaryTests.swift */; };
 		84D0E5B61B807B7C00D910D4 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6347C8F1AE78E2E00D70121 /* OrderedDictionary.swift */; };
@@ -31,10 +31,10 @@
 		84D0E5BD1B8111E800D910D4 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FEE1B354F83009A560E /* ObservableCollection.swift */; };
 		84D0E5BE1B81125700D910D4 /* MulticastEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A57FF01B357F31009A560E /* MulticastEvent.swift */; };
 		84D0E5BF1B8112CF00D910D4 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E5DEC1B2C5CFE00D44299 /* ObservableArray.swift */; };
-		84E0BE961B964B2B0044FEEA /* ViewCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E0BE951B964B2B0044FEEA /* ViewCreation.swift */; settings = {ASSET_TAGS = (); }; };
-		84E698F41B92E48400658A39 /* AnyViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */; settings = {ASSET_TAGS = (); }; };
-		84E698F61B930A0F00658A39 /* UniqueID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F51B930A0F00658A39 /* UniqueID.swift */; settings = {ASSET_TAGS = (); }; };
-		84E698FA1B93293400658A39 /* AnyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F91B93293400658A39 /* AnyViewModel.swift */; settings = {ASSET_TAGS = (); }; };
+		84E0BE961B964B2B0044FEEA /* ViewCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E0BE951B964B2B0044FEEA /* ViewCreation.swift */; };
+		84E698F41B92E48400658A39 /* AnyViewForViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F31B92E48400658A39 /* AnyViewForViewModel.swift */; };
+		84E698F61B930A0F00658A39 /* UniqueID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F51B930A0F00658A39 /* UniqueID.swift */; };
+		84E698FA1B93293400658A39 /* AnyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E698F91B93293400658A39 /* AnyViewModel.swift */; };
 		B60D98301AF2392C00262E3A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60D982F1AF2392C00262E3A /* ViewModel.swift */; };
 		B6347C601AE78B8300D70121 /* MVVMKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6347C5F1AE78B8300D70121 /* MVVMKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6347C661AE78B8300D70121 /* MVVMKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6347C5A1AE78B8300D70121 /* MVVMKit.framework */; };
@@ -321,9 +321,13 @@
 				TargetAttributes = {
 					B6347C591AE78B8300D70121 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = HS26E3V4RC;
+						DevelopmentTeamName = "SimbirSoft Ltd.";
+						LastSwiftMigration = 0800;
 					};
 					B6347C641AE78B8300D70121 = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -531,6 +535,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -553,6 +558,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -571,6 +577,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -585,6 +592,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

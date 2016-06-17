@@ -48,7 +48,7 @@ public final class AnyViewForViewModel<ViewModelType: ViewModel>: AnyViewForAnyV
         base.bindToViewModel()
     }
     
-    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+    override func strongify(@noescape _ callback: (AnyObject) -> ()) -> Bool {
         return base.strongify(callback)
     }
 }
@@ -74,7 +74,7 @@ public class AnyViewForAnyViewModel {
         fatalError()
     }
     
-    func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+    func strongify(@noescape _ callback: (AnyObject) -> ()) -> Bool {
         fatalError()
     }
 }
@@ -98,7 +98,7 @@ private class _AnyViewForViewModelBoxBase<ViewModelType: ViewModel>: ViewForView
         fatalError()
     }
     
-    func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+    func strongify(@noescape _ callback: (AnyObject) -> ()) -> Bool {
         fatalError()
     }
 }
@@ -127,7 +127,7 @@ private final class _AnyViewForViewModelBox<V: ViewForViewModel where V: AnyObje
         base.bindToViewModel()
     }
     
-    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+    override func strongify(@noescape _ callback: (AnyObject) -> ()) -> Bool {
         callback(base)
         return true
     }
@@ -157,7 +157,7 @@ private final class _WeakAnyViewForViewModelBox<V: ViewForViewModel where V: Any
         base!.bindToViewModel()
     }
     
-    override func strongify(@noescape callback: (AnyObject) -> ()) -> Bool {
+    override func strongify(@noescape _ callback: (AnyObject) -> ()) -> Bool {
         if let strongBase = base {
             callback(strongBase)
             return true

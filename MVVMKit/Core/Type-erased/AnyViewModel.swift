@@ -32,11 +32,11 @@ public prefix func!<VM: ViewModel>(vm: VM) -> AnyViewModel {
 
 //infix operator <= { associativity left }
 
-public func <=<VM: ViewModel>(inout vm: VM!, any: AnyViewModel) {
+public func <=<VM: ViewModel>(vm: inout VM!, any: AnyViewModel) {
     vm = any.value as! VM
 }
 
-public func <=<VM: ViewModel>(inout any: AnyViewModel, vm: VM) {
+public func <=<VM: ViewModel>(any: inout AnyViewModel, vm: VM) {
     any = AnyViewModel(viewModel: vm)
 }
 
@@ -51,7 +51,7 @@ private final class _ViewModelBox<VM: ViewModel>: _AnyViewModelBoxBase {
         return base
     }
     
-    override func equalsTo(other: _AnyViewModelBoxBase) -> Bool {
+    override func equalsTo(_ other: _AnyViewModelBoxBase) -> Bool {
         if let other = other as? _ViewModelBox<VM> {
             return base == other.base
         }
@@ -64,7 +64,7 @@ private class _AnyViewModelBoxBase: ViewModel {
         fatalError()
     }
     
-    func equalsTo(other: _AnyViewModelBoxBase) -> Bool {
+    func equalsTo(_ other: _AnyViewModelBoxBase) -> Bool {
         fatalError()
     }
 }

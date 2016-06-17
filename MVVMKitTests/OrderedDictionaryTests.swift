@@ -87,19 +87,19 @@ class OrderedDictionaryTests: XCTestCase {
         
         assert("New pairs are not inserted into right place.") {
             defaultOD.equalsTo(["a": 1, "d": 4, "e": 5, "b": 2, "c": 3] , then: {
-                $0.value.replaceRange(Range(start: 1, end: 1), with: ["d": 4, "e": 5])
+                $0.value.replaceSubrange((1 ..< 1), with: ["d": 4, "e": 5])
             })
         }
         
         assert("Part of the dictionary should be replaced.") {
             defaultOD.equalsTo(["a": 1, "d": 4, "c": 3] , then: {
-                $0.value.replaceRange(Range(start: 1, end: 2), with: ["d": 4])
+                $0.value.replaceSubrange((1 ..< 2), with: ["d": 4])
             })
         }
 
         assert("Part of the dictionary should be removed.") {
             defaultOD.equalsTo(["a": 1, "c": 3] , then: {
-                $0.value.replaceRange(Range(start: 1, end: 2), with: [])
+                $0.value.replaceSubrange((1 ..< 2), with: [])
             })
         }
     }
@@ -145,29 +145,29 @@ class OrderedDictionaryTests: XCTestCase {
         }
     }
     
-    func assert(message: String, @noescape condition: () -> Bool) {
+    func assert(_ message: String, @noescape condition: () -> Bool) {
         XCTAssert(condition(), message)
     }
 }
 
 extension OrderedDictionary where KeyType: Equatable, ValueType: Equatable {
 
-    func equalsTo(benchmark: DictionaryLiteral<KeyType, ValueType>, then mutator: (Box<OrderedDictionary>) -> ()) -> Bool {
+    func equalsTo(_ benchmark: DictionaryLiteral<KeyType, ValueType>, then mutator: (Box<OrderedDictionary>) -> ()) -> Bool {
         let box = Box(self)
         mutator(box)
         
         return box.value.elementsEqual(benchmark)
     }
     
-    func elementsEqual<OtherSequence: SequenceType where OtherSequence.Generator.Element == Generator.Element>(other: OtherSequence) -> Bool {
+    func elementsEqual<OtherSequence: Sequence where OtherSequence.Iterator.Element == Iterator.Element>(_ other: OtherSequence) -> Bool {
         return elementsEqual(other, isEquivalent: areElementEqual)
     }
     
-    func elementsEqual(other: Dictionary<KeyType, ValueType>) -> Bool {
+    func elementsEqual(_ other: Dictionary<KeyType, ValueType>) -> Bool {
         return elementsEqual(other, isEquivalent: areElementEqual)
     }
     
-    func areElementEqual(l: Element, _ r: Element) -> Bool {
+    func areElementEqual(_ l: Element, _ r: Element) -> Bool {
         return l.0 == r.0 && l.1 == r.1
     }
 }

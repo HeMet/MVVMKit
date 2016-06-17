@@ -9,8 +9,8 @@
 import UIKit
 
 public class CellViewBindingManager {
-    typealias Binding = (AnyViewModel, NSIndexPath) -> UITableViewCell
-    public typealias BindingCallback = (UITableViewCell, NSIndexPath) -> ()
+    typealias Binding = (AnyViewModel, IndexPath) -> UITableViewCell
+    public typealias BindingCallback = (UITableViewCell, IndexPath) -> ()
     
     let templateCellWidthContraintId = "CVBM_templace_cell_width_constraint"
     
@@ -25,26 +25,26 @@ public class CellViewBindingManager {
         self.tableView = tableView
     }
     
-    public func register<V: UITableViewCell where V: CellViewForViewModel>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: CellViewForViewModel>(_ viewType: V.Type) {
         if V.dequeueFrom(tableView) == nil {
-            tableView.registerClass(V.self, forCellReuseIdentifier: V.CellIdentifier)
+            tableView.register(V.self, forCellReuseIdentifier: V.CellIdentifier)
         }
         
         registerBinding(viewType)
         registerTemplateCell(viewType)
     }
     
-    public func register<V: UITableViewCell where V: CellViewForViewModel, V: NibSource>(viewType: V.Type) {
+    public func register<V: UITableViewCell where V: CellViewForViewModel, V: NibSource>(_ viewType: V.Type) {
         if V.dequeueFrom(tableView) == nil {
             let nib = UINib(nibName: V.NibIdentifier, bundle: nil)
-            tableView.registerNib(nib, forCellReuseIdentifier: V.CellIdentifier)
+            tableView.register(nib, forCellReuseIdentifier: V.CellIdentifier)
         }
         
         registerBinding(viewType)
         registerTemplateCell(viewType)
     }
     
-    func registerBinding<V: CellViewForViewModel where V: UITableViewCell>(viewType: V.Type) {
+    func registerBinding<V: CellViewForViewModel where V: UITableViewCell>(_ viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
         bindings[typeName] = { [unowned self] viewModel, indexPath in
@@ -60,7 +60,7 @@ public class CellViewBindingManager {
         }
     }
     
-    func registerTemplateCell<V: CellViewForViewModel where V: UITableViewCell>(viewType: V.Type) {
+    func registerTemplateCell<V: CellViewForViewModel where V: UITableViewCell>(_ viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         
         let templateCell = V.dequeueFrom(tableView)!
@@ -69,7 +69,7 @@ public class CellViewBindingManager {
         templateCells[typeName] = AnyViewForViewModel(base: templateCell)
     }
     
-    func calculateHeightForTemplateCell(cell: AnyViewForAnyViewModel, viewModel: AnyViewModel, indexPath: NSIndexPath) -> CGSize {
+    func calculateHeightForTemplateCell(_ cell: AnyViewForAnyViewModel, viewModel: AnyViewModel, indexPath: IndexPath) -> CGSize {
         let templateCell = cell.value as! UITableViewCell
         
         cell.anyViewModel = viewModel
@@ -85,31 +85,31 @@ public class CellViewBindingManager {
         templateCell.setNeedsLayout()
         templateCell.layoutIfNeeded()
         
-        var size = templateCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        size.height++
+        var size = templateCell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        size.height += 1
         
         return size
     }
     
-    func applyWidthContraint(contentView: UIView, width: CGFloat) {
+    func applyWidthContraint(_ contentView: UIView, width: CGFloat) {
         let constraints = contentView.constraints 
         let oldWC = constraints.filter { $0.identifier == self.templateCellWidthContraintId }.first
         if let wc = oldWC {
             contentView.removeConstraint(wc)
         }
         
-        let newWC = NSLayoutConstraint(item: contentView, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: width)
+        let newWC = NSLayoutConstraint(item: contentView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width)
         newWC.identifier = templateCellWidthContraintId
         
         contentView.addConstraint(newWC)
     }
     
-    public func unregister<V: ViewForViewModel>(viewType: V.Type) {
+    public func unregister<V: ViewForViewModel>(_ viewType: V.Type) {
         let typeName = nameOfType(V.ViewModelType.self)
         bindings[typeName] = nil
     }
     
-    func bindViewModel(viewModel: AnyViewModel, indexPath: NSIndexPath) -> UITableViewCell {
+    func bindViewModel(_ viewModel: AnyViewModel, indexPath: IndexPath) -> UITableViewCell {
         let typeName = nameOfInstance(viewModel.value)
         if let binding = bindings[typeName] {
             return binding(viewModel, indexPath)
@@ -117,7 +117,7 @@ public class CellViewBindingManager {
         fatalError("Unknown view model type")
     }
     
-    func sizeForViewModel(viewModel: AnyViewModel, atIndexPath: NSIndexPath) -> CGSize {
+    func sizeForViewModel(_ viewModel: AnyViewModel, atIndexPath: IndexPath) -> CGSize {
         let typeName = nameOfInstance(viewModel.value)
         if let templateCell = templateCells[typeName] {
             return calculateHeightForTemplateCell(templateCell, viewModel: viewModel, indexPath: atIndexPath)
@@ -125,11 +125,11 @@ public class CellViewBindingManager {
         fatalError("Unknown view model type")
     }
     
-    func nameOfInstance(obj: Any) -> String {
+    func nameOfInstance(_ obj: Any) -> String {
         return "\(obj.dynamicType)"
     }
     
-    func nameOfType<T>(type: T.Type) -> String {
+    func nameOfType<T>(_ type: T.Type) -> String {
         return "\(type)"
     }
     
