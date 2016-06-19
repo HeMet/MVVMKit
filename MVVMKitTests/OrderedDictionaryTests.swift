@@ -87,13 +87,13 @@ class OrderedDictionaryTests: XCTestCase {
         
         assert("New pairs are not inserted into right place.") {
             defaultOD.equalsTo(["a": 1, "d": 4, "e": 5, "b": 2, "c": 3] , then: {
-                $0.value.replaceSubrange((1 ..< 1), with: ["d": 4, "e": 5])
+                $0.value[1..<1] = ["d": 4, "e": 5]
             })
         }
         
         assert("Part of the dictionary should be replaced.") {
             defaultOD.equalsTo(["a": 1, "d": 4, "c": 3] , then: {
-                $0.value.replaceSubrange((1 ..< 2), with: ["d": 4])
+                $0.value[1 ..< 2] = ["d": 4]
             })
         }
 
@@ -145,7 +145,7 @@ class OrderedDictionaryTests: XCTestCase {
         }
     }
     
-    func assert(_ message: String, @noescape condition: () -> Bool) {
+    func assert(_ message: String, condition: @noescape () -> Bool) {
         XCTAssert(condition(), message)
     }
 }
@@ -156,7 +156,12 @@ extension OrderedDictionary where KeyType: Equatable, ValueType: Equatable {
         let box = Box(self)
         mutator(box)
         
-        return box.value.elementsEqual(benchmark)
+        var d: Dictionary<KeyType, ValueType> = [:]
+        for pair in benchmark {
+            d[pair.key] = pair.value
+        }
+        
+        return box.value.elementsEqual(d)
     }
     
     func elementsEqual<OtherSequence: Sequence where OtherSequence.Iterator.Element == Iterator.Element>(_ other: OtherSequence) -> Bool {

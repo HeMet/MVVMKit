@@ -106,7 +106,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     // SequenceType
     
     // Compares OrderedDictionary to Dictionary ignoring keys order.
-    func elementsEqual(_ other: Dictionary<KeyType, ValueType>, @noescape isEquivalent: (Element, Element) -> Bool) -> Bool {
+    func elementsEqual(_ other: Dictionary<KeyType, ValueType>, isEquivalent: @noescape (Element, Element) -> Bool) -> Bool {
         guard count == other.count else { return false }
         
         for e in other {
@@ -141,6 +141,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
     
     // Next three methods do all real work with except for replaceRange
     
+    @discardableResult
     public mutating func insert(_ value: ValueType, forKey key: KeyType, atIndex index: Index) -> ValueType? {
         let existingValue = data[key]
         let existingIndex = keys.index(of: key)
@@ -157,6 +158,7 @@ public struct OrderedDictionary<KeyType : Hashable, ValueType> : DictionaryLiter
         return existingValue
     }
     
+    @discardableResult
     mutating func updateValue(_ value: ValueType, forKey key: KeyType) -> ValueType? {
         let existingValue = data[key]
         data[key] = value

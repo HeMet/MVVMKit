@@ -26,11 +26,11 @@ public protocol ObservableCollection: class, Collection {
 
     var onBatchUpdate: MulticastEvent<Self, UpdatePhase>! { get set }
     
-    func batchUpdate(@noescape _ updateClosure: () -> ())
+    func batchUpdate(_ updateClosure: @noescape () -> ())
 }
 
 extension ObservableCollection where Self.Index == Int {
-    public func batchUpdate(@noescape _ updateClosure: () -> ()) {
+    public func batchUpdate(_ updateClosure: @noescape () -> ()) {
         onBatchUpdate.fire(.begin)
         updateClosure()
         onBatchUpdate.fire(.end)
@@ -44,15 +44,15 @@ extension ObservableCollection where Self.Index == Int {
     }
     
     func fireChangeItem(_ index: Int) {
-        fireChangeItems(index...index)
+        fireChangeItems(index..<(index + 1))
     }
     
     func fireInsertItem(_ index: Int) {
-        fireInsertItems(index...index)
+        fireInsertItems(index..<(index + 1))
     }
     
     func fireRemoveItem(_ item: Iterator.Element, atIndex index: Int) {
-        fireRemoveItems([item], bounds: index...index)
+        fireRemoveItems([item], bounds: index..<(index + 1))
     }
     
     func fireChangeItems(_ bounds: Range<Int>) {
@@ -75,7 +75,6 @@ extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index ==
     
     func oc_replaceRange(_ bounds: Range<Base.Index>, mutator: @noescape () -> ()) {
         let toRemove = Items(base: innerCollection, bounds: bounds)
-        let oldCount = count
         let oldEndIndex = endIndex
         
         mutator()
@@ -84,14 +83,13 @@ extension ObservableCollection where Self: CollectionWrapper, Self.Base.Index ==
             if !toRemove.isEmpty {
                 onDidRemoveItems.fire(toRemove)
             }
-            let deltaCount = count - oldCount
             
-            let t = endIndex - oldEndIndex
-            
+            let dst = distance(from: oldEndIndex, to: endIndex)
             let countableBounds = CountableRange(bounds)
-            countableBounds.endIndex.advanced(by: Int(deltaCount))
-            let newEndIndex = countableBounds.index(countableBounds.endIndex, offsetBy: deltaCount)
-            fireInsertItems(countableBounds.startIndex..<newEndIndex)
+            let newEndIndex2 = index(countableBounds.endIndex, offsetBy: dst)
+            let insertRange: Range = countableBounds.startIndex..<newEndIndex2
+            
+            fireInsertItems(insertRange)
         }
     }
 }

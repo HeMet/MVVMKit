@@ -33,7 +33,7 @@ public extension DisposableViewModel where Self: ViewModel {
         // do nothing by default
     }
     
-    func child<VM: DisposableViewModel>(@noescape _ factory: () -> VM) -> VM {
+    func child<VM: DisposableViewModel>(_ factory: @noescape () -> VM) -> VM {
         var vm = factory()
         vm.onDisposed = handleDidDisposeViewModel
         return vm

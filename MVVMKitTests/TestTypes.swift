@@ -17,6 +17,6 @@ class FirstView: UIViewController, ViewForViewModel {
     var viewModel: FirstViewModel!
     
     func bindToViewModel() {
-        1 + 1
+        _ = 1 + 1
     }
 }

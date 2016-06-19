@@ -28,7 +28,7 @@ class MVVMKitTests: XCTestCase {
         
         measure {
             for _ in 0...1000000 {
-                f0 == f1
+                _ = f0 == f1
             }
         }
     }
@@ -42,7 +42,7 @@ class MVVMKitTests: XCTestCase {
         
         measure {
             for _ in 0...1000000 {
-                any0 == any1
+                _ = any0 == any1
             }
         }
     }

@@ -201,7 +201,7 @@ extension AnyViewModel: TableViewSectionDataModel {
     }
 }
 
-struct CollectionDataModel<T: ObservableCollection where T.Iterator.Element: ViewModel, T.Index == Int>: TableViewSectionDataModel {
+struct CollectionDataModel<T: ObservableCollection where T.Iterator.Element: ViewModel, T.Index == Int, T.IndexDistance == Int>: TableViewSectionDataModel {
     
     let tag = "CollectionItem<T: AnyObject>"
     

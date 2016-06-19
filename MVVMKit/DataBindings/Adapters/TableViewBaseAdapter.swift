@@ -21,7 +21,7 @@ public class TableViewBaseAdapter: NSObject, UITableViewDataSource, UITableViewD
     public typealias CellAction = (UITableViewCell, IndexPath) -> ()
     
     let tag = "observable_array_tag"
-    let slHeightForRowAtIndexPath = Selector("tableView:heightForRowAtIndexPath:")
+    let slHeightForRowAtIndexPath = #selector(UITableViewDelegate.tableView(_:heightForRowAt:))
     
     // Workaround: anowned(safe) cause random crashes for NSObject descendants
     unowned(unsafe) let tableView: UITableView
